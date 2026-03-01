@@ -524,6 +524,58 @@
             color: var(--text-muted);
             line-height: 1.65;
         }
+
+        /* LOCKED CARDS */
+        .card-small.locked {
+            position: relative;
+            background: #060605;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        .card-small.locked .card-edition-num { opacity: 0.2; }
+        .card-small.locked .card-title { color: #1a1610; }
+        .card-small.locked .card-desc { color: #131008; }
+        .card-small.locked .card-date { color: #131008; }
+        .badge-lock {
+            background: rgba(201,168,76,0.08);
+            color: rgba(201,168,76,0.4);
+            border: 1px solid rgba(201,168,76,0.15);
+        }
+        .lock-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: rgba(6,6,5,0.75);
+            backdrop-filter: blur(2px);
+            pointer-events: all;
+        }
+        .lock-icon { font-size: 28px; opacity: 0.6; }
+        .lock-text {
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gold);
+            opacity: 0.6;
+        }
+        .lock-btn {
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #080804;
+            background: var(--gold);
+            padding: 8px 16px;
+            text-decoration: none;
+            margin-top: 4px;
+            transition: filter 0.2s;
+        }
+        .lock-btn:hover { filter: brightness(1.15); }
+
         /* FOOTER */
         
         .footer {
@@ -568,22 +620,20 @@
                 gap: 6px;
             }
         }
-    /* NAV */
+/* NAV */
 .top-nav{display:flex;justify-content:space-between;align-items:center;padding:14px 32px;border-bottom:1px solid var(--border);background:var(--bg);position:sticky;top:0;z-index:100;}
-.nav-brand{font-family:"Playfair Display",serif;font-size:20px;font-weight:700;color:var(--gold);text-decoration:none;}
+.nav-brand{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--gold);text-decoration:none;}
 .nav-right{display:flex;align-items:center;gap:16px;}
-.nav-link{font-family:"DM Mono",monospace;font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--text-dim);text-decoration:none;transition:color 0.2s;}
+.nav-link{font-family:'DM Mono',monospace;font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--text-dim);text-decoration:none;transition:color 0.2s;}
 .nav-link:hover{color:var(--gold);}
-.nav-btn{font-family:"DM Mono",monospace;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#080804;background:var(--gold);padding:9px 18px;text-decoration:none;transition:background 0.2s;}
-.nav-btn:hover{background:var(--gold-light);}
+.nav-btn{font-family:'DM Mono',monospace;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#080804;background:var(--gold);padding:9px 18px;text-decoration:none;transition:background 0.2s;}
+.nav-btn:hover{filter:brightness(1.1);}
 @media(max-width:640px){.nav-link{display:none;}}
-</style>
+    </style>
 </head>
 
 <body>
-
 <script>
-  // Protection — redirige vers login si pas connecté
   if (!localStorage.getItem('tpx_logged_in')) {
     window.location.replace('login.html');
   }
@@ -713,12 +763,40 @@
                     </div>
                     <div class="card-arrow">→</div>
                 </div>
-            </a>                <div class="card-title">Édition 2</div>
-                <p class="card-desc">Publication prévue le 11 mars 2026.</p>
+            </a>
+
+
+
+            <!-- ÉDITION 2 — VERROUILLÉE -->
+            <div class="card-small locked">
+                <div class="card-top">
+                    <div class="card-edition-num">ÉDITION #002</div>
+                    <div class="badge badge-lock">🔒 Abonnés</div>
+                </div>
+                <div class="card-title">Édition 2</div>
+                <p class="card-desc">Publication prévue le 11 mars 2026. Abonne-toi pour y accéder.</p>
                 <div class="card-date">11 MARS 2026</div>
-            </div>                <div class="card-title">Édition 3</div>
-                <p class="card-desc">Publication prévue le 11 mars 2026.</p>
-                <div class="card-date">11 MARS 2026</div>
+                <div class="lock-overlay">
+                    <div class="lock-icon">🔒</div>
+                    <div class="lock-text">Accès abonnés</div>
+                    <a href="https://buy.stripe.com/7sY9ALaso1b1bVGgCwfw400" class="lock-btn">S'abonner →</a>
+                </div>
+            </div>
+
+            <!-- ÉDITION 3 — VERROUILLÉE -->
+            <div class="card-small locked">
+                <div class="card-top">
+                    <div class="card-edition-num">ÉDITION #003</div>
+                    <div class="badge badge-lock">🔒 Abonnés</div>
+                </div>
+                <div class="card-title">Édition 3</div>
+                <p class="card-desc">Publication prévue le 18 mars 2026. Abonne-toi pour y accéder.</p>
+                <div class="card-date">18 MARS 2026</div>
+                <div class="lock-overlay">
+                    <div class="lock-icon">🔒</div>
+                    <div class="lock-text">Accès abonnés</div>
+                    <a href="https://buy.stripe.com/7sY9ALaso1b1bVGgCwfw400" class="lock-btn">S'abonner →</a>
+                </div>
             </div>
 
         </div>
@@ -783,7 +861,7 @@
             </div>
 
             <!-- CTA Button — remplace le href par ton lien Stripe -->
-            <a href="https://buy.stripe.com/7sY9ALaso1b1bVGgCwfw400" style="display:block; text-align:center; background:var(--gold); color:#080804; font-family:'DM Mono',monospace; font-size:11px; font-weight:700; letter-spacing:3px; text-transform:uppercase; padding:18px 24px; text-decoration:none; transition:all 0.3s; border:2px solid var(--gold-dim); box-shadow: 0 0 20px rgba(201,168,76,0.25);"
+            <a href="https://buy.stripe.com/7sY9ALaso1b1bVGgCwfw400" style="display:block; text-align:center; background:var(--gold); color:#080804; font-family:'DM Mono',monospace; font-size:11px; font-weight:700; letter-spacing:3px; text-transform:uppercase; padding:18px 24px; text-decoration:none; transition:all 0.3s; border:2px solid rgba(201,168,76,0.4); box-shadow:0 0 20px rgba(201,168,76,0.2);"
                 onmouseover="this.style.background='#e2c97e'; this.style.transform='translateY(-2px)'" onmouseout="this.style.background='#c9a84c'; this.style.transform='translateY(0)'">
           S'abonner maintenant →
         </a>
