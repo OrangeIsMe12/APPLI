@@ -1,541 +1,228 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connexion — The Pro Xau</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Barlow:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-    <style>
-         :root {
-            --gold: #C9A84C;
-            --gold-light: #E8C97A;
-            --gold-dim: rgba(201, 168, 76, 0.1);
-            --red: #C94C4C;
-            --red-light: #E05A5A;
-            --green: #4CAF7A;
-            --dark: #080808;
-            --dark2: #0E0E0E;
-            --dark3: #151515;
-            --dark4: #1C1C1C;
-            --border: #242424;
-            --border-light: #2E2E2E;
-            --text: #D8D8D8;
-            --text-muted: #6A6A6A;
-            --text-dim: #444;
-            --font-display: 'Playfair Display', serif;
-            --font-body: 'DM Sans', sans-serif;
-            --font-mono: 'DM Mono', monospace;
-            --font-label: 'Barlow', sans-serif;
-        }
-        
-        *,
-        *::before,
-        *::after {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        html,
-        body {
-            height: 100%;
-        }
-        
-        body {
-            font-family: var(--font-body);
-            background: var(--dark);
-            color: var(--text);
-            -webkit-font-smoothing: antialiased;
-        }
-        /* NAV */
-        
-        .top-nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 14px 32px;
-            border-bottom: 1px solid var(--border);
-            background: var(--dark);
-        }
-        
-        .nav-brand {
-            font-family: var(--font-display);
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--gold);
-            text-decoration: none;
-        }
-        
-        .nav-link {
-            font-family: var(--font-label);
-            font-size: 11px;
-            font-weight: 600;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            color: var(--text-muted);
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-        
-        .nav-link:hover {
-            color: var(--gold);
-        }
-        /* PAGE */
-        
-        .page {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: calc(100vh - 57px);
-            padding: 40px 16px;
-        }
-        /* CARD */
-        
-        .login-card {
-            width: 100%;
-            max-width: 420px;
-            animation: fadeUp 0.4s ease both;
-        }
-        
-        @keyframes fadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(16px)
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0)
-            }
-        }
-        
-        .card-header {
-            text-align: center;
-            margin-bottom: 36px;
-        }
-        
-        .card-eyebrow {
-            font-family: var(--font-label);
-            font-size: 10px;
-            font-weight: 700;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            color: var(--gold);
-            margin-bottom: 10px;
-        }
-        
-        .card-title {
-            font-family: var(--font-display);
-            font-size: 32px;
-            font-weight: 700;
-            color: #fff;
-            line-height: 1.1;
-        }
-        
-        .card-title em {
-            font-style: italic;
-            color: var(--gold);
-        }
-        
-        .card-sub {
-            font-family: var(--font-body);
-            font-size: 13px;
-            color: var(--text-muted);
-            margin-top: 8px;
-        }
-        
-        .card-body {
-            background: var(--dark3);
-            border: 1px solid var(--border);
-            padding: 32px;
-        }
-        /* FORM */
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .form-label {
-            display: block;
-            font-family: var(--font-label);
-            font-size: 10px;
-            font-weight: 700;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: var(--text-muted);
-            margin-bottom: 8px;
-        }
-        
-        .form-input {
-            width: 100%;
-            background: var(--dark4);
-            border: 1px solid var(--border-light);
-            color: var(--text);
-            font-family: var(--font-body);
-            font-size: 14px;
-            padding: 12px 16px;
-            outline: none;
-            transition: border-color 0.2s, box-shadow 0.2s;
-            -webkit-appearance: none;
-            border-radius: 0;
-        }
-        
-        .form-input:focus {
-            border-color: var(--gold);
-            box-shadow: 0 0 0 2px rgba(201, 168, 76, 0.1);
-        }
-        
-        .form-input::placeholder {
-            color: var(--text-dim);
-        }
-        
-        .form-input.error {
-            border-color: var(--red);
-        }
-        
-        .form-error {
-            font-family: var(--font-mono);
-            font-size: 10px;
-            color: var(--red-light);
-            margin-top: 6px;
-            display: none;
-        }
-        
-        .form-error.show {
-            display: block;
-        }
-        
-        .input-wrapper {
-            position: relative;
-        }
-        
-        .toggle-pw {
-            position: absolute;
-            right: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            color: var(--text-dim);
-            cursor: pointer;
-            font-size: 13px;
-            padding: 4px;
-        }
-        
-        .toggle-pw:hover {
-            color: var(--gold);
-        }
-        
-        .forgot-link {
-            font-family: var(--font-label);
-            font-size: 10px;
-            font-weight: 600;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            color: var(--text-muted);
-            text-decoration: none;
-            float: right;
-            margin-top: -4px;
-            transition: color 0.2s;
-        }
-        
-        .forgot-link:hover {
-            color: var(--gold);
-        }
-        
-        .form-check {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 24px;
-        }
-        
-        .form-check input[type=checkbox] {
-            width: 16px;
-            height: 16px;
-            accent-color: var(--gold);
-            cursor: pointer;
-        }
-        
-        .form-check label {
-            font-family: var(--font-label);
-            font-size: 11px;
-            color: var(--text-muted);
-            cursor: pointer;
-        }
-        
-        .btn-primary {
-            width: 100%;
-            background: var(--gold);
-            color: var(--dark);
-            border: none;
-            padding: 14px;
-            font-family: var(--font-label);
-            font-size: 12px;
-            font-weight: 700;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: background 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-        
-        .btn-primary:hover {
-            background: var(--gold-light);
-        }
-        
-        .btn-primary:disabled {
-            background: var(--border-light);
-            color: var(--text-dim);
-            cursor: not-allowed;
-        }
-        
-        .divider-text {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin: 20px 0;
-            font-family: var(--font-label);
-            font-size: 9px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: var(--text-dim);
-        }
-        
-        .divider-text::before,
-        .divider-text::after {
-            content: '';
-            flex: 1;
-            border-top: 1px solid var(--border);
-        }
-        
-        .alert-box {
-            padding: 12px 16px;
-            font-family: var(--font-mono);
-            font-size: 11px;
-            line-height: 1.6;
-            margin-bottom: 20px;
-            border-left: 3px solid;
-            display: none;
-        }
-        
-        .alert-box.show {
-            display: block;
-        }
-        
-        .alert-box.error {
-            border-color: var(--red);
-            background: rgba(201, 76, 76, 0.06);
-            color: #E09090;
-        }
-        
-        .alert-box.success {
-            border-color: var(--green);
-            background: rgba(76, 175, 122, 0.06);
-            color: #90D4A8;
-        }
-        
-        .card-footer {
-            text-align: center;
-            margin-top: 20px;
-            font-family: var(--font-label);
-            font-size: 11px;
-            color: var(--text-muted);
-        }
-        
-        .card-footer a {
-            color: var(--gold);
-            text-decoration: none;
-        }
-        
-        .card-footer a:hover {
-            text-decoration: underline;
-        }
-        
-        .spinner {
-            display: inline-block;
-            width: 13px;
-            height: 13px;
-            border: 2px solid rgba(8, 8, 8, 0.3);
-            border-top-color: var(--dark);
-            border-radius: 50%;
-            animation: spin 0.7s linear infinite;
-        }
-        
-        @keyframes spin {
-            to {
-                transform: rotate(360deg)
-            }
-        }
-        /* Security badge */
-        
-        .security-note {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            margin-top: 24px;
-            font-family: var(--font-mono);
-            font-size: 9px;
-            color: var(--text-dim);
-            letter-spacing: 1px;
-        }
-        
-        .security-note::before {
-            content: '🔒';
-        }
-    </style>
-</head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Connexion — The Pro Xau</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Barlow:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold:#C9A84C; --gold-light:#E8C97A; --gold-dim:rgba(201,168,76,0.1);
+  --red:#C94C4C; --red-light:#E05A5A; --green:#4CAF7A;
+  --dark:#080808; --dark2:#0E0E0E; --dark3:#151515; --dark4:#1C1C1C;
+  --border:#242424; --border-light:#2E2E2E;
+  --text:#D8D8D8; --text-muted:#6A6A6A; --text-dim:#444;
+  --font-display:'Playfair Display',serif;
+  --font-body:'DM Sans',sans-serif;
+  --font-mono:'DM Mono',monospace;
+  --font-label:'Barlow',sans-serif;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;}
+body{font-family:var(--font-body);background:var(--dark);color:var(--text);-webkit-font-smoothing:antialiased;}
 
+/* NAV */
+.top-nav{display:flex;justify-content:space-between;align-items:center;padding:14px 32px;border-bottom:1px solid var(--border);background:var(--dark);}
+.nav-brand{font-family:var(--font-display);font-size:20px;font-weight:700;color:var(--gold);text-decoration:none;}
+.nav-link{font-family:var(--font-label);font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);text-decoration:none;transition:color 0.2s;}
+.nav-link:hover{color:var(--gold);}
+
+/* PAGE */
+.page{display:flex;align-items:center;justify-content:center;min-height:calc(100vh - 57px);padding:40px 16px;}
+
+/* CARD */
+.login-card{width:100%;max-width:420px;animation:fadeUp 0.4s ease both;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+.card-header{text-align:center;margin-bottom:36px;}
+.card-eyebrow{font-family:var(--font-label);font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
+.card-title{font-family:var(--font-display);font-size:32px;font-weight:700;color:#fff;line-height:1.1;}
+.card-title em{font-style:italic;color:var(--gold);}
+.card-sub{font-family:var(--font-body);font-size:13px;color:var(--text-muted);margin-top:8px;}
+
+.card-body{background:var(--dark3);border:1px solid var(--border);padding:32px;}
+
+/* FORM */
+.form-group{margin-bottom:20px;}
+.form-label{display:block;font-family:var(--font-label);font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px;}
+.form-input{width:100%;background:var(--dark4);border:1px solid var(--border-light);color:var(--text);font-family:var(--font-body);font-size:14px;padding:12px 16px;outline:none;transition:border-color 0.2s,box-shadow 0.2s;-webkit-appearance:none;border-radius:0;}
+.form-input:focus{border-color:var(--gold);box-shadow:0 0 0 2px rgba(201,168,76,0.1);}
+.form-input::placeholder{color:var(--text-dim);}
+.form-input.error{border-color:var(--red);}
+.form-error{font-family:var(--font-mono);font-size:10px;color:var(--red-light);margin-top:6px;display:none;}
+.form-error.show{display:block;}
+
+.input-wrapper{position:relative;}
+.toggle-pw{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text-dim);cursor:pointer;font-size:13px;padding:4px;}
+.toggle-pw:hover{color:var(--gold);}
+
+.forgot-link{font-family:var(--font-label);font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);text-decoration:none;float:right;margin-top:-4px;transition:color 0.2s;}
+.forgot-link:hover{color:var(--gold);}
+
+.form-check{display:flex;align-items:center;gap:10px;margin-bottom:24px;}
+.form-check input[type=checkbox]{width:16px;height:16px;accent-color:var(--gold);cursor:pointer;}
+.form-check label{font-family:var(--font-label);font-size:11px;color:var(--text-muted);cursor:pointer;}
+
+.btn-primary{width:100%;background:var(--gold);color:var(--dark);border:none;padding:14px;font-family:var(--font-label);font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:background 0.2s;display:flex;align-items:center;justify-content:center;gap:8px;}
+.btn-primary:hover{background:var(--gold-light);}
+.btn-primary:disabled{background:var(--border-light);color:var(--text-dim);cursor:not-allowed;}
+
+.divider-text{display:flex;align-items:center;gap:12px;margin:20px 0;font-family:var(--font-label);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text-dim);}
+.divider-text::before,.divider-text::after{content:'';flex:1;border-top:1px solid var(--border);}
+
+.alert-box{padding:12px 16px;font-family:var(--font-mono);font-size:11px;line-height:1.6;margin-bottom:20px;border-left:3px solid;display:none;}
+.alert-box.show{display:block;}
+.alert-box.error{border-color:var(--red);background:rgba(201,76,76,0.06);color:#E09090;}
+.alert-box.success{border-color:var(--green);background:rgba(76,175,122,0.06);color:#90D4A8;}
+
+.card-footer{text-align:center;margin-top:20px;font-family:var(--font-label);font-size:11px;color:var(--text-muted);}
+.card-footer a{color:var(--gold);text-decoration:none;}
+.card-footer a:hover{text-decoration:underline;}
+
+.spinner{display:inline-block;width:13px;height:13px;border:2px solid rgba(8,8,8,0.3);border-top-color:var(--dark);border-radius:50%;animation:spin 0.7s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Security badge */
+.security-note{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:24px;font-family:var(--font-mono);font-size:9px;color:var(--text-dim);letter-spacing:1px;}
+.security-note::before{content:'🔒';}
+</style>
+</head>
 <body>
 
-    <nav class="top-nav">
-        <a href="index.html" class="nav-brand">The Pro Xau</a>
-        <a href="register.html" class="nav-link">Créer un compte</a>
-    </nav>
+<nav class="top-nav">
+  <a href="index.html" class="nav-brand">The Pro Xau</a>
+  <a href="register.html" class="nav-link">Créer un compte</a>
+</nav>
 
-    <div class="page">
-        <div class="login-card">
+<div class="page">
+  <div class="login-card">
 
-            <div class="card-header">
-                <div class="card-eyebrow">Espace Membre</div>
-                <h1 class="card-title">Bon retour,<br><em>Trader.</em></h1>
-                <p class="card-sub">Connecte-toi pour accéder à tes éditions premium.</p>
-            </div>
+    <div class="card-header">
+      <div class="card-eyebrow">Espace Membre</div>
+      <h1 class="card-title">Bon retour,<br><em>Trader.</em></h1>
+      <p class="card-sub">Connecte-toi pour accéder à tes éditions premium.</p>
+    </div>
 
-            <div class="card-body">
+    <div class="card-body">
 
-                <div class="alert-box error" id="alert-error">
-                    Identifiants incorrects. Vérifie ton email et ton mot de passe.
-                </div>
-                <div class="alert-box success" id="alert-success">
-                    Connexion réussie — redirection en cours...
-                </div>
+      <div class="alert-box error" id="alert-error">
+        Identifiants incorrects. Vérifie ton email et ton mot de passe.
+      </div>
+      <div class="alert-box success" id="alert-success">
+        Connexion réussie — redirection en cours...
+      </div>
 
-                <form id="login-form" novalidate>
+      <form id="login-form" novalidate>
 
-                    <div class="form-group">
-                        <label class="form-label" for="email">Adresse email</label>
-                        <input class="form-input" type="email" id="email" name="email" placeholder="ton@email.com" autocomplete="email">
-                        <span class="form-error" id="email-error">Email invalide.</span>
-                    </div>
+        <div class="form-group">
+          <label class="form-label" for="email">Adresse email</label>
+          <input class="form-input" type="email" id="email" name="email" placeholder="ton@email.com" autocomplete="email">
+          <span class="form-error" id="email-error">Email invalide.</span>
+        </div>
 
-                    <div class="form-group">
-                        <label class="form-label" for="password">
+        <div class="form-group">
+          <label class="form-label" for="password">
             Mot de passe
             <a href="forgot-password.html" class="forgot-link">Mot de passe oublié ?</a>
           </label>
-                        <div class="input-wrapper">
-                            <input class="form-input" type="password" id="password" name="password" placeholder="••••••••" autocomplete="current-password">
-                            <button type="button" class="toggle-pw" id="toggle-pw" tabindex="-1" aria-label="Afficher le mot de passe">👁</button>
-                        </div>
-                        <span class="form-error" id="pw-error">Mot de passe requis.</span>
-                    </div>
+          <div class="input-wrapper">
+            <input class="form-input" type="password" id="password" name="password" placeholder="••••••••" autocomplete="current-password">
+            <button type="button" class="toggle-pw" id="toggle-pw" tabindex="-1" aria-label="Afficher le mot de passe">👁</button>
+          </div>
+          <span class="form-error" id="pw-error">Mot de passe requis.</span>
+        </div>
 
-                    <div class="form-check">
-                        <input type="checkbox" id="remember" name="remember">
-                        <label for="remember">Se souvenir de moi</label>
-                    </div>
+        <div class="form-check">
+          <input type="checkbox" id="remember" name="remember">
+          <label for="remember">Se souvenir de moi</label>
+        </div>
 
-                    <button type="submit" class="btn-primary" id="submit-btn">
+        <button type="submit" class="btn-primary" id="submit-btn">
           Se connecter
         </button>
 
-                </form>
+      </form>
 
-            </div>
-
-            <div class="card-footer">
-                Pas encore membre ? <a href="register.html">Créer un compte</a>
-            </div>
-
-            <div class="security-note">Connexion sécurisée SSL · The Pro Xau</div>
-
-        </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script>
-        // ══════════════════════════════════════════
-        // COLLE TES VALEURS SUPABASE ICI
-        const SUPABASE_URL = 'https://oehoqoaxcwiffbzuegou.supabase.co'
-        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9laG9xb2F4Y3dpZmZienVlZ291Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzMjI2MTMsImV4cCI6MjA4Nzg5ODYxM30.N5UP014MgNUBunZJuhKuUUlRYC_HY7lpAFAYD39CjvE
+    <div class="card-footer">
+      Pas encore membre ? <a href="register.html">Créer un compte</a>
+    </div>
 
-'
-            // ══════════════════════════════════════════
+    <div class="security-note">Connexion sécurisée SSL · The Pro Xau</div>
 
-        const {
-            createClient
-        } = supabase
-        const sb = createClient(SUPABASE_URL, SUPABASE_KEY)
+  </div>
+</div>
 
-        const form = document.getElementById('login-form')
-        const emailInput = document.getElementById('email')
-        const pwInput = document.getElementById('password')
-        const submitBtn = document.getElementById('submit-btn')
-        const alertError = document.getElementById('alert-error')
-        const alertSuccess = document.getElementById('alert-success')
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
 
-        document.getElementById('toggle-pw').addEventListener('click', () => {
-            pwInput.type = pwInput.type === 'password' ? 'text' : 'password'
-        })
+// COLLE TES VALEURS SUPABASE ICI
+const SUPABASE_URL = 'https://oehoqoaxcwiffbzuegou.supabase.co'
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9laG9xb2F4Y3dpZmZienVlZ291Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzMjI2MTMsImV4cCI6MjA4Nzg5ODYxM30.N5UP014MgNUBunZJuhKuUUlRYC_HY7lpAFAYD39CjvE'
 
-        emailInput.addEventListener('input', () => {
-            emailInput.classList.remove('error')
-            document.getElementById('email-error').classList.remove('show')
-            alertError.classList.remove('show')
-        })
-        pwInput.addEventListener('input', () => {
-            pwInput.classList.remove('error')
-            document.getElementById('pw-error').classList.remove('show')
-            alertError.classList.remove('show')
-        })
 
-        form.addEventListener('submit', async(e) => {
-            e.preventDefault()
-            let valid = true
+const { createClient } = supabase
+const sb = createClient(SUPABASE_URL, SUPABASE_KEY)
 
-            if (!/^[^@]+@[^@]+[.][^@]+$/.test(emailInput.value)) {
-                emailInput.classList.add('error')
-                document.getElementById('email-error').classList.add('show')
-                valid = false
-            }
-            if (!pwInput.value) {
-                pwInput.classList.add('error')
-                document.getElementById('pw-error').classList.add('show')
-                valid = false
-            }
-            if (!valid) return
+const form = document.getElementById('login-form')
+const emailInput = document.getElementById('email')
+const pwInput = document.getElementById('password')
+const submitBtn = document.getElementById('submit-btn')
+const alertError = document.getElementById('alert-error')
+const alertSuccess = document.getElementById('alert-success')
 
-            submitBtn.disabled = true
-            submitBtn.innerHTML = '<span class="spinner"></span> Connexion...'
+document.getElementById('toggle-pw').addEventListener('click', () => {
+  pwInput.type = pwInput.type === 'password' ? 'text' : 'password'
+})
 
-            const {
-                data,
-                error
-            } = await sb.auth.signInWithPassword({
-                email: emailInput.value,
-                password: pwInput.value
-            })
+emailInput.addEventListener('input', () => {
+  emailInput.classList.remove('error')
+  document.getElementById('email-error').classList.remove('show')
+  alertError.classList.remove('show')
+})
+pwInput.addEventListener('input', () => {
+  pwInput.classList.remove('error')
+  document.getElementById('pw-error').classList.remove('show')
+  alertError.classList.remove('show')
+})
 
-            if (error) {
-                alertError.textContent = 'Identifiants incorrects. Verifie ton email et ton mot de passe.'
-                alertError.classList.add('show')
-                submitBtn.disabled = false
-                submitBtn.innerHTML = 'Se connecter'
-                return
-            }
+form.addEventListener('submit', async (e) => {
+  e.preventDefault()
+  let valid = true
 
-            localStorage.setItem('tpx_logged_in', 'true')
-            alertSuccess.classList.add('show')
-            setTimeout(() => {
-                window.location.href = 'index.html'
-            }, 1200)
-        })
-    </script>
+  if (!/^[^@]+@[^@]+[.][^@]+$/.test(emailInput.value)) {
+    emailInput.classList.add('error')
+    document.getElementById('email-error').classList.add('show')
+    valid = false
+  }
+  if (!pwInput.value) {
+    pwInput.classList.add('error')
+    document.getElementById('pw-error').classList.add('show')
+    valid = false
+  }
+  if (!valid) return
+
+  submitBtn.disabled = true
+  submitBtn.innerHTML = '<span class="spinner"></span> Connexion...'
+
+  const { data, error } = await sb.auth.signInWithPassword({
+    email: emailInput.value,
+    password: pwInput.value
+  })
+
+  if (error) {
+    alertError.textContent = 'Identifiants incorrects. Verifie ton email et ton mot de passe.'
+    alertError.classList.add('show')
+    submitBtn.disabled = false
+    submitBtn.innerHTML = 'Se connecter'
+    return
+  }
+
+  localStorage.setItem('tpx_logged_in', 'true')
+  alertSuccess.classList.add('show')
+  setTimeout(() => { window.location.href = 'index.html' }, 1200)
+})
+</script>
 </body>
-
 </html>
