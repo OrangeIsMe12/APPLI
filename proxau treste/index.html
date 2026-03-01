@@ -568,91 +568,35 @@
                 gap: 6px;
             }
         }
-        /* NAV */
-        
-        .top-nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 14px 32px;
-            border-bottom: 1px solid var(--border);
-            background: var(--bg);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        
-        .nav-brand {
-            font-family: "Playfair Display", serif;
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--gold);
-            text-decoration: none;
-        }
-        
-        .nav-right {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-        
-        .nav-link {
-            font-family: "DM Mono", monospace;
-            font-size: 10px;
-            font-weight: 600;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: var(--text-dim);
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-        
-        .nav-link:hover {
-            color: var(--gold);
-        }
-        
-        .nav-btn {
-            font-family: "DM Mono", monospace;
-            font-size: 10px;
-            font-weight: 700;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: #080804;
-            background: var(--gold);
-            padding: 9px 18px;
-            text-decoration: none;
-            transition: background 0.2s;
-        }
-        
-        .nav-btn:hover {
-            background: var(--gold-light);
-        }
-        
-        @media(max-width:640px) {
-            .nav-link {
-                display: none;
-            }
-        }
-    </style>
+    /* NAV */
+.top-nav{display:flex;justify-content:space-between;align-items:center;padding:14px 32px;border-bottom:1px solid var(--border);background:var(--bg);position:sticky;top:0;z-index:100;}
+.nav-brand{font-family:"Playfair Display",serif;font-size:20px;font-weight:700;color:var(--gold);text-decoration:none;}
+.nav-right{display:flex;align-items:center;gap:16px;}
+.nav-link{font-family:"DM Mono",monospace;font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--text-dim);text-decoration:none;transition:color 0.2s;}
+.nav-link:hover{color:var(--gold);}
+.nav-btn{font-family:"DM Mono",monospace;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#080804;background:var(--gold);padding:9px 18px;text-decoration:none;transition:background 0.2s;}
+.nav-btn:hover{background:var(--gold-light);}
+@media(max-width:640px){.nav-link{display:none;}}
+</style>
 </head>
 
 <body>
 
-    <script>
-        // Protection — redirige vers login si pas connecté
-        if (!localStorage.getItem('tpx_logged_in')) {
-            window.location.replace('login.html');
-        }
-    </script>
+<script>
+  // Protection — redirige vers login si pas connecté
+  if (!localStorage.getItem('tpx_logged_in')) {
+    window.location.replace('login.html');
+  }
+</script>
 
-    <!-- NAV -->
-    <nav class="top-nav">
-        <a href="index.html" class="nav-brand">The Pro Xau</a>
-        <div class="nav-right">
-            <a href="register.html" class="nav-link">S'abonner</a>
-            <a href="dashboard.html" class="nav-btn">Mon compte →</a>
-        </div>
-    </nav>
+<!-- NAV -->
+<nav class="top-nav">
+  <a href="index.html" class="nav-brand">The Pro Xau</a>
+  <div class="nav-right">
+    <a href="https://buy.stripe.com/7sY9ALaso1b1bVGgCwfw400" class="nav-link">S'abonner</a>
+    <a href="dashboard.html" class="nav-btn">Mon compte →</a>
+  </div>
+</nav>
 
     <!-- HERO -->
     <section class="hero">
@@ -769,15 +713,13 @@
                     </div>
                     <div class="card-arrow">→</div>
                 </div>
-            </a>
-            <div class="card-title">Édition 2</div>
-            <p class="card-desc">Publication prévue le 11 mars 2026.</p>
-            <div class="card-date">11 MARS 2026</div>
-        </div>
-        <div class="card-title">Édition 3</div>
-        <p class="card-desc">Publication prévue le 11 mars 2026.</p>
-        <div class="card-date">11 MARS 2026</div>
-        </div>
+            </a>                <div class="card-title">Édition 2</div>
+                <p class="card-desc">Publication prévue le 11 mars 2026.</p>
+                <div class="card-date">11 MARS 2026</div>
+            </div>                <div class="card-title">Édition 3</div>
+                <p class="card-desc">Publication prévue le 11 mars 2026.</p>
+                <div class="card-date">11 MARS 2026</div>
+            </div>
 
         </div>
     </section>
@@ -841,7 +783,7 @@
             </div>
 
             <!-- CTA Button — remplace le href par ton lien Stripe -->
-            <a href="COLLE_TON_LIEN_STRIPE_ICI" style="display:block; text-align:center; background:var(--gold); color:#080804; font-family:'DM Mono',monospace; font-size:11px; font-weight:700; letter-spacing:3px; text-transform:uppercase; padding:18px 24px; text-decoration:none; transition:all 0.3s;"
+            <a href="https://buy.stripe.com/7sY9ALaso1b1bVGgCwfw400" style="display:block; text-align:center; background:var(--gold); color:#080804; font-family:'DM Mono',monospace; font-size:11px; font-weight:700; letter-spacing:3px; text-transform:uppercase; padding:18px 24px; text-decoration:none; transition:all 0.3s; border:2px solid var(--gold-dim); box-shadow: 0 0 20px rgba(201,168,76,0.25);"
                 onmouseover="this.style.background='#e2c97e'; this.style.transform='translateY(-2px)'" onmouseout="this.style.background='#c9a84c'; this.style.transform='translateY(0)'">
           S'abonner maintenant →
         </a>
