@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Compte — The Pro Xau</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Barlow:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+         :root {
+            --gold: #C9A84C;
+            --gold-light: #E8C97A;
+            --gold-dim: rgba(201, 168, 76, 0.1);
+            --red: #C94C4C;
+            --red-light: #E05A5A;
+            --green: #4CAF7A;
+            --dark: #080808;
+            --dark2: #0E0E0E;
+            --dark3: #151515;
+            --dark4: #1C1C1C;
+            --border: #242424;
+            --border-light: #2E2E2E;
+            --text: #D8D8D8;
+            --text-muted: #6A6A6A;
+            --text-dim: #444;
+            --font-display: 'Playfair Display', serif;
+            --font-body: 'DM Sans', sans-serif;
+            --font-mono: 'DM Mono', monospace;
+            --font-label: 'Barlow', sans-serif;
+        }
+        
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-body);
+            background: var(--dark);
+            color: var(--text);
+            -webkit-font-smoothing: antialiased;
+        }
+        /* ─── NAV ─── */
+        
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 32px;
+            border-bottom: 1px solid var(--border);
+            background: var(--dark);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .nav-brand {
+            font-family: var(--font-display);
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--gold);
+            text-decoration: none;
+        }
+        
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .nav-link {
+            font-family: var(--font-label);
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        
+        .nav-link:hover {
+            color: var(--gold);
+        }
+        
+        .nav-avatar {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: var(--gold-dim);
+            border: 1px solid var(--gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-label);
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--gold);
+            cursor: pointer;
+            text-decoration: none;
+        }
+        
+        .nav-editions-btn {
+            font-family: var(--font-label);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--dark);
+            background: var(--gold);
+            padding: 7px 14px;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+        
+        .nav-editions-btn:hover {
+            background: var(--gold-light);
+        }
+        /* ─── LAYOUT ─── */
+        
+        .dashboard {
+            display: grid;
+            grid-template-columns: 220px 1fr;
+            min-height: calc(100vh - 57px);
+        }
+        
+        @media(max-width:768px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            .sidebar {
+                display: none;
+            }
+        }
+        /* ─── SIDEBAR ─── */
+        
+        .sidebar {
+            border-right: 1px solid var(--border);
+            padding: 32px 0;
+            background: var(--dark2);
+        }
+        
+        .sidebar-section {
+            margin-bottom: 8px;
+        }
+        
+        .sidebar-label {
+            font-family: var(--font-label);
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            padding: 8px 24px;
+            margin-bottom: 4px;
+        }
+        
+        .sidebar-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 24px;
+            font-family: var(--font-label);
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: background 0.15s, color 0.15s;
+            cursor: pointer;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+        }
+        
+        .sidebar-item:hover {
+            background: rgba(201, 168, 76, 0.05);
+            color: var(--text);
+        }
+        
+        .sidebar-item.active {
+            background: var(--gold-dim);
+            color: var(--gold);
+            border-right: 2px solid var(--gold);
+        }
+        
+        .sidebar-icon {
+            font-size: 14px;
+            width: 18px;
+            text-align: center;
+        }
+        
+        .sidebar-divider {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 12px 0;
+        }
+        
+        .sidebar-item.danger {
+            color: var(--red-light);
+        }
+        
+        .sidebar-item.danger:hover {
+            background: rgba(201, 76, 76, 0.05);
+        }
+        /* ─── MAIN ─── */
+        
+        .main {
+            padding: 40px 36px;
+            overflow-y: auto;
+        }
+        
+        @media(max-width:640px) {
+            .main {
+                padding: 24px 16px;
+            }
+        }
+        
+        .page-header {
+            margin-bottom: 36px;
+        }
+        
+        .page-eyebrow {
+            font-family: var(--font-label);
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 8px;
+        }
+        
+        .page-title {
+            font-family: var(--font-display);
+            font-size: 28px;
+            font-weight: 700;
+            color: #fff;
+        }
+        
+        .page-title em {
+            font-style: italic;
+            color: var(--gold);
+        }
+        
+        .page-sub {
+            font-family: var(--font-body);
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-top: 6px;
+        }
+        /* ─── TABS ─── */
+        
+        .dash-tabs {
+            display: flex;
+            gap: 0;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 32px;
+            overflow-x: auto;
+        }
+        
+        .dash-tab {
+            font-family: var(--font-label);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 12px 20px;
+            color: var(--text-muted);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            white-space: nowrap;
+            transition: color 0.2s;
+            background: none;
+            border-top: none;
+            border-left: none;
+            border-right: none;
+        }
+        
+        .dash-tab:hover {
+            color: var(--text);
+        }
+        
+        .dash-tab.active {
+            color: var(--gold);
+            border-bottom-color: var(--gold);
+        }
+        /* ─── TAB PANELS ─── */
+        
+        .tab-panel {
+            display: none;
+        }
+        
+        .tab-panel.active {
+            display: block;
+        }
+        /* ─── CARDS GRID ─── */
+        
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 14px;
+            margin-bottom: 28px;
+        }
+        
+        .stat-card {
+            background: var(--dark3);
+            border: 1px solid var(--border);
+            padding: 20px;
+        }
+        
+        .stat-card-label {
+            font-family: var(--font-label);
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+        }
+        
+        .stat-card-val {
+            font-family: var(--font-display);
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--gold);
+            line-height: 1;
+        }
+        
+        .stat-card-val.green {
+            color: var(--green);
+        }
+        
+        .stat-card-val.red {
+            color: var(--red-light);
+        }
+        
+        .stat-card-sub {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: var(--text-dim);
+            margin-top: 6px;
+        }
+        /* ─── SUBSCRIPTION CARD ─── */
+        
+        .sub-card {
+            background: var(--dark3);
+            border: 1px solid var(--border);
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+        
+        .sub-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        
+        .sub-title {
+            font-family: var(--font-label);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 6px;
+        }
+        
+        .sub-name {
+            font-family: var(--font-display);
+            font-size: 22px;
+            font-weight: 700;
+            color: #fff;
+        }
+        
+        .badge {
+            display: inline-block;
+            font-family: var(--font-label);
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 4px 10px;
+        }
+        
+        .badge-active {
+            background: rgba(76, 175, 122, 0.15);
+            color: var(--green);
+            border: 1px solid rgba(76, 175, 122, 0.3);
+        }
+        
+        .badge-cancelled {
+            background: rgba(201, 76, 76, 0.15);
+            color: var(--red-light);
+            border: 1px solid rgba(201, 76, 76, 0.3);
+        }
+        
+        .sub-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 14px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+        }
+        
+        .sub-detail-label {
+            font-family: var(--font-label);
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+        
+        .sub-detail-val {
+            font-family: var(--font-mono);
+            font-size: 13px;
+            color: var(--text);
+        }
+        
+        .sub-detail-val.gold {
+            color: var(--gold);
+        }
+        
+        .sub-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+        }
+        
+        .btn-small {
+            font-family: var(--font-label);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 9px 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .btn-gold {
+            background: var(--gold);
+            color: var(--dark);
+        }
+        
+        .btn-gold:hover {
+            background: var(--gold-light);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid var(--border-light);
+        }
+        
+        .btn-outline:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+        
+        .btn-red {
+            background: rgba(201, 76, 76, 0.1);
+            color: var(--red-light);
+            border: 1px solid rgba(201, 76, 76, 0.25);
+        }
+        
+        .btn-red:hover {
+            background: rgba(201, 76, 76, 0.2);
+        }
+        /* ─── PAYMENTS TABLE ─── */
+        
+        .section-title {
+            font-family: var(--font-label);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 14px;
+        }
+        
+        .payments-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+        
+        .payments-table th {
+            background: var(--dark4);
+            padding: 10px 14px;
+            text-align: left;
+            font-family: var(--font-label);
+            font-size: 8px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .payments-table td {
+            padding: 12px 14px;
+            border-bottom: 1px solid var(--border);
+            font-family: var(--font-body);
+            font-size: 12px;
+            color: var(--text-muted);
+            vertical-align: middle;
+        }
+        
+        .payments-table tr:hover td {
+            background: rgba(255, 255, 255, 0.01);
+        }
+        
+        .payment-status {
+            display: inline-block;
+            font-family: var(--font-label);
+            font-size: 8px;
+            font-weight: 700;
+            padding: 2px 8px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        
+        .payment-paid {
+            background: rgba(76, 175, 122, 0.15);
+            color: var(--green);
+        }
+        
+        .payment-failed {
+            background: rgba(201, 76, 76, 0.15);
+            color: var(--red-light);
+        }
+        
+        .payment-amount {
+            font-family: var(--font-mono);
+            color: var(--text);
+        }
+        
+        .payment-invoice {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: var(--gold);
+            text-decoration: none;
+            cursor: pointer;
+        }
+        
+        .payment-invoice:hover {
+            text-decoration: underline;
+        }
+        /* ─── EDITIONS LIST ─── */
+        
+        .editions-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .edition-row {
+            background: var(--dark3);
+            border: 1px solid var(--border);
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            text-decoration: none;
+            transition: border-color 0.2s, background 0.2s;
+        }
+        
+        .edition-row:hover {
+            border-color: rgba(201, 168, 76, 0.3);
+            background: rgba(201, 168, 76, 0.02);
+        }
+        
+        .edition-row-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .edition-num {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--gold);
+            width: 36px;
+            flex-shrink: 0;
+        }
+        
+        .edition-title {
+            font-family: var(--font-display);
+            font-size: 15px;
+            font-weight: 700;
+            color: #fff;
+        }
+        
+        .edition-date {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: var(--text-muted);
+            margin-top: 3px;
+        }
+        
+        .edition-arrow {
+            color: var(--gold);
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+        
+        .edition-tag {
+            font-family: var(--font-label);
+            font-size: 8px;
+            font-weight: 700;
+            padding: 2px 7px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            background: rgba(201, 168, 76, 0.12);
+            color: var(--gold);
+            border: 1px solid rgba(201, 168, 76, 0.25);
+            flex-shrink: 0;
+        }
+        /* ─── PROFILE FORM ─── */
+        
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        
+        @media(max-width:560px) {
+            .profile-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .form-group {
+            margin-bottom: 18px;
+        }
+        
+        .form-label {
+            display: block;
+            font-family: var(--font-label);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+        
+        .form-input {
+            width: 100%;
+            background: var(--dark4);
+            border: 1px solid var(--border-light);
+            color: var(--text);
+            font-family: var(--font-body);
+            font-size: 14px;
+            padding: 11px 14px;
+            outline: none;
+            transition: border-color 0.2s;
+            border-radius: 0;
+            -webkit-appearance: none;
+        }
+        
+        .form-input:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 0 2px rgba(201, 168, 76, 0.1);
+        }
+        
+        .form-input::placeholder {
+            color: var(--text-dim);
+        }
+        
+        .form-input:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .danger-zone {
+            background: rgba(201, 76, 76, 0.04);
+            border: 1px solid rgba(201, 76, 76, 0.2);
+            padding: 20px;
+            margin-top: 24px;
+        }
+        
+        .danger-title {
+            font-family: var(--font-label);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--red-light);
+            margin-bottom: 8px;
+        }
+        
+        .danger-text {
+            font-family: var(--font-body);
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 14px;
+            line-height: 1.6;
+        }
+        /* ─── MODAL ─── */
+        
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 200;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .modal-overlay.show {
+            display: flex;
+        }
+        
+        .modal {
+            background: var(--dark3);
+            border: 1px solid var(--border);
+            padding: 32px;
+            max-width: 420px;
+            width: 100%;
+            animation: fadeUp 0.25s ease both;
+        }
+        
+        .modal-title {
+            font-family: var(--font-display);
+            font-size: 22px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+        
+        .modal-text {
+            font-family: var(--font-body);
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.7;
+            margin-bottom: 24px;
+        }
+        
+        .modal-text strong {
+            color: var(--red-light);
+        }
+        
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .modal-actions .btn-small {
+            flex: 1;
+            justify-content: center;
+        }
+        
+        .alert-box {
+            padding: 12px 16px;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            line-height: 1.6;
+            margin-bottom: 16px;
+            border-left: 3px solid;
+            display: none;
+        }
+        
+        .alert-box.show {
+            display: block;
+        }
+        
+        .alert-box.success {
+            border-color: var(--green);
+            background: rgba(76, 175, 122, 0.06);
+            color: #90D4A8;
+        }
+        
+        .alert-box.info {
+            border-color: var(--gold);
+            background: var(--gold-dim);
+            color: var(--gold-light);
+        }
+    </style>
+</head>
+
+<body>
+
+    <script>
+        if (!localStorage.getItem('tpx_logged_in')) {
+            window.location.replace('login.html');
+        }
+    </script>
+
+    <!-- NAV -->
+    <nav class="top-nav">
+        <a href="index.html" class="nav-brand">The Pro Xau</a>
+        <div class="nav-right">
+            <a href="index.html" class="nav-editions-btn">📰 Mes Éditions</a>
+            <a href="index.html" class="nav-link">Éditions</a>
+            <a href="dashboard.html" class="nav-avatar" title="Mon compte" id="user-avatar">JD</a>
+        </div>
+    </nav>
+
+    <!-- LAYOUT -->
+    <div class="dashboard">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="sidebar-section">
+                <div class="sidebar-label">Mon espace</div>
+                <button class="sidebar-item active" data-tab="abonnement">
+        <span class="sidebar-icon">💎</span> Abonnement
+      </button>
+                <button class="sidebar-item" data-tab="paiements">
+        <span class="sidebar-icon">🧾</span> Paiements
+      </button>
+                <button class="sidebar-item" data-tab="editions">
+        <span class="sidebar-icon">📰</span> Mes éditions
+      </button>
+            </div>
+            <hr class="sidebar-divider">
+            <div class="sidebar-section">
+                <div class="sidebar-label">Compte</div>
+                <button class="sidebar-item" data-tab="profil">
+        <span class="sidebar-icon">👤</span> Profil
+      </button>
+                <button class="sidebar-item" data-tab="securite">
+        <span class="sidebar-icon">🔒</span> Sécurité
+      </button>
+            </div>
+            <hr class="sidebar-divider">
+            <button class="sidebar-item danger" id="logout-btn">
+      <span class="sidebar-icon">🚪</span> Déconnexion
+    </button>
+        </aside>
+
+        <!-- MAIN -->
+        <main class="main">
+
+            <div class="page-header">
+                <div class="page-eyebrow">Espace Membre</div>
+                <h1 class="page-title">Bonjour, <em id="user-name">Jean-David</em></h1>
+                <p class="page-sub">Gère ton abonnement et accède à tes éditions premium.</p>
+            </div>
+
+            <!-- ── TAB: ABONNEMENT ── -->
+            <div class="tab-panel active" id="panel-abonnement">
+
+                <div class="alert-box info show">
+                    📰 La nouvelle édition #002 est disponible — <a href="index.html" style="color:var(--gold)">Lire maintenant →</a>
+                </div>
+
+                <div class="cards-grid">
+                    <div class="stat-card">
+                        <div class="stat-card-label">Statut</div>
+                        <div class="stat-card-val green">Actif</div>
+                        <div class="stat-card-sub">Abonné depuis Jan 2026</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-label">Prochain paiement</div>
+                        <div class="stat-card-val">29$</div>
+                        <div class="stat-card-sub">Le 7 Mars 2026</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-label">Éditions lues</div>
+                        <div class="stat-card-val">3</div>
+                        <div class="stat-card-sub">Sur 3 disponibles</div>
+                    </div>
+                </div>
+
+                <div class="sub-card">
+                    <div class="sub-header">
+                        <div>
+                            <div class="sub-title">Plan actif</div>
+                            <div class="sub-name">The Pro Xau — Premium</div>
+                        </div>
+                        <span class="badge badge-active">● Actif</span>
+                    </div>
+                    <div class="sub-details">
+                        <div>
+                            <div class="sub-detail-label">Montant</div>
+                            <div class="sub-detail-val gold">29$ CAD / mois</div>
+                        </div>
+                        <div>
+                            <div class="sub-detail-label">Renouvellement</div>
+                            <div class="sub-detail-val">7 Mars 2026</div>
+                        </div>
+                        <div>
+                            <div class="sub-detail-label">Moyen de paiement</div>
+                            <div class="sub-detail-val">Visa •••• 4242</div>
+                        </div>
+                        <div>
+                            <div class="sub-detail-label">Membre depuis</div>
+                            <div class="sub-detail-val">7 Jan 2026</div>
+                        </div>
+                    </div>
+                    <div class="sub-actions">
+                        <button class="btn-small btn-outline" id="update-card-btn">💳 Modifier la carte</button>
+                        <button class="btn-small btn-red" id="cancel-btn">✕ Résilier l'abonnement</button>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- ── TAB: PAIEMENTS ── -->
+            <div class="tab-panel" id="panel-paiements">
+                <div class="section-title">Historique des paiements</div>
+                <table class="payments-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Description</th>
+                            <th>Montant</th>
+                            <th>Statut</th>
+                            <th>Reçu</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>7 Fév 2026</td>
+                            <td>The Pro Xau — Premium</td>
+                            <td class="payment-amount">29,00 $</td>
+                            <td><span class="payment-status payment-paid">Payé</span></td>
+                            <td><a class="payment-invoice" href="#">Télécharger PDF</a></td>
+                        </tr>
+                        <tr>
+                            <td>7 Jan 2026</td>
+                            <td>The Pro Xau — Premium</td>
+                            <td class="payment-amount">29,00 $</td>
+                            <td><span class="payment-status payment-paid">Payé</span></td>
+                            <td><a class="payment-invoice" href="#">Télécharger PDF</a></td>
+                        </tr>
+                        <tr>
+                            <td>7 Déc 2025</td>
+                            <td>The Pro Xau — Premium (essai)</td>
+                            <td class="payment-amount">0,00 $</td>
+                            <td><span class="payment-status payment-paid">Gratuit</span></td>
+                            <td><span style="color:var(--text-dim);font-size:11px;">—</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- ── TAB: ÉDITIONS ── -->
+            <div class="tab-panel" id="panel-editions">
+                <div class="section-title">Toutes mes éditions</div>
+                <div class="editions-grid">
+                    <a href="edition01/edition-01.html" class="edition-row">
+                        <div class="edition-row-left">
+                            <div class="edition-num">#001</div>
+                            <div>
+                                <div class="edition-title">Iran, NFP &amp; Dollar</div>
+                                <div class="edition-date">Semaine du 2–7 Mars 2026</div>
+                            </div>
+                        </div>
+                        <div style="display:flex;align-items:center;gap:10px;">
+                            <span class="edition-tag">Nouvelle</span>
+                            <span class="edition-arrow">→</span>
+                        </div>
+                    </a>
+                    <div class="edition-row" style="opacity:0.6;cursor:default;">
+                        <div class="edition-row-left">
+                            <div class="edition-num">#000</div>
+                            <div>
+                                <div class="edition-title">Lancement — Introduction XAU/USD</div>
+                                <div class="edition-date">Semaine du 23–28 Fév 2026</div>
+                            </div>
+                        </div>
+                        <span class="edition-arrow" style="color:var(--text-dim);">→</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── TAB: PROFIL ── -->
+            <div class="tab-panel" id="panel-profil">
+                <div class="section-title">Informations personnelles</div>
+                <div class="alert-box success" id="profile-saved" style="display:none;">✓ Profil mis à jour avec succès.</div>
+                <form id="profile-form">
+                    <div class="profile-grid">
+                        <div class="form-group">
+                            <label class="form-label">Prénom</label>
+                            <input class="form-input" type="text" value="Jean-David" id="p-firstname">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Nom</label>
+                            <input class="form-input" type="text" value="Tremblay" id="p-lastname">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Adresse email</label>
+                        <input class="form-input" type="email" value="jeandavid@email.com" id="p-email">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Pays</label>
+                        <input class="form-input" type="text" value="Canada" id="p-country">
+                    </div>
+                    <button type="submit" class="btn-small btn-gold" style="margin-top:4px;">Sauvegarder</button>
+                </form>
+
+                <div class="danger-zone">
+                    <div class="danger-title">⚠ Zone de danger</div>
+                    <p class="danger-text">La suppression de ton compte est permanente. Toutes tes données seront effacées et ton abonnement sera annulé immédiatement.</p>
+                    <button class="btn-small btn-red" id="delete-account-btn">Supprimer mon compte</button>
+                </div>
+            </div>
+
+            <!-- ── TAB: SÉCURITÉ ── -->
+            <div class="tab-panel" id="panel-securite">
+                <div class="section-title">Changer le mot de passe</div>
+                <div class="alert-box success" id="pw-saved" style="display:none;">✓ Mot de passe modifié.</div>
+                <form id="security-form" style="max-width:380px;">
+                    <div class="form-group">
+                        <label class="form-label">Mot de passe actuel</label>
+                        <input class="form-input" type="password" placeholder="••••••••">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Nouveau mot de passe</label>
+                        <input class="form-input" type="password" placeholder="Min. 8 caractères" id="new-pw">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Confirmer le nouveau mot de passe</label>
+                        <input class="form-input" type="password" placeholder="••••••••" id="confirm-pw">
+                    </div>
+                    <button type="submit" class="btn-small btn-gold">Modifier le mot de passe</button>
+                </form>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- MODAL — Résiliation -->
+    <div class="modal-overlay" id="cancel-modal">
+        <div class="modal">
+            <div class="modal-title">Résilier l'abonnement</div>
+            <p class="modal-text">
+                Es-tu sûr de vouloir résilier ? Tu continueras à avoir accès jusqu'au <strong>7 Mars 2026</strong>, puis ton compte sera désactivé. <strong>Cette action est irréversible.</strong>
+            </p>
+            <div class="modal-actions">
+                <button class="btn-small btn-outline" id="cancel-modal-close">Non, garder</button>
+                <button class="btn-small btn-red" id="confirm-cancel-btn">Oui, résilier</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // ══════════════════════════════════════════
+        // COLLE TES VALEURS SUPABASE ICI
+        const SUPABASE_URL = 'https://oehoqoaxcwiffbzuegou.supabase.co'
+        const SUPABASE_KEY = 'sb_publishable_qdioPxOLK9tbh5HZWjsT2w_yLZd2fm7'
+            // ══════════════════════════════════════════
+
+        const {
+            createClient
+        } = supabase
+        const sb = createClient(SUPABASE_URL, SUPABASE_KEY)
+
+        // ── VERIFIER SESSION AU CHARGEMENT
+        async function initDashboard() {
+            const {
+                data: {
+                    session
+                }
+            } = await sb.auth.getSession()
+
+            if (!session) {
+                localStorage.removeItem('tpx_logged_in')
+                window.location.replace('login.html')
+                return
+            }
+
+            const user = session.user
+            const firstName = user.user_metadata ? .first_name || user.email.split('@')[0]
+            const initials = (user.user_metadata ? .first_name ? .[0] || '') + (user.user_metadata ? .last_name ? .[0] || '')
+
+            document.getElementById('user-name').textContent = firstName
+            document.getElementById('user-avatar').textContent = initials.toUpperCase() || '?'
+
+            // Pre-fill profile form
+            if (document.getElementById('p-firstname')) {
+                document.getElementById('p-firstname').value = user.user_metadata ? .first_name || ''
+                document.getElementById('p-lastname').value = user.user_metadata ? .last_name || ''
+                document.getElementById('p-email').value = user.email || ''
+            }
+        }
+
+        initDashboard()
+
+        // ── SIDEBAR NAV
+        document.querySelectorAll('.sidebar-item[data-tab]').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const tab = this.dataset.tab
+                document.querySelectorAll('.sidebar-item').forEach(b => b.classList.remove('active'))
+                this.classList.add('active')
+                document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'))
+                document.getElementById('panel-' + tab).classList.add('active')
+            })
+        })
+
+        // ── CANCEL SUBSCRIPTION
+        document.getElementById('cancel-btn').addEventListener('click', () => {
+            document.getElementById('cancel-modal').classList.add('show')
+        })
+        document.getElementById('cancel-modal-close').addEventListener('click', () => {
+            document.getElementById('cancel-modal').classList.remove('show')
+        })
+        document.getElementById('confirm-cancel-btn').addEventListener('click', async() => {
+            const btn = document.getElementById('confirm-cancel-btn')
+            btn.textContent = 'Resiliation...'
+            btn.disabled = true
+            await new Promise(r => setTimeout(r, 1200))
+            document.getElementById('cancel-modal').classList.remove('show')
+            alert('Abonnement resilie. Tu garderas acces jusqu au 7 Mars 2026.')
+        })
+        document.getElementById('cancel-modal').addEventListener('click', (e) => {
+            if (e.target === e.currentTarget) e.currentTarget.classList.remove('show')
+        })
+
+        // ── PROFILE FORM
+        document.getElementById('profile-form').addEventListener('submit', async(e) => {
+            e.preventDefault()
+            const {
+                error
+            } = await sb.auth.updateUser({
+                data: {
+                    first_name: document.getElementById('p-firstname').value,
+                    last_name: document.getElementById('p-lastname').value
+                }
+            })
+            const box = document.getElementById('profile-saved')
+            box.style.display = 'block'
+            box.classList.add('show')
+            setTimeout(() => {
+                box.style.display = 'none'
+            }, 3000)
+        })
+
+        // ── SECURITY FORM
+        document.getElementById('security-form').addEventListener('submit', async(e) => {
+            e.preventDefault()
+            const pw = document.getElementById('new-pw').value
+            const cpw = document.getElementById('confirm-pw').value
+            if (pw !== cpw || pw.length < 8) {
+                alert('Les mots de passe ne correspondent pas ou sont trop courts.')
+                return
+            }
+            const {
+                error
+            } = await sb.auth.updateUser({
+                password: pw
+            })
+            if (error) {
+                alert('Erreur: ' + error.message);
+                return
+            }
+            const box = document.getElementById('pw-saved')
+            box.style.display = 'block'
+            setTimeout(() => {
+                box.style.display = 'none'
+            }, 3000)
+        })
+
+        // ── LOGOUT
+        document.getElementById('logout-btn').addEventListener('click', async() => {
+            await sb.auth.signOut()
+            localStorage.removeItem('tpx_logged_in')
+            window.location.href = 'login.html'
+        })
+
+        document.querySelectorAll('.modal-overlay').forEach(overlay => {
+            overlay.addEventListener('click', e => {
+                if (e.target === overlay) overlay.classList.remove('show')
+            })
+        })
+    </script>
+</body>
+
+</html>
