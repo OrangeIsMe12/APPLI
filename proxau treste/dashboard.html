@@ -143,18 +143,12 @@ body{font-family:var(--font-body);background:var(--dark);color:var(--text);-webk
 </head>
 <body>
 
-<script>
-  if (!localStorage.getItem('tpx_logged_in')) {
-    window.location.replace('login.html');
-  }
-</script>
-
 <!-- NAV -->
 <nav class="top-nav">
-  <a href="index.html" class="nav-brand">The Pro Xau</a>
+  <a href="editions.html" class="nav-brand">The Pro Xau</a>
   <div class="nav-right">
-    <a href="index.html" class="nav-editions-btn">📰 Mes Éditions</a>
-    <a href="index.html" class="nav-link">Éditions</a>
+    <a href="editions.html" class="nav-editions-btn">📰 Mes Éditions</a>
+    <a href="editions.html" class="nav-link">Éditions</a>
     <a href="dashboard.html" class="nav-avatar" title="Mon compte" id="user-avatar">JD</a>
   </div>
 </nav>
@@ -205,18 +199,18 @@ body{font-family:var(--font-body);background:var(--dark);color:var(--text);-webk
     <div class="tab-panel active" id="panel-abonnement">
 
       <div class="alert-box info show">
-        📰 La nouvelle édition #002 est disponible — <a href="index.html" style="color:var(--gold)">Lire maintenant →</a>
+        📰 La nouvelle édition #002 est disponible — <a href="editions.html" style="color:var(--gold)">Lire maintenant →</a>
       </div>
 
       <div class="cards-grid">
         <div class="stat-card">
           <div class="stat-card-label">Statut</div>
           <div class="stat-card-val green">Actif</div>
-          <div class="stat-card-sub">Abonné depuis Jan 2026</div>
+          <div class="stat-card-sub" id="sub-since">—</div>
         </div>
         <div class="stat-card">
           <div class="stat-card-label">Prochain paiement</div>
-          <div class="stat-card-val">29$</div>
+          <div class="stat-card-val">9.99$</div>
           <div class="stat-card-sub">Le 7 Mars 2026</div>
         </div>
         <div class="stat-card">
@@ -237,7 +231,7 @@ body{font-family:var(--font-body);background:var(--dark);color:var(--text);-webk
         <div class="sub-details">
           <div>
             <div class="sub-detail-label">Montant</div>
-            <div class="sub-detail-val gold">29$ CAD / mois</div>
+            <div class="sub-detail-val gold">9.99$ CAD / mois</div>
           </div>
           <div>
             <div class="sub-detail-label">Renouvellement</div>
@@ -245,7 +239,7 @@ body{font-family:var(--font-body);background:var(--dark);color:var(--text);-webk
           </div>
           <div>
             <div class="sub-detail-label">Moyen de paiement</div>
-            <div class="sub-detail-val">Visa •••• 4242</div>
+            <div class="sub-detail-val">Géré via Stripe</div>
           </div>
           <div>
             <div class="sub-detail-label">Membre depuis</div>
@@ -277,14 +271,14 @@ body{font-family:var(--font-body);background:var(--dark);color:var(--text);-webk
           <tr>
             <td>7 Fév 2026</td>
             <td>The Pro Xau — Premium</td>
-            <td class="payment-amount">29,00 $</td>
+            <td class="payment-amount">9,99 $</td>
             <td><span class="payment-status payment-paid">Payé</span></td>
             <td><a class="payment-invoice" href="#">Télécharger PDF</a></td>
           </tr>
           <tr>
             <td>7 Jan 2026</td>
             <td>The Pro Xau — Premium</td>
-            <td class="payment-amount">29,00 $</td>
+            <td class="payment-amount">9,99 $</td>
             <td><span class="payment-status payment-paid">Payé</span></td>
             <td><a class="payment-invoice" href="#">Télécharger PDF</a></td>
           </tr>
@@ -303,7 +297,7 @@ body{font-family:var(--font-body);background:var(--dark);color:var(--text);-webk
     <div class="tab-panel" id="panel-editions">
       <div class="section-title">Toutes mes éditions</div>
       <div class="editions-grid">
-        <a href="edition01/edition-01.html" class="edition-row">
+        <a href="TheProXau_Edition001.html" class="edition-row">
           <div class="edition-row-left">
             <div class="edition-num">#001</div>
             <div>
@@ -400,115 +394,81 @@ body{font-family:var(--font-body);background:var(--dark);color:var(--text);-webk
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-
-// COLLE TES VALEURS SUPABASE ICI
-const SUPABASE_URL = 'https://oehoqoaxcwiffbzuegou.supabase.co'
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9laG9xb2F4Y3dpZmZienVlZ291Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzMjI2MTMsImV4cCI6MjA4Nzg5ODYxM30.N5UP014MgNUBunZJuhKuUUlRYC_HY7lpAFAYD39CjvE'
-
-
-const { createClient } = supabase
-const sb = createClient(SUPABASE_URL, SUPABASE_KEY)
-
-// ── VERIFIER SESSION AU CHARGEMENT
-async function initDashboard() {
-  const { data: { session } } = await sb.auth.getSession()
-
-  if (!session) {
-    localStorage.removeItem('tpx_logged_in')
-    window.location.replace('login.html')
-    return
-  }
-
-  const user = session.user
-  const firstName = user.user_metadata?.first_name || user.email.split('@')[0]
-  const initials = (user.user_metadata?.first_name?.[0] || '') + (user.user_metadata?.last_name?.[0] || '')
-
-  document.getElementById('user-name').textContent = firstName
-  document.getElementById('user-avatar').textContent = initials.toUpperCase() || '?'
-
-  // Pre-fill profile form
-  if (document.getElementById('p-firstname')) {
-    document.getElementById('p-firstname').value = user.user_metadata?.first_name || ''
-    document.getElementById('p-lastname').value = user.user_metadata?.last_name || ''
-    document.getElementById('p-email').value = user.email || ''
-  }
-}
-
-initDashboard()
+// ── USER DATA (remplace par données réelles du backend)
+const user = { name: 'Jean-David', initials: 'JD' };
+document.getElementById('user-name').textContent = user.name;
+document.getElementById('user-avatar').textContent = user.initials;
 
 // ── SIDEBAR NAV
 document.querySelectorAll('.sidebar-item[data-tab]').forEach(btn => {
   btn.addEventListener('click', function() {
-    const tab = this.dataset.tab
-    document.querySelectorAll('.sidebar-item').forEach(b => b.classList.remove('active'))
-    this.classList.add('active')
-    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'))
-    document.getElementById('panel-' + tab).classList.add('active')
-  })
-})
+    const tab = this.dataset.tab;
+    document.querySelectorAll('.sidebar-item').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('panel-' + tab).classList.add('active');
+  });
+});
 
 // ── CANCEL SUBSCRIPTION
 document.getElementById('cancel-btn').addEventListener('click', () => {
-  document.getElementById('cancel-modal').classList.add('show')
-})
+  document.getElementById('cancel-modal').classList.add('show');
+});
 document.getElementById('cancel-modal-close').addEventListener('click', () => {
-  document.getElementById('cancel-modal').classList.remove('show')
-})
+  document.getElementById('cancel-modal').classList.remove('show');
+});
 document.getElementById('confirm-cancel-btn').addEventListener('click', async () => {
-  const btn = document.getElementById('confirm-cancel-btn')
-  btn.textContent = 'Resiliation...'
-  btn.disabled = true
-  await new Promise(r => setTimeout(r, 1200))
-  document.getElementById('cancel-modal').classList.remove('show')
-  alert('Abonnement resilie. Tu garderas acces jusqu au 7 Mars 2026.')
-})
+  const btn = document.getElementById('confirm-cancel-btn');
+  btn.textContent = 'Résiliation...';
+  btn.disabled = true;
+  // BACKEND CALL — await fetch('/api/subscription/cancel', { method:'POST' })
+  await new Promise(r => setTimeout(r, 1200));
+  document.getElementById('cancel-modal').classList.remove('show');
+  alert('Abonnement résilié. Tu garderas l\'accès jusqu\'au 7 Mars 2026.');
+});
 document.getElementById('cancel-modal').addEventListener('click', (e) => {
-  if (e.target === e.currentTarget) e.currentTarget.classList.remove('show')
-})
+  if (e.target === e.currentTarget) e.currentTarget.classList.remove('show');
+});
 
 // ── PROFILE FORM
 document.getElementById('profile-form').addEventListener('submit', async (e) => {
-  e.preventDefault()
-  const { error } = await sb.auth.updateUser({
-    data: {
-      first_name: document.getElementById('p-firstname').value,
-      last_name: document.getElementById('p-lastname').value
-    }
-  })
-  const box = document.getElementById('profile-saved')
-  box.style.display = 'block'
-  box.classList.add('show')
-  setTimeout(() => { box.style.display = 'none' }, 3000)
-})
+  e.preventDefault();
+  // BACKEND CALL — await fetch('/api/user/profile', { method:'PUT', ... })
+  await new Promise(r => setTimeout(r, 600));
+  const box = document.getElementById('profile-saved');
+  box.style.display = 'block';
+  box.classList.add('show');
+  setTimeout(() => { box.style.display = 'none'; }, 3000);
+});
 
 // ── SECURITY FORM
 document.getElementById('security-form').addEventListener('submit', async (e) => {
-  e.preventDefault()
-  const pw = document.getElementById('new-pw').value
-  const cpw = document.getElementById('confirm-pw').value
-  if (pw !== cpw || pw.length < 8) {
-    alert('Les mots de passe ne correspondent pas ou sont trop courts.')
-    return
-  }
-  const { error } = await sb.auth.updateUser({ password: pw })
-  if (error) { alert('Erreur: ' + error.message); return }
-  const box = document.getElementById('pw-saved')
-  box.style.display = 'block'
-  setTimeout(() => { box.style.display = 'none' }, 3000)
-})
+  e.preventDefault();
+  const pw = document.getElementById('new-pw').value;
+  const cpw = document.getElementById('confirm-pw').value;
+  if (pw !== cpw || pw.length < 8) { alert('Les mots de passe ne correspondent pas ou sont trop courts.'); return; }
+  await new Promise(r => setTimeout(r, 600));
+  const box = document.getElementById('pw-saved');
+  box.style.display = 'block';
+  setTimeout(() => { box.style.display = 'none'; }, 3000);
+});
 
-// ── LOGOUT
-document.getElementById('logout-btn').addEventListener('click', async () => {
-  await sb.auth.signOut()
-  localStorage.removeItem('tpx_logged_in')
-  window.location.href = 'login.html'
-})
+// ── UPDATE CARD
+        document.getElementById('update-card-btn').addEventListener('click', () => {
+            window.open('https://billing.stripe.com/p/login/bpc_1T6Gvu0T4doyDnPbwxgeH2DS', '_blank')
+        })
 
+        // ── LOGOUT
+document.getElementById('logout-btn').addEventListener('click', () => {
+  // localStorage.removeItem('token');
+  window.location.href = 'login.html';
+});
+
+// ── MODAL CLOSE on overlay click
 document.querySelectorAll('.modal-overlay').forEach(overlay => {
-  overlay.addEventListener('click', e => { if(e.target === overlay) overlay.classList.remove('show') })
-})
+  overlay.addEventListener('click', e => { if(e.target === overlay) overlay.classList.remove('show'); });
+});
 </script>
 </body>
 </html>
