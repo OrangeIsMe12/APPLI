@@ -1136,11 +1136,17 @@ document.querySelectorAll('.modal-overlay').forEach(o => {
 // ─── Portail Stripe
 async function openStripePortal() {
   const { data: { session } } = await sb.auth.getSession()
-  const { data: sub } = await sb
+  
+  const { data: sub, error } = await sb
     .from('subscriptions')
     .select('stripe_customer_id')
     .eq('email', session.user.email)
-    .single()
+    .maybeSingle()
+
+  if (error || !sub || !sub.stripe_customer_id) {
+    alert('Aucun abonnement actif trouvé. Abonne-toi d\'abord.')
+    return
+  }
 
   const res = await fetch('/api/create-portal-session', {
     method: 'POST',
