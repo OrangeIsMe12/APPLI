@@ -1,0 +1,47 @@
+# Vercel Web Analytics Implementation
+
+## Summary
+Successfully implemented Vercel Web Analytics across all HTML pages in the project by adding the required tracking scripts to each HTML file.
+
+## Changes Made
+
+### Files Modified (6 files total):
+1. **index.html** - Added analytics scripts before closing `</head>` tag
+2. **dashboard.html** - Added analytics scripts before closing `</head>` tag
+3. **login.html** - Added analytics scripts before closing `</head>` tag
+4. **register.html** - Added analytics scripts before closing `</head>` tag
+5. **forgot-password.html** - Added analytics scripts before closing `</head>` tag
+6. **edition01/edition-01.html** - Added analytics scripts before closing `</head>` tag
+
+### Implementation Details
+For each HTML file, the following scripts were added just before the closing `</head>` tag:
+
+```html
+<script>
+  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+</script>
+<script defer src="/_vercel/insights/script.js"></script>
+```
+
+This implementation follows the official Vercel Web Analytics guide for plain HTML sites.
+
+## What This Enables
+
+Once the project is deployed to Vercel with Web Analytics enabled in the dashboard:
+- Automatic tracking of page views across all pages
+- Visitor analytics and metrics
+- No need to install `@vercel/analytics` package (HTML-only implementation)
+- Analytics data accessible via `/_vercel/insights/*` routes after deployment
+
+## Next Steps
+
+To complete the setup:
+1. Deploy the app to Vercel using `vercel deploy`
+2. Enable Web Analytics in the Vercel Dashboard (Project → Analytics tab → Enable)
+3. After deployment, verify the setup by checking for fetch requests to `/_vercel/insights/view` in the browser's Network tab
+4. View analytics data in the Vercel Dashboard under the Analytics tab
+
+## Notes
+- This is a plain HTML website, so the HTML implementation was used (no framework-specific integration needed)
+- The tracking script will only load on the deployed Vercel environment
+- No build process or package dependencies required for the analytics to work
