@@ -1,0 +1,8 @@
+{
+    "name": "Proxau",
+    "version": "1.0.0",
+    "type": "module",
+    "dependencies": {
+        "stripe": "^20.4.0"
+    }
+}
