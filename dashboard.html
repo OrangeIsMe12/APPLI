@@ -1126,7 +1126,7 @@ document.getElementById('cancel-modal-close').addEventListener('click', () => {
 })
 document.getElementById('confirm-cancel-btn').addEventListener('click', () => {
   document.getElementById('cancel-modal').classList.remove('show')
-  window.open('https://billing.stripe.com/p/login/7sY9ALaso1b1bVGgCwfw400', '_blank')
+  openStripePortal()
 })
 document.querySelectorAll('.modal-overlay').forEach(o => {
   o.addEventListener('click', e => { if (e.target === o) o.classList.remove('show') })
