@@ -1133,9 +1133,26 @@ document.querySelectorAll('.modal-overlay').forEach(o => {
 })
 
 // ─── Modifier carte
-document.getElementById('update-card-btn').addEventListener('click', () => {
-  window.open('https://billing.stripe.com/p/login/7sY9ALaso1b1bVGgCwfw400', '_blank')
-})
+// ─── Portail Stripe
+async function openStripePortal() {
+  const { data: { session } } = await sb.auth.getSession()
+  const { data: sub } = await sb
+    .from('subscriptions')
+    .select('stripe_customer_id')
+    .eq('email', session.user.email)
+    .single()
+
+  const res = await fetch('/api/create-portal-session', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ customerId: sub.stripe_customer_id })
+  })
+  const { url } = await res.json()
+  window.location.href = url
+}
+
+// ─── Modifier carte
+document.getElementById('update-card-btn').addEventListener('click', openStripePortal)
 
 // ─── Profil
 document.getElementById('profile-form').addEventListener('submit', async (e) => {
