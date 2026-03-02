@@ -472,21 +472,10 @@ document.getElementById('profile-form').addEventListener('submit', async (e) => 
     }
   })
   showAlert('profile-saved',
-  error ? `❌ Erreur : ${error.message}` : '✓ Profil mis à jour avec succès.',
-  error ? 'error' : 'success'
-)
-
-// ✅ Met à jour "Bonjour, Prénom Nom" instantanément
-if (!error) {
-  const fn = document.getElementById('p-firstname').value
-  const ln = document.getElementById('p-lastname').value
-  const newName = (fn || ln)
-    ? `${fn} ${ln}`.trim()
-    : document.getElementById('p-email').value.split('@')[0]
-  document.getElementById('user-name').textContent   = newName
-  document.getElementById('user-avatar').textContent = newName[0].toUpperCase()
-}        // ← ferme le if
-})       // ← ferme le addEventListener
+    error ? `❌ Erreur : ${error.message}` : '✓ Profil mis à jour avec succès.',
+    error ? 'error' : 'success'
+  )
+})
 
 // ─── Mot de passe
 document.getElementById('security-form').addEventListener('submit', async (e) => {
