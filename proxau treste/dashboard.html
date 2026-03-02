@@ -1,3 +1,6 @@
+Dashboard · HTML
+Copier
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -337,7 +340,7 @@ async function loadDashboard() {
   if (!session) { window.location.href = 'login.html'; return; }
 
   const email    = session.user.email
-  const username = email.split('@')[0]       // ✅ partie avant le @
+  const username = email.split('@')[0]
   const initial  = username[0].toUpperCase()
 
   // 2. Nom + avatar
@@ -409,9 +412,21 @@ async function loadDashboard() {
     }
 
   } else {
-    // Pas encore de données (webhook pas encore configuré)
-    document.getElementById('card-status').textContent = 'En attente'
-    document.getElementById('card-since').textContent  = '—'
+    // ✅ Pas d'abonnement actif — correction appliquée
+    document.getElementById('card-status').textContent  = 'Inactif'
+    document.getElementById('card-status').className    = 'stat-card-val red'
+    document.getElementById('card-since').textContent   = '—'
+    document.getElementById('card-amount').textContent  = '—'
+    document.getElementById('card-renewal').textContent = '—'
+
+    const badge = document.getElementById('sub-badge')
+    badge.className   = 'badge badge-cancelled'
+    badge.textContent = '● Inactif'
+
+    const cancelBtn = document.getElementById('cancel-btn')
+    cancelBtn.disabled      = true
+    cancelBtn.style.opacity = '0.4'
+
     document.getElementById('payments-tbody').innerHTML =
       '<tr><td colspan="5" style="text-align:center;color:var(--text-dim);padding:24px;">Aucun paiement trouvé.</td></tr>'
   }
