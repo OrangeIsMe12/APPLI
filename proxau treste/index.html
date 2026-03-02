@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Pro Xau — Newsletter</title>
+    <link rel="icon" type="image/png" href="/icon.jpg"> ← ICI
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
         * {
@@ -524,23 +525,37 @@
             color: var(--text-muted);
             line-height: 1.65;
         }
-
         /* LOCKED CARDS */
+        
         .card-small.locked {
             position: relative;
             background: #060605;
             overflow: hidden;
             pointer-events: none;
         }
-        .card-small.locked .card-edition-num { opacity: 0.2; }
-        .card-small.locked .card-title { color: #1a1610; }
-        .card-small.locked .card-desc { color: #131008; }
-        .card-small.locked .card-date { color: #131008; }
-        .badge-lock {
-            background: rgba(201,168,76,0.08);
-            color: rgba(201,168,76,0.4);
-            border: 1px solid rgba(201,168,76,0.15);
+        
+        .card-small.locked .card-edition-num {
+            opacity: 0.2;
         }
+        
+        .card-small.locked .card-title {
+            color: #1a1610;
+        }
+        
+        .card-small.locked .card-desc {
+            color: #131008;
+        }
+        
+        .card-small.locked .card-date {
+            color: #131008;
+        }
+        
+        .badge-lock {
+            background: rgba(201, 168, 76, 0.08);
+            color: rgba(201, 168, 76, 0.4);
+            border: 1px solid rgba(201, 168, 76, 0.15);
+        }
+        
         .lock-overlay {
             position: absolute;
             inset: 0;
@@ -549,11 +564,16 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
-            background: rgba(6,6,5,0.75);
+            background: rgba(6, 6, 5, 0.75);
             backdrop-filter: blur(2px);
             pointer-events: all;
         }
-        .lock-icon { font-size: 28px; opacity: 0.6; }
+        
+        .lock-icon {
+            font-size: 28px;
+            opacity: 0.6;
+        }
+        
         .lock-text {
             font-family: 'DM Mono', monospace;
             font-size: 10px;
@@ -562,6 +582,7 @@
             color: var(--gold);
             opacity: 0.6;
         }
+        
         .lock-btn {
             font-family: 'DM Mono', monospace;
             font-size: 10px;
@@ -574,8 +595,10 @@
             margin-top: 4px;
             transition: filter 0.2s;
         }
-        .lock-btn:hover { filter: brightness(1.15); }
-
+        
+        .lock-btn:hover {
+            filter: brightness(1.15);
+        }
         /* FOOTER */
         
         .footer {
@@ -620,33 +643,127 @@
                 gap: 6px;
             }
         }
-/* NAV */
-.top-nav{display:flex;justify-content:space-between;align-items:center;padding:14px 32px;border-bottom:1px solid var(--border);background:var(--bg);position:sticky;top:0;z-index:100;}
-.nav-brand{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--gold);text-decoration:none;}
-.nav-right{display:flex;align-items:center;gap:16px;}
-.nav-link{font-family:'DM Mono',monospace;font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--text-dim);text-decoration:none;transition:color 0.2s;}
-.nav-link:hover{color:var(--gold);}
-.nav-btn{font-family:'DM Mono',monospace;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#080804;background:var(--gold);padding:9px 18px;text-decoration:none;transition:background 0.2s;}
-.nav-btn:hover{filter:brightness(1.1);}
-@media(max-width:640px){.nav-link{display:none;}}
+        /* NAV */
+        
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 32px;
+            border-bottom: 1px solid var(--border);
+            background: var(--bg);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .nav-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--gold);
+            text-decoration: none;
+        }
+        
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .nav-link {
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        
+        .nav-link:hover {
+            color: var(--gold);
+        }
+        
+        .nav-btn {
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #080804;
+            background: var(--gold);
+            padding: 9px 18px;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+        
+        .nav-btn:hover {
+            filter: brightness(1.1);
+        }
+        
+        @media(max-width:640px) {
+            .nav-link {
+                display: none;
+            }
+        }
+        
+        .card-small.unlocked {
+            pointer-events: all;
+            cursor: pointer;
+            background: #090908;
+        }
+        
+        .card-small.unlocked:hover {
+            background: #0d0b05;
+        }
+        
+        .card-small.unlocked:hover .card-arrow {
+            opacity: 1;
+            transform: translateX(5px);
+        }
+        
+        .card-small.unlocked .card-title {
+            color: var(--text);
+        }
+        
+        .card-small.unlocked .card-desc {
+            color: var(--text-dim);
+        }
+        
+        .card-small.unlocked .card-date {
+            color: var(--text-muted);
+        }
+        
+        .card-small.unlocked .card-edition-num {
+            opacity: 0.55;
+        }
+        
+        .badge-subscriber {
+            background: rgba(76, 175, 122, 0.1);
+            color: #4caf7d;
+            border: 1px solid rgba(76, 175, 122, 0.2);
+        }
     </style>
 </head>
 
 <body>
-<script>
-  if (!localStorage.getItem('tpx_logged_in')) {
-    window.location.replace('login.html');
-  }
-</script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        if (!localStorage.getItem('tpx_logged_in')) {
+            window.location.replace('login.html');
+        }
+    </script>
 
-<!-- NAV -->
-<nav class="top-nav">
-  <a href="index.html" class="nav-brand">The Pro Xau</a>
-  <div class="nav-right">
-    <a href="https://buy.stripe.com/7sY9ALaso1b1bVGgCwfw400" class="nav-link">S'abonner</a>
-    <a href="dashboard.html" class="nav-btn">Mon compte →</a>
-  </div>
-</nav>
+    <!-- NAV -->
+    <nav class="top-nav">
+        <a href="index.html" class="nav-brand">The Pro Xau</a>
+        <div class="nav-right">
+            <a href="https://buy.stripe.com/7sY9ALaso1b1bVGgCwfw400" class="nav-link">S'abonner</a>
+            <a href="dashboard.html" class="nav-btn">Mon compte →</a>
+        </div>
+    </nav>
 
     <!-- HERO -->
     <section class="hero">
@@ -768,15 +885,15 @@
 
 
             <!-- ÉDITION 2 — VERROUILLÉE -->
-            <div class="card-small locked">
+            <div id="card-edition-2" class="card-small locked">
                 <div class="card-top">
                     <div class="card-edition-num">ÉDITION #002</div>
-                    <div class="badge badge-lock">🔒 Abonnés</div>
+                    <div class="badge badge-lock" id="badge-ed2">🔒 Abonnés</div>
                 </div>
                 <div class="card-title">Édition 2</div>
                 <p class="card-desc">Publication prévue le 11 mars 2026. Abonne-toi pour y accéder.</p>
                 <div class="card-date">11 MARS 2026</div>
-                <div class="lock-overlay">
+                <div class="lock-overlay" id="lock-ed2">
                     <div class="lock-icon">🔒</div>
                     <div class="lock-text">Accès abonnés</div>
                     <a href="https://buy.stripe.com/7sY9ALaso1b1bVGgCwfw400" class="lock-btn">S'abonner →</a>
@@ -784,15 +901,15 @@
             </div>
 
             <!-- ÉDITION 3 — VERROUILLÉE -->
-            <div class="card-small locked">
+            <div id="card-edition-3" class="card-small locked">
                 <div class="card-top">
                     <div class="card-edition-num">ÉDITION #003</div>
-                    <div class="badge badge-lock">🔒 Abonnés</div>
+                    <div class="badge badge-lock" id="badge-ed3">🔒 Abonnés</div>
                 </div>
                 <div class="card-title">Édition 3</div>
                 <p class="card-desc">Publication prévue le 18 mars 2026. Abonne-toi pour y accéder.</p>
                 <div class="card-date">18 MARS 2026</div>
-                <div class="lock-overlay">
+                <div class="lock-overlay" id="lock-ed3">
                     <div class="lock-icon">🔒</div>
                     <div class="lock-text">Accès abonnés</div>
                     <a href="https://buy.stripe.com/7sY9ALaso1b1bVGgCwfw400" class="lock-btn">S'abonner →</a>
@@ -907,6 +1024,57 @@
         <div class="footer-logo">THE <span>PRO</span> XAU</div>
         <div class="footer-copy">© 2026 THE PRO XAU · TOUS DROITS RÉSERVÉS · CONTENU ÉDUCATIF UNIQUEMENT</div>
     </footer>
+    <script>
+        const SUPABASE_URL = 'https://oehoqoaxcwiffbzuegou.supabase.co'
+        const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9laG9xb2F4Y3dpZmZienVlZ291Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzMjI2MTMsImV4cCI6MjA4Nzg5ODYxM30.N5UP014MgNUBunZJuhKuUUlRYC_HY7lpAFAYD39CjvE'
+        const {
+            createClient
+        } = supabase
+        const sb = createClient(SUPABASE_URL, SUPABASE_ANON)
+
+        function unlockCard(cardId, lockId, badgeId, href) {
+            const card = document.getElementById(cardId)
+            const lock = document.getElementById(lockId)
+            const badge = document.getElementById(badgeId)
+            if (!card) return
+            if (lock) lock.remove()
+            card.classList.remove('locked')
+            card.classList.add('unlocked')
+            if (badge) {
+                badge.className = 'badge badge-subscriber';
+                badge.textContent = '✓ Abonné'
+            }
+            if (href) {
+                card.style.cursor = 'pointer';
+                card.addEventListener('click', () => {
+                    window.location.href = href
+                })
+            }
+        }
+
+        async function checkSubscription() {
+            try {
+                const {
+                    data: {
+                        session
+                    }
+                } = await sb.auth.getSession()
+                if (!session) return
+                const {
+                    data: sub
+                } = await sb.from('subscriptions').select('status').eq('email', session.user.email).single()
+                if (!sub) return
+                if (sub.status !== 'active' && sub.status !== 'trialing') return
+                    // ✅ Abonné actif — déverrouille les cartes !
+                unlockCard('card-edition-2', 'lock-ed2', 'badge-ed2', 'edition02/edition-02.html')
+                unlockCard('card-edition-3', 'lock-ed3', 'badge-ed3', 'edition03/edition-03.html')
+            } catch (e) {
+                console.warn(e)
+            }
+        }
+
+        checkSubscription()
+    </script>
 
 </body>
 
