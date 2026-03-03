@@ -1,11 +1,11 @@
 // /api/stripe-webhook.js
-import Stripe from 'stripe'
-import { createClient } from '@supabase/supabase-js'
+const Stripe = require('stripe')
+const { createClient } = require('@supabase/supabase-js')
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 const sb = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY)
 
-export const config = { api: { bodyParser: false } }
+module.exports.config = { api: { bodyParser: false } }
 
 async function getRawBody(req) {
     return new Promise((resolve, reject) => {
@@ -16,7 +16,7 @@ async function getRawBody(req) {
     })
 }
 
-export default async function handler(req, res) {
+module.exports.default = async function handler(req, res) {
     if (req.method !== 'POST') return res.status(405).end()
 
     const sig = req.headers['stripe-signature']
@@ -27,23 +27,20 @@ export default async function handler(req, res) {
         event = stripe.webhooks.constructEvent(rawBody, sig, process.env.STRIPE_WEBHOOK_SECRET)
     } catch (err) {
         console.error('Webhook signature failed:', err.message)
-        return res.status(400).send(`Webhook Error: ${err.message}`)
+        return res.status(400).send('Webhook Error: ' + err.message)
     }
 
     const data = event.data.object
 
     // ── Abonnement créé ou activé
-    if (event.type === 'checkout.session.completed' || event.type === 'customer.subscription.updated' || event.type === 'customer.subscription.created') {
+    if (event.type === 'checkout.session.completed') {
+        if (!data.subscription) return res.json({ received: true })
 
-        let subscription = data
-            // Si c'est un checkout.session, on récupère l'abonnement
-        if (event.type === 'checkout.session.completed') {
-            if (!data.subscription) return res.json({ received: true })
-            subscription = await stripe.subscriptions.retrieve(data.subscription)
-        }
+        const subscription = await stripe.subscriptions.retrieve(data.subscription)
 
-        const customer = await stripe.customers.retrieve(subscription.customer)
-        const email = customer.email
+        const email = data.customer_details && data.customer_details.email
+            ? data.customer_details.email
+            : (await stripe.customers.retrieve(subscription.customer)).email
 
         await sb.from('subscriptions').upsert({
             email,
@@ -67,7 +64,9 @@ export default async function handler(req, res) {
             status: 'paid',
             description: 'The Pro Xau — Premium',
             invoice_pdf: data.invoice_pdf,
-            paid_at: new Date(data.status_transitions ? .paid_at * 1000).toISOString(),
+            paid_at: data.status_transitions && data.status_transitions.paid_at
+                ? new Date(data.status_transitions.paid_at * 1000).toISOString()
+                : null
         })
     }
 
