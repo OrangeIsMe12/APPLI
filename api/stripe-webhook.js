@@ -1,11 +1,11 @@
 // /api/stripe-webhook.js
-const Stripe = require('stripe')
-const { createClient } = require('@supabase/supabase-js')
+import Stripe from 'stripe'
+import { createClient } from '@supabase/supabase-js'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 const sb = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY)
 
-module.exports.config = { api: { bodyParser: false } }
+export const config = { api: { bodyParser: false } }
 
 async function getRawBody(req) {
     return new Promise((resolve, reject) => {
@@ -16,7 +16,7 @@ async function getRawBody(req) {
     })
 }
 
-module.exports.default = async function handler(req, res) {
+export default async function handler(req, res) {
     if (req.method !== 'POST') return res.status(405).end()
 
     const sig = req.headers['stripe-signature']
