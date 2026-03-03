@@ -111,7 +111,6 @@
                 display: none;
             }
         }
-        /* OFFER PANEL */
         
         .offer-panel {
             background: var(--dark2);
@@ -199,7 +198,6 @@
             margin-top: 6px;
             letter-spacing: 1px;
         }
-        /* FORM PANEL */
         
         .form-panel {
             background: var(--dark3);
@@ -536,8 +534,8 @@
                     </div>
 
                     <button type="submit" class="btn-primary" id="submit-btn">
-          Créer mon compte
-        </button>
+                        Créer mon compte
+                    </button>
 
                 </form>
 
@@ -552,19 +550,14 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        // COLLE TES VALEURS SUPABASE ICI
         const SUPABASE_URL = 'https://oehoqoaxcwiffbzuegou.supabase.co'
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9laG9xb2F4Y3dpZmZienVlZ291Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzMjI2MTMsImV4cCI6MjA4Nzg5ODYxM30.N5UP014MgNUBunZJuhKuUUlRYC_HY7lpAFAYD39CjvE'
 
-
-        const {
-            createClient
-        } = supabase
+        const { createClient } = supabase
         const sb = createClient(SUPABASE_URL, SUPABASE_KEY)
 
         const form = document.getElementById('register-form')
         const pwInput = document.getElementById('password')
-        const pw2Input = document.getElementById('password2')
         const pwBar = document.getElementById('pw-bar')
         const submitBtn = document.getElementById('submit-btn')
 
@@ -581,10 +574,10 @@
             const v = pwInput.value
             let score = 0
             if (v.length >= 8) score++
-                if (/[A-Z]/.test(v)) score++
-                    if (/[0-9]/.test(v)) score++
-                        if (/[^A-Za-z0-9]/.test(v)) score++
-                            const colors = ['', '#E05A5A', '#E0A050', '#C9A84C', '#4CAF7A']
+            if (/[A-Z]/.test(v)) score++
+            if (/[0-9]/.test(v)) score++
+            if (/[^A-Za-z0-9]/.test(v)) score++
+            const colors = ['', '#E05A5A', '#E0A050', '#C9A84C', '#4CAF7A']
             const widths = [0, 25, 50, 75, 100]
             pwBar.style.width = widths[score] + '%'
             pwBar.style.background = colors[score] || ''
@@ -609,48 +602,33 @@
             const terms = document.getElementById('terms')
 
             if (!ff.value.trim()) {
-                ff.classList.add('error');
-                showError('firstname-error', true);
-                valid = false
+                ff.classList.add('error'); showError('firstname-error', true); valid = false
             } else {
-                ff.classList.remove('error');
-                showError('firstname-error', false)
+                ff.classList.remove('error'); showError('firstname-error', false)
             }
 
             if (!lf.value.trim()) {
-                lf.classList.add('error');
-                showError('lastname-error', true);
-                valid = false
+                lf.classList.add('error'); showError('lastname-error', true); valid = false
             } else {
-                lf.classList.remove('error');
-                showError('lastname-error', false)
+                lf.classList.remove('error'); showError('lastname-error', false)
             }
 
             if (!validateEmail(em.value)) {
-                em.classList.add('error');
-                showError('email-error', true);
-                valid = false
+                em.classList.add('error'); showError('email-error', true); valid = false
             } else {
-                em.classList.remove('error');
-                showError('email-error', false)
+                em.classList.remove('error'); showError('email-error', false)
             }
 
             if (pw.value.length < 8) {
-                pw.classList.add('error');
-                showError('pw-error', true);
-                valid = false
+                pw.classList.add('error'); showError('pw-error', true); valid = false
             } else {
-                pw.classList.remove('error');
-                showError('pw-error', false)
+                pw.classList.remove('error'); showError('pw-error', false)
             }
 
             if (pw2.value !== pw.value) {
-                pw2.classList.add('error');
-                showError('pw2-error', true);
-                valid = false
+                pw2.classList.add('error'); showError('pw2-error', true); valid = false
             } else {
-                pw2.classList.remove('error');
-                showError('pw2-error', false)
+                pw2.classList.remove('error'); showError('pw2-error', false)
             }
 
             if (!terms.checked) {
@@ -664,12 +642,9 @@
             if (!valid) return
 
             submitBtn.disabled = true
-            submitBtn.innerHTML = '<span class="spinner"></span> Creation du compte...'
+            submitBtn.innerHTML = '<span class="spinner"></span> Création du compte...'
 
-            const {
-                data,
-                error
-            } = await sb.auth.signUp({
+            const { data, error } = await sb.auth.signUp({
                 email: em.value,
                 password: pw.value,
                 options: {
@@ -688,10 +663,10 @@
                 return
             }
 
+            // ✅ Compte créé → redirection vers Stripe pour le paiement
             document.getElementById('alert-success').classList.add('show')
-                // Redirect to Stripe after account creation
             setTimeout(() => {
-                window.location.href = 'index.html'
+                window.location.href = 'https://buy.stripe.com/7sY9ALaso1b1bVGgCwfw400'
             }, 1200)
         })
     </script>
