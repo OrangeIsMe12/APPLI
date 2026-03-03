@@ -751,9 +751,14 @@
 <body>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        if (!localStorage.getItem('tpx_logged_in')) {
-            window.location.replace('login.html');
-        }
+       const { createClient } = window.supabase
+const sb = createClient(
+    'https://oehoqoaxcwiffbzuegou.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9laG9xb2F4Y3dpZmZienVlZ291Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzMjI2MTMsImV4cCI6MjA4Nzg5ODYxM30.N5UP014MgNUBunZJuhKuUUlRYC_HY7lpAFAYD39CjvE'
+)
+sb.auth.getSession().then(({ data: { session } }) => {
+    if (!session) window.location.replace('login.html')
+})
     </script>
 
     <!-- NAV -->
