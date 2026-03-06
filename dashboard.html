@@ -248,11 +248,13 @@
         <div class="nav-menu-label">Navigation</div>
         <a href="index.html">Accueil <span>→</span></a>
         <a href="about.html">À propos <span>→</span></a>
+        <a href="services.html">Services <span>→</span></a>
+        <a href="partenaires.html">Partenaires <span>→</span></a>
         <a href="faq.html">FAQ <span>→</span></a>
         <a href="privacy.html">Confidentialité <span>→</span></a>
         <a href="terms.html">Conditions <span>→</span></a>
         <a href="dashboard.html">Mon compte <span>→</span></a>
-        <a href="register.html" class="nav-menu-cta">S'abonner maintenant →</a>
+        <a href="register.html" class="nav-menu-cta" id="nav-subscribe-link">S'abonner maintenant →</a>
     </div>
 
     <nav class="top-nav">
@@ -556,6 +558,8 @@
 
             if (isActive) {
                 document.getElementById('nav-status-badge').style.display = 'flex'
+                const subLink = document.getElementById('nav-subscribe-link')
+                if (subLink) subLink.style.display = 'none'
                 document.getElementById('sidebar-status').textContent = 'PRO · Actif'
 
                 const renewalDate = fmt(sub.current_period_end)
