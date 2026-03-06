@@ -68,14 +68,12 @@
             .sidebar { display: none !important; }
         }
 
-        /* user card top */
         .sidebar-user { padding: 36px 32px 28px; border-bottom: 1px solid var(--border); }
         .sidebar-user-avatar { width: 52px; height: 52px; border-radius: 50%; background: var(--gold-dim); border: 1px solid rgba(201,168,76,0.25); display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--gold); margin-bottom: 14px; }
         .sidebar-user-name { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
         .sidebar-user-status { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--green); display: flex; align-items: center; gap: 6px; }
         .sidebar-user-status::before { content:''; width:5px; height:5px; border-radius:50%; background:var(--green); animation:blink 2s infinite; }
 
-        /* nav items */
         .sidebar-nav { padding: 24px 16px; flex: 1; }
         .sidebar-group-label { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 4px; text-transform: uppercase; color: var(--text-muted); padding: 6px 16px 10px; }
         .sidebar-item { display: flex; align-items: center; gap: 12px; padding: 13px 16px; font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-muted); cursor: pointer; border: none; background: none; width: 100%; text-align: left; border-left: 2px solid transparent; transition: all 0.18s; border-radius: 0; margin-bottom: 2px; }
@@ -94,7 +92,6 @@
         @media(max-width: 900px) { .main { overflow: visible !important; width: 100% !important; max-width: 100% !important; } }
         @media(max-width: 640px) { .main { padding: 28px 16px 110px !important; } }
 
-        /* ── PAGE HEADER ── */
         .page-header { margin-bottom: 52px; padding-bottom: 44px; border-bottom: 1px solid var(--border); position: relative; overflow: hidden; animation: fadeIn 0.4s ease; }
         .page-header::before { content: attr(data-bg); position: absolute; right: -10px; top: 50%; transform: translateY(-50%); font-family: 'Playfair Display', serif; font-size: clamp(70px, 12vw, 130px); font-weight: 900; color: var(--gold); opacity: 0.03; pointer-events: none; white-space: nowrap; line-height: 1; }
         .page-eyebrow { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 5px; text-transform: uppercase; color: var(--gold); opacity: 0.55; margin-bottom: 14px; display: flex; align-items: center; gap: 12px; }
@@ -103,29 +100,18 @@
         .page-title em { color: var(--gold-light); font-style: italic; }
         .page-sub { font-size: 14px; color: var(--text-dim); line-height: 1.8; max-width: 520px; }
 
-        /* ── TABS ── */
         .tab-panel { display: none; animation: fadeIn 0.3s ease; }
         .tab-panel.active { display: block; }
 
-        /* ── SECTION EYEBROW ── */
         .section-eyebrow { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); opacity: 0.5; margin-bottom: 24px; display: flex; align-items: center; gap: 16px; }
         .section-eyebrow::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
-        /* ── ALERTS ── */
         .alert-box { padding: 14px 20px; font-family: 'DM Mono', monospace; font-size: 11px; line-height: 1.6; margin-bottom: 24px; border-left: 2px solid; display: none; }
         .alert-box.show { display: block; }
         .alert-box.success { border-color: var(--green); background: var(--green-dim); color: #90d4a8; }
         .alert-box.info { border-color: var(--gold); background: var(--gold-dim); color: var(--gold-light); }
         .alert-box.error { border-color: var(--red); background: var(--red-dim); color: #e09090; }
 
-        /* ── NO SUB BANNER ── */
-        .no-sub-banner { background: var(--red-dim); border: 1px solid rgba(201,76,76,0.2); padding: 22px 28px; margin-bottom: 32px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
-        .no-sub-text { font-size: 13px; color: #e09090; }
-        .no-sub-text strong { display: block; font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 4px; }
-        .btn-pay-now { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; background: var(--gold); color: var(--bg); padding: 11px 20px; text-decoration: none; white-space: nowrap; transition: background 0.2s; border: none; cursor: pointer; font-weight: 700; }
-        .btn-pay-now:hover { background: var(--gold-light); }
-
-        /* ── STAT CARDS ── */
         .cards-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); margin-bottom: 1px; }
         @media(max-width: 700px) { .cards-grid { grid-template-columns: 1fr; } }
         .stat-card { background: var(--bg2); padding: 32px 36px; transition: background 0.2s; position: relative; overflow: hidden; }
@@ -137,7 +123,6 @@
         .stat-card-val.red { color: var(--red-light); }
         .stat-card-sub { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text-muted); }
 
-        /* ── SUB CARD ── */
         .sub-card { background: var(--bg2); padding: 44px; margin-top: 1px; position: relative; overflow: hidden; }
         .sub-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--gold), transparent); opacity: 0.5; }
         .sub-header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px; margin-bottom: 32px; }
@@ -153,7 +138,6 @@
         .sub-detail-val.gold { color: var(--gold-light); }
         .sub-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 32px; padding-top: 28px; border-top: 1px solid var(--border); }
 
-        /* ── BUTTONS ── */
         .btn-small { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; padding: 13px 22px; cursor: pointer; transition: all 0.2s; border: none; text-decoration: none; display: inline-flex; align-items: center; gap: 7px; }
         .btn-gold { background: var(--gold); color: var(--bg); font-weight: 700; }
         .btn-gold:hover { background: var(--gold-light); }
@@ -162,7 +146,6 @@
         .btn-red { background: var(--red-dim); color: var(--red-light); border: 1px solid rgba(201,76,76,0.2); }
         .btn-red:hover { background: rgba(201,76,76,0.12); border-color: rgba(201,76,76,0.4); }
 
-        /* ── PAYMENTS TABLE ── */
         .payments-table { width: 100%; border-collapse: collapse; }
         .payments-table th { background: var(--bg2); padding: 14px 20px; text-align: left; font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); border-bottom: 1px solid var(--border); font-weight: 400; }
         .payments-table td { padding: 18px 20px; border-bottom: 1px solid rgba(255,255,255,0.025); font-size: 13px; color: var(--text-dim); vertical-align: middle; }
@@ -174,7 +157,6 @@
         .payment-invoice { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--gold); text-decoration: none; }
         .payment-invoice:hover { text-decoration: underline; }
 
-        /* ── EDITIONS ── */
         .editions-grid { display: flex; flex-direction: column; gap: 1px; background: var(--border); }
         .edition-row { background: var(--bg2); padding: 22px 32px; display: flex; align-items: center; justify-content: space-between; gap: 16px; text-decoration: none; transition: background 0.2s; }
         .edition-row:hover { background: var(--bg3); }
@@ -186,7 +168,6 @@
         .edition-tag { font-family: 'DM Mono', monospace; font-size: 8px; padding: 3px 10px; letter-spacing: 1px; text-transform: uppercase; background: var(--gold-dim); color: var(--gold); border: 1px solid rgba(201,168,76,0.25); flex-shrink: 0; }
         .edition-locked { opacity: 0.3; pointer-events: none; }
 
-        /* ── SERVICES ── */
         .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); }
         @media(max-width: 800px) { .services-grid { grid-template-columns: 1fr; } }
         .service-card { background: var(--bg2); padding: 36px; display: flex; flex-direction: column; position: relative; overflow: hidden; transition: background 0.25s; text-decoration: none; }
@@ -196,26 +177,12 @@
         .service-card.telegram::before { background: linear-gradient(90deg, transparent, #2AADDE, transparent); }
         .service-card.instagram::before { background: linear-gradient(90deg, transparent, #dc2743, transparent); }
         .service-card:hover::before { opacity: 1; }
-        .service-glow { position:absolute; bottom:-60px; right:-60px; width:160px; height:160px; border-radius:50%; opacity:0; transition:all 0.4s; pointer-events:none; }
-        .service-card.discord .service-glow { background:radial-gradient(circle,rgba(88,101,242,0.07),transparent 70%); }
-        .service-card.telegram .service-glow { background:radial-gradient(circle,rgba(42,173,222,0.07),transparent 70%); }
-        .service-card.instagram .service-glow { background:radial-gradient(circle,rgba(220,39,67,0.07),transparent 70%); }
-        .service-card:hover .service-glow { opacity:1; bottom:-40px; right:-40px; }
-        .service-icon { width: 48px; height: 48px; border-radius: 13px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
-        .service-card.discord .service-icon { background: rgba(88,101,242,0.1); border: 1px solid rgba(88,101,242,0.25); }
-        .service-card.telegram .service-icon { background: rgba(42,173,222,0.1); border: 1px solid rgba(42,173,222,0.25); }
-        .service-card.instagram .service-icon { background: rgba(220,39,67,0.07); border: 1px solid rgba(220,39,67,0.2); }
         .service-name { font-family: 'Playfair Display', serif; font-size: 19px; font-weight: 700; color: var(--text); margin-bottom: 10px; }
         .service-desc { font-size: 13px; color: var(--text-dim); line-height: 1.75; flex: 1; margin-bottom: 26px; }
         .service-cta { display: flex; align-items: center; justify-content: space-between; padding: 13px 18px; border: 1px solid var(--border2); font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); transition: all 0.22s; margin-top: auto; }
-        .service-card.discord:hover .service-cta { border-color: rgba(88,101,242,0.4); color: #7b88f5; background: rgba(88,101,242,0.04); }
-        .service-card.telegram:hover .service-cta { border-color: rgba(42,173,222,0.4); color: #5ac8e8; background: rgba(42,173,222,0.04); }
-        .service-card.instagram:hover .service-cta { border-color: rgba(220,39,67,0.4); color: #e8607a; background: rgba(220,39,67,0.04); }
         .service-arrow { transition: transform 0.2s; }
         .service-card:hover .service-arrow { transform: translateX(4px); }
-        .service-note { background: var(--bg2); padding: 16px 36px; font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); display: flex; align-items: center; gap: 10px; margin-top: 1px; }
 
-        /* ── FORMS ── */
         .profile-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         @media(max-width: 560px) { .profile-grid { grid-template-columns: 1fr; } }
         .form-group { margin-bottom: 24px; }
@@ -228,7 +195,6 @@
         .danger-title { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--red-light); margin-bottom: 12px; }
         .danger-text { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; line-height: 1.8; }
 
-        /* ── MODAL ── */
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.88); z-index: 300; display: none; align-items: center; justify-content: center; padding: 20px; }
         .modal-overlay.show { display: flex; }
         .modal { background: var(--bg2); border: 1px solid var(--border); padding: 44px; max-width: 460px; width: 100%; position: relative; }
@@ -239,27 +205,13 @@
         .modal-actions { display: flex; gap: 12px; }
         .modal-actions .btn-small { flex: 1; justify-content: center; }
 
-        /* ── MOBILE BOTTOM NAV ── */
         .mobile-nav { display: none; }
         @media(max-width: 900px) {
-            .mobile-nav {
-                display: flex; position: fixed; bottom: 0; left: 0; right: 0;
-                background: #0a0a08; border-top: 1px solid var(--border);
-                z-index: 150; padding: 0; safe-area-inset-bottom: env(safe-area-inset-bottom);
-                padding-bottom: env(safe-area-inset-bottom);
-            }
-            .mobile-nav-item {
-                flex: 1; display: flex; flex-direction: column; align-items: center;
-                justify-content: center; gap: 5px; padding: 10px 4px 12px;
-                border: none; background: none; cursor: pointer;
-                font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 1px;
-                text-transform: uppercase; color: var(--text-muted);
-                transition: all 0.18s; border-top: 2px solid transparent;
-            }
+            .mobile-nav { display: flex; position: fixed; bottom: 0; left: 0; right: 0; background: #0a0a08; border-top: 1px solid var(--border); z-index: 150; padding: 0; padding-bottom: env(safe-area-inset-bottom); }
+            .mobile-nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; padding: 10px 4px 12px; border: none; background: none; cursor: pointer; font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); transition: all 0.18s; border-top: 2px solid transparent; }
             .mobile-nav-item.active { color: var(--gold); border-top-color: var(--gold); background: var(--gold-dim); }
             .mobile-nav-item:hover { color: var(--text-dim); }
             .mobile-nav-item .mn-icon { font-size: 18px; line-height: 1; }
-            /* push main content up so it's not hidden behind mobile nav */
             .main { padding-bottom: 100px !important; overflow: visible !important; }
             body { overflow-x: hidden; }
         }
@@ -298,7 +250,6 @@
 
     <div class="dashboard">
 
-        <!-- ── SIDEBAR ── -->
         <aside class="sidebar">
             <div class="sidebar-user">
                 <div class="sidebar-user-avatar" id="sidebar-avatar">…</div>
@@ -307,32 +258,18 @@
             </div>
             <nav class="sidebar-nav">
                 <div class="sidebar-group-label">Mon espace</div>
-                <button class="sidebar-item active" data-tab="abonnement">
-                    <span class="si-icon">💎</span> Abonnement <span class="si-arrow">→</span>
-                </button>
-                <button class="sidebar-item" data-tab="paiements">
-                    <span class="si-icon">🧾</span> Paiements <span class="si-arrow">→</span>
-                </button>
-                <button class="sidebar-item" data-tab="editions">
-                    <span class="si-icon">📰</span> Mes éditions <span class="si-arrow">→</span>
-                </button>
-
+                <button class="sidebar-item active" data-tab="abonnement"><span class="si-icon">💎</span> Abonnement <span class="si-arrow">→</span></button>
+                <button class="sidebar-item" data-tab="paiements"><span class="si-icon">🧾</span> Paiements <span class="si-arrow">→</span></button>
+                <button class="sidebar-item" data-tab="editions"><span class="si-icon">📰</span> Mes éditions <span class="si-arrow">→</span></button>
                 <hr class="sidebar-divider">
                 <div class="sidebar-group-label">Compte</div>
-                <button class="sidebar-item" data-tab="profil">
-                    <span class="si-icon">👤</span> Profil <span class="si-arrow">→</span>
-                </button>
-                <button class="sidebar-item" data-tab="securite">
-                    <span class="si-icon">🔒</span> Sécurité <span class="si-arrow">→</span>
-                </button>
+                <button class="sidebar-item" data-tab="profil"><span class="si-icon">👤</span> Profil <span class="si-arrow">→</span></button>
+                <button class="sidebar-item" data-tab="securite"><span class="si-icon">🔒</span> Sécurité <span class="si-arrow">→</span></button>
                 <hr class="sidebar-divider">
-                <button class="sidebar-item danger" id="logout-btn">
-                    <span class="si-icon">🚪</span> Déconnexion <span class="si-arrow">→</span>
-                </button>
+                <button class="sidebar-item danger" id="logout-btn"><span class="si-icon">🚪</span> Déconnexion <span class="si-arrow">→</span></button>
             </nav>
         </aside>
 
-        <!-- ── MAIN ── -->
         <main class="main">
 
             <!-- ABONNEMENT -->
@@ -342,19 +279,9 @@
                     <h1 class="page-title">Bonjour, <em id="user-name">…</em></h1>
                     <p class="page-sub">Gère ton abonnement, accède à tes éditions et à tes services inclus.</p>
                 </div>
-
-                <div id="no-sub-banner" class="no-sub-banner" style="display:none;">
-                    <div class="no-sub-text">
-                        <strong>⚠ Aucun abonnement actif</strong>
-                        Ton paiement n'a pas encore été confirmé. Si tu viens de payer, attends quelques secondes et rafraîchis.
-                    </div>
-                    <a href="#" id="btn-subscribe" class="btn-pay-now">S'abonner maintenant →</a>
-                </div>
-
                 <div class="alert-box info" id="edition-banner" style="display:none;">
                     📰 La nouvelle édition #001 est disponible — <a href="edition01/edition-01.html" style="color:var(--gold)">Lire maintenant →</a>
                 </div>
-
                 <div class="cards-grid">
                     <div class="stat-card">
                         <div class="stat-card-label">Statut</div>
@@ -372,7 +299,6 @@
                         <div class="stat-card-sub" id="card-editions-sub">—</div>
                     </div>
                 </div>
-
                 <div class="sub-card">
                     <div class="sub-header">
                         <div>
@@ -491,32 +417,14 @@
         </main>
     </div>
 
-
-    <!-- ── MOBILE BOTTOM NAV ── -->
     <nav class="mobile-nav" id="mobileNav">
-        <button class="mobile-nav-item active" data-tab="abonnement">
-            <span class="mn-icon">💎</span>
-            <span>Abonnement</span>
-        </button>
-        <button class="mobile-nav-item" data-tab="paiements">
-            <span class="mn-icon">🧾</span>
-            <span>Paiements</span>
-        </button>
-        <button class="mobile-nav-item" data-tab="editions">
-            <span class="mn-icon">📰</span>
-            <span>Éditions</span>
-        </button>
-        <button class="mobile-nav-item" data-tab="profil">
-            <span class="mn-icon">👤</span>
-            <span>Profil</span>
-        </button>
-        <button class="mobile-nav-item" data-tab="securite">
-            <span class="mn-icon">🔒</span>
-            <span>Sécurité</span>
-        </button>
+        <button class="mobile-nav-item active" data-tab="abonnement"><span class="mn-icon">💎</span><span>Abonnement</span></button>
+        <button class="mobile-nav-item" data-tab="paiements"><span class="mn-icon">🧾</span><span>Paiements</span></button>
+        <button class="mobile-nav-item" data-tab="editions"><span class="mn-icon">📰</span><span>Éditions</span></button>
+        <button class="mobile-nav-item" data-tab="profil"><span class="mn-icon">👤</span><span>Profil</span></button>
+        <button class="mobile-nav-item" data-tab="securite"><span class="mn-icon">🔒</span><span>Sécurité</span></button>
     </nav>
 
-    <!-- MODAL RÉSILIATION -->
     <div class="modal-overlay" id="cancel-modal">
         <div class="modal">
             <div class="modal-title">Résilier l'abonnement</div>
@@ -531,7 +439,6 @@
     <script>
         const SUPABASE_URL  = 'https://oehoqoaxcwiffbzuegou.supabase.co'
         const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9laG9xb2F4Y3dpZmZienVlZ291Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzMjI2MTMsImV4cCI6MjA4Nzg5ODYxM30.N5UP014MgNUBunZJuhKuUUlRYC_HY7lpAFAYD39CjvE'
-        const STRIPE_BASE_URL = 'https://buy.stripe.com/7sY9ALaso1b1bVGgCwfw400'
 
         const { createClient } = supabase
         const sb = createClient(SUPABASE_URL, SUPABASE_ANON, {
@@ -582,91 +489,78 @@
             const { data: { session } } = await sb.auth.getSession()
             if (!session) { window.location.href = 'login.html'; return }
 
-            document.getElementById('loading-overlay').classList.add('hidden')
-
-            const email = session.user.email
-            const meta  = session.user.user_metadata || {}
-            const firstName   = meta.first_name || ''
-            const lastName    = meta.last_name  || ''
-            const fullName    = (firstName + ' ' + lastName).trim() || email.split('@')[0]
+            const email   = session.user.email
+            const meta    = session.user.user_metadata || {}
+            const firstName    = meta.first_name || ''
+            const lastName     = meta.last_name  || ''
+            const fullName     = (firstName + ' ' + lastName).trim() || email.split('@')[0]
             const displayFirst = firstName || email.split('@')[0]
-            const userId = session.user.id
-
-            document.getElementById('user-name').textContent = fullName
-            document.getElementById('sidebar-name').textContent = fullName
-            document.getElementById('sidebar-avatar').textContent = displayFirst[0].toUpperCase()
-
-            document.getElementById('btn-subscribe').href =
-                `${STRIPE_BASE_URL}?prefilled_email=${encodeURIComponent(email)}&client_reference_id=${userId}`
-
-            document.getElementById('p-firstname').value = meta.first_name || ''
-            document.getElementById('p-lastname').value  = meta.last_name  || ''
-            document.getElementById('p-email').value     = email
-            document.getElementById('p-country').value   = meta.pays || ''
+            const userId  = session.user.id
 
             const { data: sub } = await sb.from('subscriptions').select('*')
                 .or(`email.eq.${email},user_id.eq.${userId}`)
                 .order('created_at', { ascending: false }).limit(1).single()
 
             const isActive = sub && (sub.status === 'active' || sub.status === 'trialing')
-            document.getElementById('no-sub-banner').style.display = isActive ? 'none' : 'flex'
 
-            if (isActive) {
-                document.getElementById('nav-status-badge').style.display = 'flex'
-                const subLink = document.getElementById('nav-subscribe-link')
-                if (subLink) subLink.style.display = 'none'
-                document.getElementById('sidebar-status').textContent = 'PRO · Actif'
-
-                const renewalDate = fmt(sub.current_period_end)
-                const sinceDate   = fmt(sub.member_since || sub.created_at)
-
-                document.getElementById('card-status').textContent  = 'Actif'
-                document.getElementById('card-status').className    = 'stat-card-val green'
-                document.getElementById('card-since').textContent   = `Depuis ${sinceDate}`
-                document.getElementById('card-amount').textContent  = '9.99$'
-                document.getElementById('card-renewal').textContent = renewalDate !== '—' ? `Le ${renewalDate}` : '—'
-                document.getElementById('detail-renewal').textContent = renewalDate
-                document.getElementById('detail-since').textContent   = sinceDate
-                document.getElementById('modal-end-date').textContent = renewalDate
-
-                const badge = document.getElementById('sub-badge')
-                badge.className = 'badge badge-active'; badge.textContent = 'Actif'
-
-                const { data: payments } = await sb.from('payments').select('*')
-                    .or(`email.eq.${email}${sub.stripe_customer_id ? `,stripe_customer_id.eq.${sub.stripe_customer_id}` : ''}`)
-                    .order('paid_at', { ascending: false })
-
-                const tbody = document.getElementById('payments-tbody')
-                tbody.innerHTML = payments?.length > 0
-                    ? payments.map(p => `<tr>
-                        <td>${fmt(p.paid_at)}</td>
-                        <td>${p.description || 'The Pro Xau — Premium'}</td>
-                        <td class="payment-amount">${parseFloat(p.amount||0).toFixed(2)} ${p.currency||'USD'}</td>
-                        <td><span class="payment-status ${p.status==='paid'?'payment-paid':'payment-failed'}">${p.status==='paid'?'Payé':'Échoué'}</span></td>
-                        <td>${p.invoice_pdf?`<a class="payment-invoice" href="${p.invoice_pdf}" target="_blank">Télécharger PDF</a>`:'<span style="color:var(--text-muted)">—</span>'}</td>
-                    </tr>`).join('')
-                    : '<tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:48px;">Aucun paiement trouvé.</td></tr>'
-
-            } else {
-                document.getElementById('sidebar-status').textContent = 'Inactif'
-                document.getElementById('card-status').textContent = 'Inactif'
-                document.getElementById('card-status').className   = 'stat-card-val red'
-                document.getElementById('card-since').textContent  = '—'
-                document.getElementById('card-amount').textContent = '—'
-                document.getElementById('card-renewal').textContent = '—'
-                const badge = document.getElementById('sub-badge')
-                badge.className = 'badge badge-cancelled'; badge.textContent = sub ? 'Résilié' : 'Inactif'
-                const cancelBtn = document.getElementById('cancel-btn')
-                cancelBtn.disabled = true; cancelBtn.style.opacity = '0.35'
-                document.getElementById('payments-tbody').innerHTML =
-                    '<tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:48px;">Aucun paiement trouvé.</td></tr>'
+            // ✅ Si pas d'abonnement actif → redirect checkout
+            if (!isActive) {
+                window.location.href = 'checkout.html'
+                return
             }
-            renderEditions(isActive)
+
+            // Abonnement actif → afficher le dashboard
+            document.getElementById('loading-overlay').classList.add('hidden')
+
+            document.getElementById('user-name').textContent     = fullName
+            document.getElementById('sidebar-name').textContent  = fullName
+            document.getElementById('sidebar-avatar').textContent = displayFirst[0].toUpperCase()
+            document.getElementById('p-firstname').value = meta.first_name || ''
+            document.getElementById('p-lastname').value  = meta.last_name  || ''
+            document.getElementById('p-email').value     = email
+            document.getElementById('p-country').value   = meta.pays || ''
+
+            document.getElementById('nav-status-badge').style.display = 'flex'
+            const subLink = document.getElementById('nav-subscribe-link')
+            if (subLink) subLink.style.display = 'none'
+            document.getElementById('sidebar-status').textContent = 'PRO · Actif'
+
+            const renewalDate = fmt(sub.current_period_end)
+            const sinceDate   = fmt(sub.member_since || sub.created_at)
+
+            document.getElementById('card-status').textContent   = sub.status === 'trialing' ? 'Trial' : 'Actif'
+            document.getElementById('card-status').className     = 'stat-card-val green'
+            document.getElementById('card-since').textContent    = `Depuis ${sinceDate}`
+            document.getElementById('card-amount').textContent   = '9.99$'
+            document.getElementById('card-renewal').textContent  = renewalDate !== '—' ? `Le ${renewalDate}` : '—'
+            document.getElementById('detail-renewal').textContent = renewalDate
+            document.getElementById('detail-since').textContent   = sinceDate
+            document.getElementById('modal-end-date').textContent = renewalDate
+
+            const badge = document.getElementById('sub-badge')
+            badge.className = 'badge badge-active'
+            badge.textContent = sub.status === 'trialing' ? 'Trial actif' : 'Actif'
+
+            const { data: payments } = await sb.from('payments').select('*')
+                .or(`email.eq.${email}${sub.stripe_customer_id ? `,stripe_customer_id.eq.${sub.stripe_customer_id}` : ''}`)
+                .order('paid_at', { ascending: false })
+
+            const tbody = document.getElementById('payments-tbody')
+            tbody.innerHTML = payments?.length > 0
+                ? payments.map(p => `<tr>
+                    <td>${fmt(p.paid_at)}</td>
+                    <td>${p.description || 'The Pro Xau — Premium'}</td>
+                    <td class="payment-amount">${parseFloat(p.amount||0).toFixed(2)} ${p.currency||'USD'}</td>
+                    <td><span class="payment-status ${p.status==='paid'?'payment-paid':'payment-failed'}">${p.status==='paid'?'Payé':'Échoué'}</span></td>
+                    <td>${p.invoice_pdf?`<a class="payment-invoice" href="${p.invoice_pdf}" target="_blank">Télécharger PDF</a>`:'<span style="color:var(--text-muted)">—</span>'}</td>
+                </tr>`).join('')
+                : '<tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:48px;">Aucun paiement trouvé.</td></tr>'
+
+            renderEditions(true)
         }
 
         loadDashboard()
 
-        /* Tab switching — sidebar + mobile nav synced */
         function switchTab(tabName) {
             document.querySelectorAll('.sidebar-item[data-tab], .mobile-nav-item[data-tab]').forEach(b => b.classList.remove('active'))
             document.querySelectorAll('[data-tab="' + tabName + '"]').forEach(b => b.classList.add('active'))
@@ -682,13 +576,11 @@
             btn.addEventListener('click', function() { switchTab(this.dataset.tab) })
         })
 
-        /* Résiliation */
         document.getElementById('cancel-btn').addEventListener('click', () => document.getElementById('cancel-modal').classList.add('show'))
         document.getElementById('cancel-modal-close').addEventListener('click', () => document.getElementById('cancel-modal').classList.remove('show'))
         document.getElementById('confirm-cancel-btn').addEventListener('click', () => { document.getElementById('cancel-modal').classList.remove('show'); openStripePortal() })
         document.querySelectorAll('.modal-overlay').forEach(o => o.addEventListener('click', e => { if (e.target===o) o.classList.remove('show') }))
 
-        /* Stripe portal */
         async function openStripePortal() {
             const btn = document.getElementById('update-card-btn')
             const orig = btn.innerHTML; btn.disabled=true; btn.innerHTML='⏳ Chargement...'
@@ -711,7 +603,6 @@
         }
         document.getElementById('update-card-btn').addEventListener('click', openStripePortal)
 
-        /* Profil */
         document.getElementById('profile-form').addEventListener('submit', async e => {
             e.preventDefault()
             const { error } = await sb.auth.updateUser({ data: {
@@ -722,7 +613,6 @@
             showAlert('profile-saved', error?`❌ Erreur : ${error.message}`:'✓ Profil mis à jour.', error?'error':'success')
         })
 
-        /* Mot de passe */
         document.getElementById('security-form').addEventListener('submit', async e => {
             e.preventDefault()
             const pw=document.getElementById('new-pw').value, cpw=document.getElementById('confirm-pw').value
@@ -731,19 +621,16 @@
             showAlert('pw-saved', error?`❌ Erreur : ${error.message}`:'✓ Mot de passe modifié.', error?'error':'success')
         })
 
-        /* Déconnexion */
         document.getElementById('logout-btn').addEventListener('click', async () => {
             await sb.auth.signOut()
             localStorage.removeItem('tpx_user_email'); localStorage.removeItem('tpx_user_id')
             window.location.href = 'login.html'
         })
 
-        /* Supprimer compte */
         document.getElementById('delete-account-btn').addEventListener('click', () => {
             if (confirm('Es-tu certain ? Cette action est irréversible.')) alert('Pour supprimer ton compte, contacte le support.')
         })
 
-        /* Hamburger */
         const hamburger=document.getElementById('hamburger'),navMenu=document.getElementById('navMenu'),navOverlay=document.getElementById('navOverlay'),navClose=document.getElementById('navClose')
         const openMenu=()=>{ hamburger.classList.add('open'); navMenu.classList.add('open'); navOverlay.classList.add('open'); document.body.style.overflow='hidden' }
         const closeMenu=()=>{ hamburger.classList.remove('open'); navMenu.classList.remove('open'); navOverlay.classList.remove('open'); document.body.style.overflow='' }
