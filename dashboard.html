@@ -27,13 +27,13 @@
         @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
 
         /* NAV */
-        .top-nav { display: flex; justify-content: space-between; align-items: center; padding: 14px 32px; border-bottom: 1px solid var(--border); background: rgba(8,8,8,0.97); backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 100; }
+        .top-nav { display: flex; justify-content: space-between; align-items: center; padding: 14px 40px; border-bottom: 1px solid var(--border); background: rgba(8,8,8,0.97); backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 100; }
         .nav-brand { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--gold); text-decoration: none; }
         .nav-right { display: flex; align-items: center; gap: 14px; }
         .nav-editions-btn { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--bg); background: var(--gold); padding: 8px 16px; text-decoration: none; transition: background 0.2s; }
         .nav-editions-btn:hover { background: var(--gold-light); }
-        .nav-avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--gold-dim); border: 1px solid rgba(201,168,76,0.3); display: flex; align-items: center; justify-content: center; font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 700; color: var(--gold); cursor: pointer; text-decoration: none; transition: border-color 0.2s; }
-        .nav-avatar:hover { border-color: var(--gold); }
+        .nav-status { display: flex; align-items: center; gap: 7px; font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--green); padding: 7px 14px; border: 1px solid rgba(76,175,125,0.2); background: var(--green-dim); }
+        .nav-status::before { content:''; width:5px; height:5px; border-radius:50%; background:var(--green); animation:blink 2s infinite; }
         .hamburger { background: none; border: 1px solid var(--border); padding: 8px 12px; cursor: pointer; display: flex; flex-direction: column; gap: 5px; transition: border-color 0.2s; }
         .hamburger:hover { border-color: var(--gold); }
         .hamburger span { display: block; width: 20px; height: 1px; background: var(--text-dim); transition: all 0.3s; }
@@ -53,71 +53,80 @@
         .nav-menu-cta { margin-top: auto; background: var(--gold); color: #080804 !important; font-weight: 700; padding: 14px 24px !important; text-align: center; justify-content: center !important; border: none !important; }
         .nav-menu-cta:hover { filter: brightness(1.1); }
 
-        /* LAYOUT */
-        .dashboard { display: grid; grid-template-columns: 240px 1fr; min-height: calc(100vh - 57px); }
-        @media(max-width: 768px) { .dashboard { grid-template-columns: 1fr; } .sidebar { display: none; } }
+        /* PAGE */
+        .page { max-width: 1080px; margin: 0 auto; padding: 64px 40px 100px; }
+        @media(max-width: 640px) { .page { padding: 40px 20px 80px; } }
 
-        /* SIDEBAR */
-        .sidebar { border-right: 1px solid var(--border); padding: 40px 0; background: var(--bg2); }
-        .sidebar-section { margin-bottom: 8px; }
-        .sidebar-label { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: var(--text-muted); padding: 8px 28px; margin-bottom: 4px; }
-        .sidebar-item { display: flex; align-items: center; gap: 10px; padding: 11px 28px; font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); text-decoration: none; transition: background 0.15s, color 0.15s; cursor: pointer; border: none; border-left: 2px solid transparent; background: none; width: 100%; text-align: left; }
-        .sidebar-item:hover { background: rgba(201,168,76,0.04); color: var(--text-dim); }
-        .sidebar-item.active { background: var(--gold-dim); color: var(--gold); border-left-color: var(--gold); }
-        .sidebar-icon { font-size: 13px; width: 18px; text-align: center; flex-shrink: 0; }
-        .sidebar-divider { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
-        .sidebar-item.danger { color: rgba(201,76,76,0.6); }
-        .sidebar-item.danger:hover { background: var(--red-dim); color: var(--red-light); }
+        /* WELCOME HERO */
+        .welcome-hero { display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 40px; padding-bottom: 48px; margin-bottom: 0; border-bottom: 1px solid var(--border); position: relative; overflow: hidden; }
+        @media(max-width: 640px) { .welcome-hero { grid-template-columns: 1fr; } .welcome-side { display: none; } }
+        .welcome-hero::before { content: 'XAU'; position: absolute; right: -20px; bottom: -20px; font-family: 'Playfair Display', serif; font-size: clamp(100px, 18vw, 180px); font-weight: 900; color: var(--gold); opacity: 0.025; pointer-events: none; line-height: 1; white-space: nowrap; }
+        .welcome-eyebrow { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 5px; text-transform: uppercase; color: var(--gold); opacity: 0.6; margin-bottom: 18px; display: flex; align-items: center; gap: 12px; }
+        .welcome-eyebrow::before { content: ''; width: 32px; height: 1px; background: var(--gold); opacity: 0.4; }
+        .welcome-title { font-family: 'Playfair Display', serif; font-size: clamp(32px, 5vw, 52px); font-weight: 900; line-height: 1.05; letter-spacing: -1px; margin-bottom: 16px; }
+        .welcome-title em { color: var(--gold-light); font-style: italic; }
+        .welcome-sub { font-size: 13px; color: var(--text-dim); line-height: 1.8; max-width: 480px; }
+        .welcome-side { text-align: right; }
+        .welcome-date-big { font-family: 'Playfair Display', serif; font-size: clamp(40px, 5vw, 60px); font-weight: 900; color: transparent; -webkit-text-stroke: 1px rgba(201,168,76,0.2); line-height: 1; }
+        .welcome-date-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--text-muted); margin-top: 8px; }
 
-        /* MAIN */
-        .main { padding: 48px 48px 80px; overflow-y: auto; }
-        @media(max-width: 640px) { .main { padding: 28px 20px 60px; } }
-
-        /* PAGE HEADER */
-        .page-header { margin-bottom: 40px; padding-bottom: 32px; border-bottom: 1px solid var(--border); position: relative; overflow: hidden; }
-        .page-header::before { content: 'XAU'; position: absolute; right: -10px; top: 50%; transform: translateY(-50%); font-family: 'Playfair Display', serif; font-size: clamp(60px, 10vw, 100px); font-weight: 900; color: var(--gold); opacity: 0.025; pointer-events: none; white-space: nowrap; line-height: 1; }
-        .page-eyebrow { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 5px; text-transform: uppercase; color: var(--gold); opacity: 0.6; margin-bottom: 12px; display: flex; align-items: center; gap: 12px; }
-        .page-eyebrow::before { content: ''; width: 28px; height: 1px; background: var(--gold); opacity: 0.4; }
-        .page-title { font-family: 'Playfair Display', serif; font-size: clamp(26px, 4vw, 36px); font-weight: 900; line-height: 1.1; margin-bottom: 8px; }
-        .page-title em { color: var(--gold-light); font-style: italic; }
-        .page-sub { font-size: 13px; color: var(--text-dim); line-height: 1.7; }
+        /* TAB NAV */
+        .tab-nav { display: flex; gap: 0; border-bottom: 1px solid var(--border); margin-bottom: 48px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        .tab-nav-btn { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--text-muted); padding: 16px 24px; background: none; border: none; border-bottom: 2px solid transparent; cursor: pointer; transition: all 0.2s; white-space: nowrap; margin-bottom: -1px; }
+        .tab-nav-btn:hover { color: var(--text-dim); }
+        .tab-nav-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
 
         /* TABS */
         .tab-panel { display: none; }
         .tab-panel.active { display: block; }
 
         /* SECTION EYEBROW */
-        .section-eyebrow { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); opacity: 0.55; margin-bottom: 20px; display: flex; align-items: center; gap: 14px; }
+        .section-eyebrow { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); opacity: 0.55; margin-bottom: 24px; display: flex; align-items: center; gap: 14px; }
         .section-eyebrow::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
+        /* ALERTS */
+        .alert-box { padding: 14px 18px; font-family: 'DM Mono', monospace; font-size: 11px; line-height: 1.6; margin-bottom: 24px; border-left: 2px solid; display: none; }
+        .alert-box.show { display: block; }
+        .alert-box.success { border-color: var(--green); background: var(--green-dim); color: #90d4a8; }
+        .alert-box.info { border-color: var(--gold); background: var(--gold-dim); color: var(--gold-light); }
+        .alert-box.error { border-color: var(--red); background: var(--red-dim); color: #e09090; }
+
+        /* NO SUB BANNER */
+        .no-sub-banner { background: var(--red-dim); border: 1px solid rgba(201,76,76,0.25); padding: 20px 28px; margin-bottom: 32px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+        .no-sub-text { font-size: 13px; color: #e09090; }
+        .no-sub-text strong { display: block; font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 4px; }
+        .btn-pay-now { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; background: var(--gold); color: var(--bg); padding: 11px 20px; text-decoration: none; white-space: nowrap; transition: background 0.2s; border: none; cursor: pointer; font-weight: 700; }
+        .btn-pay-now:hover { background: var(--gold-light); }
+
         /* STAT CARDS */
-        .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1px; background: var(--border); margin-bottom: 1px; }
-        .stat-card { background: var(--bg2); padding: 24px 28px; transition: background 0.2s; }
+        .cards-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); margin-bottom: 1px; }
+        @media(max-width: 640px) { .cards-grid { grid-template-columns: 1fr; } }
+        .stat-card { background: var(--bg2); padding: 28px 32px; transition: background 0.2s; }
         .stat-card:hover { background: var(--bg3); }
-        .stat-card-label { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 12px; }
-        .stat-card-val { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: var(--gold); line-height: 1; margin-bottom: 6px; }
+        .stat-card-label { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 14px; }
+        .stat-card-val { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 700; color: var(--gold); line-height: 1; margin-bottom: 8px; }
         .stat-card-val.green { color: var(--green); }
         .stat-card-val.red { color: var(--red-light); }
         .stat-card-sub { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text-muted); }
 
         /* SUB CARD */
-        .sub-card { background: var(--bg2); border: 1px solid var(--border); padding: 32px; margin-top: 1px; position: relative; overflow: hidden; }
-        .sub-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--gold), transparent); opacity: 0.4; }
-        .sub-header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px; margin-bottom: 24px; }
-        .sub-title { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); opacity: 0.6; margin-bottom: 8px; }
-        .sub-name { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--text); }
-        .badge { display: inline-flex; align-items: center; gap: 5px; font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 2px; text-transform: uppercase; padding: 5px 12px; }
+        .sub-card { background: var(--bg2); padding: 40px; margin-top: 1px; position: relative; overflow: hidden; }
+        .sub-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--gold), transparent); opacity: 0.5; }
+        .sub-header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px; margin-bottom: 28px; }
+        .sub-plan-label { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); opacity: 0.6; margin-bottom: 10px; }
+        .sub-name { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; color: var(--text); }
+        .badge { display: inline-flex; align-items: center; gap: 6px; font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 2px; text-transform: uppercase; padding: 6px 14px; }
         .badge-active { background: var(--green-dim); color: var(--green); border: 1px solid rgba(76,175,125,0.3); }
         .badge-active::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--green); animation: blink 2s infinite; }
         .badge-cancelled { background: var(--red-dim); color: var(--red-light); border: 1px solid rgba(201,76,76,0.3); }
-        .sub-details { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 20px; padding-top: 20px; border-top: 1px solid var(--border); }
-        .sub-detail-label { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px; }
+        .sub-details { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 24px; padding-top: 24px; border-top: 1px solid var(--border); }
+        .sub-detail-label { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; }
         .sub-detail-val { font-family: 'DM Mono', monospace; font-size: 13px; color: var(--text-dim); }
         .sub-detail-val.gold { color: var(--gold-light); }
-        .sub-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--border); }
+        .sub-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--border); }
 
         /* BUTTONS */
-        .btn-small { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; padding: 11px 18px; cursor: pointer; transition: all 0.2s; border: none; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
+        .btn-small { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; padding: 12px 20px; cursor: pointer; transition: all 0.2s; border: none; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
         .btn-gold { background: var(--gold); color: var(--bg); font-weight: 700; }
         .btn-gold:hover { background: var(--gold-light); }
         .btn-outline { background: transparent; color: var(--text-muted); border: 1px solid var(--border2); }
@@ -125,10 +134,10 @@
         .btn-red { background: var(--red-dim); color: var(--red-light); border: 1px solid rgba(201,76,76,0.25); }
         .btn-red:hover { background: rgba(201,76,76,0.15); border-color: rgba(201,76,76,0.5); }
 
-        /* PAYMENTS TABLE */
+        /* PAYMENTS */
         .payments-table { width: 100%; border-collapse: collapse; }
-        .payments-table th { background: var(--bg3); padding: 10px 16px; text-align: left; font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); border-bottom: 1px solid var(--border); font-weight: 400; }
-        .payments-table td { padding: 14px 16px; border-bottom: 1px solid rgba(255,255,255,0.03); font-size: 12px; color: var(--text-dim); vertical-align: middle; }
+        .payments-table th { background: var(--bg2); padding: 12px 18px; text-align: left; font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); border-bottom: 1px solid var(--border); font-weight: 400; }
+        .payments-table td { padding: 16px 18px; border-bottom: 1px solid rgba(255,255,255,0.03); font-size: 12px; color: var(--text-dim); vertical-align: middle; }
         .payments-table tr:hover td { background: rgba(255,255,255,0.01); }
         .payment-status { display: inline-block; font-family: 'DM Mono', monospace; font-size: 8px; padding: 3px 8px; letter-spacing: 1px; text-transform: uppercase; }
         .payment-paid { background: var(--green-dim); color: var(--green); border: 1px solid rgba(76,175,125,0.2); }
@@ -139,11 +148,11 @@
 
         /* EDITIONS */
         .editions-grid { display: flex; flex-direction: column; gap: 1px; background: var(--border); }
-        .edition-row { background: var(--bg2); padding: 18px 24px; display: flex; align-items: center; justify-content: space-between; gap: 12px; text-decoration: none; transition: background 0.2s; }
+        .edition-row { background: var(--bg2); padding: 20px 28px; display: flex; align-items: center; justify-content: space-between; gap: 12px; text-decoration: none; transition: background 0.2s; }
         .edition-row:hover { background: var(--bg3); }
-        .edition-row-left { display: flex; align-items: center; gap: 18px; }
+        .edition-row-left { display: flex; align-items: center; gap: 20px; }
         .edition-num { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--gold); width: 36px; flex-shrink: 0; }
-        .edition-title { font-family: 'Playfair Display', serif; font-size: 15px; font-weight: 700; color: var(--text); }
+        .edition-title { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 700; color: var(--text); }
         .edition-date { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--text-muted); margin-top: 4px; letter-spacing: 1px; }
         .edition-arrow { color: var(--gold); font-size: 14px; flex-shrink: 0; }
         .edition-tag { font-family: 'DM Mono', monospace; font-size: 8px; padding: 3px 8px; letter-spacing: 1px; text-transform: uppercase; background: var(--gold-dim); color: var(--gold); border: 1px solid rgba(201,168,76,0.25); flex-shrink: 0; }
@@ -152,64 +161,53 @@
         /* SERVICES */
         .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); }
         @media(max-width: 700px) { .services-grid { grid-template-columns: 1fr; } }
-        .service-card { background: var(--bg2); padding: 28px; display: flex; flex-direction: column; position: relative; overflow: hidden; transition: background 0.25s; text-decoration: none; }
+        .service-card { background: var(--bg2); padding: 32px; display: flex; flex-direction: column; position: relative; overflow: hidden; transition: background 0.25s; text-decoration: none; }
         .service-card:hover { background: var(--bg3); }
         .service-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; opacity: 0; transition: opacity 0.3s; }
         .service-card.discord::before { background: linear-gradient(90deg, transparent, #5865F2, transparent); }
         .service-card.telegram::before { background: linear-gradient(90deg, transparent, #2AADDE, transparent); }
         .service-card.instagram::before { background: linear-gradient(90deg, transparent, #dc2743, transparent); }
         .service-card:hover::before { opacity: 1; }
-        .service-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+        .service-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 18px; }
         .service-card.discord .service-icon { background: rgba(88,101,242,0.1); border: 1px solid rgba(88,101,242,0.25); }
         .service-card.telegram .service-icon { background: rgba(42,173,222,0.1); border: 1px solid rgba(42,173,222,0.25); }
         .service-card.instagram .service-icon { background: rgba(220,39,67,0.07); border: 1px solid rgba(220,39,67,0.2); }
-        .service-name { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
-        .service-desc { font-size: 12px; color: var(--text-dim); line-height: 1.7; flex: 1; margin-bottom: 20px; }
-        .service-cta { display: flex; align-items: center; justify-content: space-between; padding: 11px 16px; border: 1px solid var(--border2); font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); transition: all 0.2s; margin-top: auto; }
-        .service-card.discord:hover .service-cta { border-color: rgba(88,101,242,0.4); color: #7b88f5; }
-        .service-card.telegram:hover .service-cta { border-color: rgba(42,173,222,0.4); color: #5ac8e8; }
-        .service-card.instagram:hover .service-cta { border-color: rgba(220,39,67,0.4); color: #e8607a; }
+        .service-name { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 10px; }
+        .service-desc { font-size: 13px; color: var(--text-dim); line-height: 1.75; flex: 1; margin-bottom: 24px; }
+        .service-cta { display: flex; align-items: center; justify-content: space-between; padding: 13px 18px; border: 1px solid var(--border2); font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); transition: all 0.2s; margin-top: auto; }
+        .service-card.discord:hover .service-cta { border-color: rgba(88,101,242,0.4); color: #7b88f5; background: rgba(88,101,242,0.04); }
+        .service-card.telegram:hover .service-cta { border-color: rgba(42,173,222,0.4); color: #5ac8e8; background: rgba(42,173,222,0.04); }
+        .service-card.instagram:hover .service-cta { border-color: rgba(220,39,67,0.4); color: #e8607a; background: rgba(220,39,67,0.04); }
         .service-arrow { transition: transform 0.2s; }
         .service-card:hover .service-arrow { transform: translateX(4px); }
-        .service-note { background: var(--bg2); padding: 14px 28px; font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); display: flex; align-items: center; gap: 10px; margin-top: 1px; }
+        .service-note { background: var(--bg2); padding: 14px 32px; font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); display: flex; align-items: center; gap: 10px; margin-top: 1px; }
 
         /* FORMS */
         .profile-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
         @media(max-width: 560px) { .profile-grid { grid-template-columns: 1fr; } }
         .form-group { margin-bottom: 20px; }
         .form-label { display: block; font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; }
-        .form-input { width: 100%; background: var(--bg3); border: 1px solid var(--border2); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px; padding: 12px 16px; outline: none; transition: border-color 0.2s; -webkit-appearance: none; border-radius: 0; }
+        .form-input { width: 100%; background: var(--bg3); border: 1px solid var(--border2); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px; padding: 13px 18px; outline: none; transition: border-color 0.2s; -webkit-appearance: none; border-radius: 0; }
         .form-input:focus { border-color: var(--gold); box-shadow: 0 0 0 2px rgba(201,168,76,0.08); }
         .form-input::placeholder { color: var(--text-muted); }
         .form-input:disabled { opacity: 0.4; cursor: not-allowed; }
-        .danger-zone { background: rgba(201,76,76,0.03); border: 1px solid rgba(201,76,76,0.15); padding: 24px; margin-top: 32px; }
+        .danger-zone { background: rgba(201,76,76,0.03); border: 1px solid rgba(201,76,76,0.15); padding: 28px; margin-top: 40px; }
         .danger-title { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--red-light); margin-bottom: 10px; }
-        .danger-text { font-size: 12px; color: var(--text-muted); margin-bottom: 16px; line-height: 1.7; }
-
-        /* ALERTS */
-        .alert-box { padding: 12px 18px; font-family: 'DM Mono', monospace; font-size: 11px; line-height: 1.6; margin-bottom: 20px; border-left: 2px solid; display: none; }
-        .alert-box.show { display: block; }
-        .alert-box.success { border-color: var(--green); background: var(--green-dim); color: #90d4a8; }
-        .alert-box.info { border-color: var(--gold); background: var(--gold-dim); color: var(--gold-light); }
-        .alert-box.error { border-color: var(--red); background: var(--red-dim); color: #e09090; }
-
-        /* NO SUB BANNER */
-        .no-sub-banner { background: var(--red-dim); border: 1px solid rgba(201,76,76,0.25); padding: 20px 24px; margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
-        .no-sub-text { font-size: 13px; color: #e09090; }
-        .no-sub-text strong { display: block; font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 4px; }
-        .btn-pay-now { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; background: var(--gold); color: var(--bg); padding: 10px 18px; text-decoration: none; white-space: nowrap; transition: background 0.2s; border: none; cursor: pointer; font-weight: 700; }
-        .btn-pay-now:hover { background: var(--gold-light); }
+        .danger-text { font-size: 13px; color: var(--text-muted); margin-bottom: 18px; line-height: 1.7; }
 
         /* MODAL */
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 300; display: none; align-items: center; justify-content: center; padding: 20px; }
         .modal-overlay.show { display: flex; }
-        .modal { background: var(--bg2); border: 1px solid var(--border); padding: 40px; max-width: 420px; width: 100%; position: relative; }
+        .modal { background: var(--bg2); border: 1px solid var(--border); padding: 40px; max-width: 440px; width: 100%; position: relative; }
         .modal::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--red-light), transparent); opacity: 0.4; }
-        .modal-title { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--text); margin-bottom: 12px; }
+        .modal-title { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; color: var(--text); margin-bottom: 14px; }
         .modal-text { font-size: 13px; color: var(--text-dim); line-height: 1.8; margin-bottom: 28px; }
         .modal-text strong { color: var(--red-light); }
         .modal-actions { display: flex; gap: 10px; }
         .modal-actions .btn-small { flex: 1; justify-content: center; }
+
+        /* LOGOUT BTN */
+        .logout-row { margin-top: 48px; padding-top: 32px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; }
     </style>
 </head>
 <body>
@@ -233,214 +231,215 @@
         <a href="index.html" class="nav-brand">The Pro Xau</a>
         <div class="nav-right">
             <a href="edition01/edition-01.html" class="nav-editions-btn" id="nav-editions-btn" style="display:none;">📰 Mes Éditions</a>
-            <a href="dashboard.html" class="nav-avatar" title="Mon compte" id="user-avatar">…</a>
+            <div class="nav-status" id="nav-status-badge" style="display:none;">PRO Actif</div>
             <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
         </div>
     </nav>
 
-    <div class="dashboard">
+    <div class="page">
 
-        <aside class="sidebar">
-            <div class="sidebar-section">
-                <div class="sidebar-label">Mon espace</div>
-                <button class="sidebar-item active" data-tab="abonnement"><span class="sidebar-icon">💎</span> Abonnement</button>
-                <button class="sidebar-item" data-tab="paiements"><span class="sidebar-icon">🧾</span> Paiements</button>
-                <button class="sidebar-item" data-tab="editions"><span class="sidebar-icon">📰</span> Mes éditions</button>
-                <button class="sidebar-item" data-tab="services"><span class="sidebar-icon">🔗</span> Services</button>
+        <!-- WELCOME -->
+        <div class="welcome-hero">
+            <div>
+                <div class="welcome-eyebrow">Espace membre</div>
+                <h1 class="welcome-title">Bonjour,<br><em id="user-name">…</em></h1>
+                <p class="welcome-sub">Gère ton abonnement, accède à tes éditions et à tes services inclus.</p>
             </div>
-            <hr class="sidebar-divider">
-            <div class="sidebar-section">
-                <div class="sidebar-label">Compte</div>
-                <button class="sidebar-item" data-tab="profil"><span class="sidebar-icon">👤</span> Profil</button>
-                <button class="sidebar-item" data-tab="securite"><span class="sidebar-icon">🔒</span> Sécurité</button>
+            <div class="welcome-side">
+                <div class="welcome-date-big" id="welcome-day">—</div>
+                <div class="welcome-date-label" id="welcome-date-label">—</div>
             </div>
-            <hr class="sidebar-divider">
-            <button class="sidebar-item danger" id="logout-btn"><span class="sidebar-icon">🚪</span> Déconnexion</button>
-        </aside>
+        </div>
 
-        <main class="main">
+        <!-- TAB NAV -->
+        <div class="tab-nav">
+            <button class="tab-nav-btn active" data-tab="abonnement">💎 Abonnement</button>
+            <button class="tab-nav-btn" data-tab="paiements">🧾 Paiements</button>
+            <button class="tab-nav-btn" data-tab="editions">📰 Éditions</button>
+            <button class="tab-nav-btn" data-tab="services">🔗 Services</button>
+            <button class="tab-nav-btn" data-tab="profil">👤 Profil</button>
+            <button class="tab-nav-btn" data-tab="securite">🔒 Sécurité</button>
+        </div>
 
-            <div class="page-header">
-                <div class="page-eyebrow">Espace Membre</div>
-                <h1 class="page-title">Bonjour, <em id="user-name">…</em></h1>
-                <p class="page-sub">Gère ton abonnement et accède à tes éditions premium.</p>
+        <!-- ABONNEMENT -->
+        <div class="tab-panel active" id="panel-abonnement">
+            <div id="no-sub-banner" class="no-sub-banner" style="display:none;">
+                <div class="no-sub-text">
+                    <strong>⚠ Aucun abonnement actif</strong>
+                    Ton paiement n'a pas encore été confirmé. Si tu viens de payer, attends quelques secondes et rafraîchis la page.
+                </div>
+                <a href="#" id="btn-subscribe" class="btn-pay-now">S'abonner maintenant →</a>
             </div>
 
-            <!-- ABONNEMENT -->
-            <div class="tab-panel active" id="panel-abonnement">
-                <div id="no-sub-banner" class="no-sub-banner" style="display:none;">
-                    <div class="no-sub-text">
-                        <strong>⚠ Aucun abonnement actif</strong>
-                        Ton paiement n'a pas encore été confirmé. Si tu viens de payer, attends quelques secondes et rafraîchis la page.
-                    </div>
-                    <a href="#" id="btn-subscribe" class="btn-pay-now">S'abonner maintenant →</a>
+            <div class="alert-box info" id="edition-banner" style="display:none;">
+                📰 La nouvelle édition #001 est disponible — <a href="edition01/edition-01.html" style="color:var(--gold)">Lire maintenant →</a>
+            </div>
+
+            <div class="cards-grid">
+                <div class="stat-card">
+                    <div class="stat-card-label">Statut</div>
+                    <div class="stat-card-val green" id="card-status">—</div>
+                    <div class="stat-card-sub" id="card-since">—</div>
                 </div>
-                <div class="alert-box info" id="edition-banner" style="display:none;">
-                    📰 La nouvelle édition #001 est disponible — <a href="edition01/edition-01.html" style="color:var(--gold)">Lire maintenant →</a>
+                <div class="stat-card">
+                    <div class="stat-card-label">Prochain paiement</div>
+                    <div class="stat-card-val" id="card-amount">—</div>
+                    <div class="stat-card-sub" id="card-renewal">—</div>
                 </div>
-                <div class="cards-grid">
-                    <div class="stat-card">
-                        <div class="stat-card-label">Statut</div>
-                        <div class="stat-card-val green" id="card-status">—</div>
-                        <div class="stat-card-sub" id="card-since">—</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-card-label">Prochain paiement</div>
-                        <div class="stat-card-val" id="card-amount">—</div>
-                        <div class="stat-card-sub" id="card-renewal">—</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-card-label">Éditions disponibles</div>
-                        <div class="stat-card-val" id="card-editions">—</div>
-                        <div class="stat-card-sub" id="card-editions-sub">—</div>
-                    </div>
-                </div>
-                <div class="sub-card">
-                    <div class="sub-header">
-                        <div>
-                            <div class="sub-title">Plan actif</div>
-                            <div class="sub-name">The Pro Xau — Premium</div>
-                        </div>
-                        <span class="badge badge-active" id="sub-badge">Chargement…</span>
-                    </div>
-                    <div class="sub-details">
-                        <div>
-                            <div class="sub-detail-label">Montant</div>
-                            <div class="sub-detail-val gold">9.99$ USD / mois</div>
-                        </div>
-                        <div>
-                            <div class="sub-detail-label">Renouvellement</div>
-                            <div class="sub-detail-val" id="detail-renewal">—</div>
-                        </div>
-                        <div>
-                            <div class="sub-detail-label">Moyen de paiement</div>
-                            <div class="sub-detail-val">Géré via Stripe</div>
-                        </div>
-                        <div>
-                            <div class="sub-detail-label">Membre depuis</div>
-                            <div class="sub-detail-val" id="detail-since">—</div>
-                        </div>
-                    </div>
-                    <div class="sub-actions">
-                        <button class="btn-small btn-outline" id="update-card-btn">💳 Modifier la carte</button>
-                        <button class="btn-small btn-red" id="cancel-btn">✕ Résilier l'abonnement</button>
-                    </div>
+                <div class="stat-card">
+                    <div class="stat-card-label">Éditions disponibles</div>
+                    <div class="stat-card-val" id="card-editions">—</div>
+                    <div class="stat-card-sub" id="card-editions-sub">—</div>
                 </div>
             </div>
 
-            <!-- PAIEMENTS -->
-            <div class="tab-panel" id="panel-paiements">
-                <div class="section-eyebrow">Historique des paiements</div>
-                <table class="payments-table">
-                    <thead><tr><th>Date</th><th>Description</th><th>Montant</th><th>Statut</th><th>Reçu</th></tr></thead>
-                    <tbody id="payments-tbody">
-                        <tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:32px;">Chargement…</td></tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- ÉDITIONS -->
-            <div class="tab-panel" id="panel-editions">
-                <div class="section-eyebrow">Toutes mes éditions</div>
-                <div class="editions-grid" id="editions-list"></div>
-            </div>
-
-            <!-- SERVICES -->
-            <div class="tab-panel" id="panel-services">
-                <div class="section-eyebrow">Services inclus</div>
-                <div class="services-grid">
-                    <a class="service-card discord" href="#">
-                        <div class="service-icon">
-                            <svg width="18" height="14" viewBox="0 0 71 55" fill="#5865F2"><path d="M60.105 4.898A58.55 58.55 0 0 0 45.653.415a.22.22 0 0 0-.233.11 40.784 40.784 0 0 0-1.8 3.698c-5.456-.817-10.886-.817-16.231 0a37.3 37.3 0 0 0-1.827-3.698.229.229 0 0 0-.233-.11 58.39 58.39 0 0 0-14.452 4.483.208.208 0 0 0-.095.082C1.578 18.73-.944 32.144.293 45.39a.244.244 0 0 0 .093.167c6.073 4.46 11.955 7.167 17.729 8.962a.23.23 0 0 0 .249-.082 42.08 42.08 0 0 0 3.627-5.9.225.225 0 0 0-.123-.312 38.772 38.772 0 0 1-5.539-2.64.228.228 0 0 1-.022-.378 31.17 31.17 0 0 0 1.1-.862.22.22 0 0 1 .23-.031c11.619 5.304 24.198 5.304 35.68 0a.219.219 0 0 1 .232.028c.356.293.728.586 1.103.865a.228.228 0 0 1-.02.378 36.384 36.384 0 0 1-5.54 2.637.227.227 0 0 0-.12.316 47.249 47.249 0 0 0 3.623 5.897.225.225 0 0 0 .249.084c5.801-1.794 11.684-4.502 17.757-8.961a.228.228 0 0 0 .092-.164c1.48-15.315-2.48-28.618-10.497-40.412a.18.18 0 0 0-.093-.084zm-36.38 32.427c-3.497 0-6.38-3.211-6.38-7.156 0-3.944 2.827-7.156 6.38-7.156 3.583 0 6.438 3.24 6.38 7.156 0 3.945-2.827 7.156-6.38 7.156zm23.593 0c-3.498 0-6.38-3.211-6.38-7.156 0-3.944 2.826-7.156 6.38-7.156 3.582 0 6.437 3.24 6.38 7.156 0 3.945-2.798 7.156-6.38 7.156z"/></svg>
-                        </div>
-                        <div class="service-name">Discord Privé</div>
-                        <div class="service-desc">Serveur privé du coach — communauté exclusive et analyses réservées aux membres abonnés.</div>
-                        <div class="service-cta"><span>Rejoindre le serveur</span><span class="service-arrow">→</span></div>
-                    </a>
-                    <a class="service-card telegram" href="#">
-                        <div class="service-icon">
-                            <svg width="18" height="16" viewBox="0 0 24 20" fill="#2AADDE"><path d="M22.05.8L.72 9.04c-.47.19-.46.45-.08.56l5.43 1.67L18.69 3.6c.6-.37 1.15-.17.7.24L8.54 13.22l-.4 5.59c.58 0 .84-.27 1.16-.57l2.79-2.7 5.49 4.01c1.01.55 1.73.27 1.98-.93L23.98 2.6c.37-1.47-.57-2.13-1.93-1.8z"/></svg>
-                        </div>
-                        <div class="service-name">Canal Telegram</div>
-                        <div class="service-desc">Canal gratuit — suis les défis et challenges lancés par le coach en temps réel.</div>
-                        <div class="service-cta"><span>Accéder au canal</span><span class="service-arrow">→</span></div>
-                    </a>
-                    <a class="service-card instagram" href="#">
-                        <div class="service-icon">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <defs><linearGradient id="ig2" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#f09433"/><stop offset="50%" stop-color="#dc2743"/><stop offset="100%" stop-color="#bc1888"/></linearGradient></defs>
-                                <rect x="2" y="2" width="20" height="20" rx="5" ry="5" stroke="url(#ig2)" fill="none"/>
-                                <circle cx="12" cy="12" r="4" stroke="url(#ig2)" fill="none"/>
-                                <circle cx="17.5" cy="6.5" r="1.2" fill="#dc2743" stroke="none"/>
-                            </svg>
-                        </div>
-                        <div class="service-name">Instagram</div>
-                        <div class="service-desc">Notre page Instagram — on y partage nos analyses, nos publications et toute l'actualité du site.</div>
-                        <div class="service-cta"><span>Voir la page</span><span class="service-arrow">→</span></div>
-                    </a>
+            <div class="sub-card">
+                <div class="sub-header">
+                    <div>
+                        <div class="sub-plan-label">Plan actif</div>
+                        <div class="sub-name">The Pro Xau — Premium</div>
+                    </div>
+                    <span class="badge badge-active" id="sub-badge">Chargement…</span>
                 </div>
-                <div class="service-note">🔒 <strong style="color:var(--gold);font-weight:500;">Liens personnels</strong> &nbsp;— générés uniquement pour ton compte. Ne pas partager.</div>
+                <div class="sub-details">
+                    <div>
+                        <div class="sub-detail-label">Montant</div>
+                        <div class="sub-detail-val gold">9.99$ USD / mois</div>
+                    </div>
+                    <div>
+                        <div class="sub-detail-label">Renouvellement</div>
+                        <div class="sub-detail-val" id="detail-renewal">—</div>
+                    </div>
+                    <div>
+                        <div class="sub-detail-label">Moyen de paiement</div>
+                        <div class="sub-detail-val">Géré via Stripe</div>
+                    </div>
+                    <div>
+                        <div class="sub-detail-label">Membre depuis</div>
+                        <div class="sub-detail-val" id="detail-since">—</div>
+                    </div>
+                </div>
+                <div class="sub-actions">
+                    <button class="btn-small btn-outline" id="update-card-btn">💳 Modifier la carte</button>
+                    <button class="btn-small btn-red" id="cancel-btn">✕ Résilier l'abonnement</button>
+                </div>
             </div>
 
-            <!-- PROFIL -->
-            <div class="tab-panel" id="panel-profil">
-                <div class="section-eyebrow">Informations personnelles</div>
-                <div class="alert-box" id="profile-saved"></div>
-                <form id="profile-form">
-                    <div class="profile-grid">
-                        <div class="form-group">
-                            <label class="form-label">Prénom</label>
-                            <input class="form-input" type="text" id="p-firstname" placeholder="Prénom">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Nom</label>
-                            <input class="form-input" type="text" id="p-lastname" placeholder="Nom">
-                        </div>
+            <div class="logout-row">
+                <button class="btn-small btn-outline" id="logout-btn">🚪 Déconnexion</button>
+            </div>
+        </div>
+
+        <!-- PAIEMENTS -->
+        <div class="tab-panel" id="panel-paiements">
+            <div class="section-eyebrow">Historique des paiements</div>
+            <table class="payments-table">
+                <thead><tr><th>Date</th><th>Description</th><th>Montant</th><th>Statut</th><th>Reçu</th></tr></thead>
+                <tbody id="payments-tbody">
+                    <tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:40px;">Chargement…</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- ÉDITIONS -->
+        <div class="tab-panel" id="panel-editions">
+            <div class="section-eyebrow">Toutes mes éditions</div>
+            <div class="editions-grid" id="editions-list"></div>
+        </div>
+
+        <!-- SERVICES -->
+        <div class="tab-panel" id="panel-services">
+            <div class="section-eyebrow">Services inclus</div>
+            <div class="services-grid">
+                <a class="service-card discord" href="#">
+                    <div class="service-icon">
+                        <svg width="20" height="15" viewBox="0 0 71 55" fill="#5865F2"><path d="M60.105 4.898A58.55 58.55 0 0 0 45.653.415a.22.22 0 0 0-.233.11 40.784 40.784 0 0 0-1.8 3.698c-5.456-.817-10.886-.817-16.231 0a37.3 37.3 0 0 0-1.827-3.698.229.229 0 0 0-.233-.11 58.39 58.39 0 0 0-14.452 4.483.208.208 0 0 0-.095.082C1.578 18.73-.944 32.144.293 45.39a.244.244 0 0 0 .093.167c6.073 4.46 11.955 7.167 17.729 8.962a.23.23 0 0 0 .249-.082 42.08 42.08 0 0 0 3.627-5.9.225.225 0 0 0-.123-.312 38.772 38.772 0 0 1-5.539-2.64.228.228 0 0 1-.022-.378 31.17 31.17 0 0 0 1.1-.862.22.22 0 0 1 .23-.031c11.619 5.304 24.198 5.304 35.68 0a.219.219 0 0 1 .232.028c.356.293.728.586 1.103.865a.228.228 0 0 1-.02.378 36.384 36.384 0 0 1-5.54 2.637.227.227 0 0 0-.12.316 47.249 47.249 0 0 0 3.623 5.897.225.225 0 0 0 .249.084c5.801-1.794 11.684-4.502 17.757-8.961a.228.228 0 0 0 .092-.164c1.48-15.315-2.48-28.618-10.497-40.412a.18.18 0 0 0-.093-.084zm-36.38 32.427c-3.497 0-6.38-3.211-6.38-7.156 0-3.944 2.827-7.156 6.38-7.156 3.583 0 6.438 3.24 6.38 7.156 0 3.945-2.827 7.156-6.38 7.156zm23.593 0c-3.498 0-6.38-3.211-6.38-7.156 0-3.944 2.826-7.156 6.38-7.156 3.582 0 6.437 3.24 6.38 7.156 0 3.945-2.798 7.156-6.38 7.156z"/></svg>
+                    </div>
+                    <div class="service-name">Discord Privé</div>
+                    <div class="service-desc">Serveur privé du coach — communauté exclusive et analyses réservées aux membres abonnés.</div>
+                    <div class="service-cta"><span>Rejoindre le serveur</span><span class="service-arrow">→</span></div>
+                </a>
+                <a class="service-card telegram" href="#">
+                    <div class="service-icon">
+                        <svg width="20" height="17" viewBox="0 0 24 20" fill="#2AADDE"><path d="M22.05.8L.72 9.04c-.47.19-.46.45-.08.56l5.43 1.67L18.69 3.6c.6-.37 1.15-.17.7.24L8.54 13.22l-.4 5.59c.58 0 .84-.27 1.16-.57l2.79-2.7 5.49 4.01c1.01.55 1.73.27 1.98-.93L23.98 2.6c.37-1.47-.57-2.13-1.93-1.8z"/></svg>
+                    </div>
+                    <div class="service-name">Canal Telegram</div>
+                    <div class="service-desc">Canal gratuit — suis les défis et challenges lancés par le coach en temps réel.</div>
+                    <div class="service-cta"><span>Accéder au canal</span><span class="service-arrow">→</span></div>
+                </a>
+                <a class="service-card instagram" href="#">
+                    <div class="service-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <defs><linearGradient id="ig" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#f09433"/><stop offset="50%" stop-color="#dc2743"/><stop offset="100%" stop-color="#bc1888"/></linearGradient></defs>
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5" stroke="url(#ig)" fill="none"/>
+                            <circle cx="12" cy="12" r="4" stroke="url(#ig)" fill="none"/>
+                            <circle cx="17.5" cy="6.5" r="1.2" fill="#dc2743" stroke="none"/>
+                        </svg>
+                    </div>
+                    <div class="service-name">Instagram</div>
+                    <div class="service-desc">Notre page Instagram — on y partage nos analyses, nos publications et toute l'actualité du site.</div>
+                    <div class="service-cta"><span>Voir la page</span><span class="service-arrow">→</span></div>
+                </a>
+            </div>
+            <div class="service-note">🔒 <strong style="color:var(--gold);font-weight:500;">Liens personnels</strong> &nbsp;— générés uniquement pour ton compte. Ne pas partager.</div>
+        </div>
+
+        <!-- PROFIL -->
+        <div class="tab-panel" id="panel-profil">
+            <div class="section-eyebrow">Informations personnelles</div>
+            <div class="alert-box" id="profile-saved"></div>
+            <form id="profile-form" style="max-width:600px;">
+                <div class="profile-grid">
+                    <div class="form-group">
+                        <label class="form-label">Prénom</label>
+                        <input class="form-input" type="text" id="p-firstname" placeholder="Prénom">
                     </div>
                     <div class="form-group">
-                        <label class="form-label">Adresse email</label>
-                        <input class="form-input" type="email" id="p-email" disabled>
+                        <label class="form-label">Nom</label>
+                        <input class="form-input" type="text" id="p-lastname" placeholder="Nom">
                     </div>
-                    <div class="form-group">
-                        <label class="form-label">Pays</label>
-                        <input class="form-input" type="text" id="p-country" placeholder="Canada">
-                    </div>
-                    <button type="submit" class="btn-small btn-gold">Sauvegarder →</button>
-                </form>
-                <div class="danger-zone">
-                    <div class="danger-title">⚠ Zone de danger</div>
-                    <p class="danger-text">La suppression de ton compte est permanente. Toutes tes données seront effacées et ton abonnement sera annulé immédiatement.</p>
-                    <button class="btn-small btn-red" id="delete-account-btn">Supprimer mon compte</button>
                 </div>
+                <div class="form-group">
+                    <label class="form-label">Adresse email</label>
+                    <input class="form-input" type="email" id="p-email" disabled>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Pays</label>
+                    <input class="form-input" type="text" id="p-country" placeholder="Canada">
+                </div>
+                <button type="submit" class="btn-small btn-gold">Sauvegarder →</button>
+            </form>
+            <div class="danger-zone" style="max-width:600px;">
+                <div class="danger-title">⚠ Zone de danger</div>
+                <p class="danger-text">La suppression de ton compte est permanente. Toutes tes données seront effacées et ton abonnement sera annulé immédiatement.</p>
+                <button class="btn-small btn-red" id="delete-account-btn">Supprimer mon compte</button>
             </div>
+        </div>
 
-            <!-- SÉCURITÉ -->
-            <div class="tab-panel" id="panel-securite">
-                <div class="section-eyebrow">Sécurité</div>
-                <div class="alert-box" id="pw-saved"></div>
-                <form id="security-form" style="max-width:400px;">
-                    <div class="form-group">
-                        <label class="form-label">Nouveau mot de passe</label>
-                        <input class="form-input" type="password" placeholder="Min. 8 caractères" id="new-pw">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Confirmer le mot de passe</label>
-                        <input class="form-input" type="password" placeholder="••••••••" id="confirm-pw">
-                    </div>
-                    <button type="submit" class="btn-small btn-gold">Modifier le mot de passe →</button>
-                </form>
-            </div>
+        <!-- SÉCURITÉ -->
+        <div class="tab-panel" id="panel-securite">
+            <div class="section-eyebrow">Sécurité</div>
+            <div class="alert-box" id="pw-saved"></div>
+            <form id="security-form" style="max-width:440px;">
+                <div class="form-group">
+                    <label class="form-label">Nouveau mot de passe</label>
+                    <input class="form-input" type="password" placeholder="Min. 8 caractères" id="new-pw">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Confirmer le mot de passe</label>
+                    <input class="form-input" type="password" placeholder="••••••••" id="confirm-pw">
+                </div>
+                <button type="submit" class="btn-small btn-gold">Modifier le mot de passe →</button>
+            </form>
+        </div>
 
-        </main>
     </div>
 
     <!-- MODAL RÉSILIATION -->
     <div class="modal-overlay" id="cancel-modal">
         <div class="modal">
             <div class="modal-title">Résilier l'abonnement</div>
-            <p class="modal-text">
-                Es-tu sûr de vouloir résilier ? Tu continueras à avoir accès jusqu'au <strong id="modal-end-date">—</strong>, puis ton compte sera désactivé. <strong>Cette action est irréversible.</strong>
-            </p>
+            <p class="modal-text">Es-tu sûr de vouloir résilier ? Tu continueras à avoir accès jusqu'au <strong id="modal-end-date">—</strong>, puis ton compte sera désactivé. <strong>Cette action est irréversible.</strong></p>
             <div class="modal-actions">
                 <button class="btn-small btn-outline" id="cancel-modal-close">Non, garder</button>
                 <button class="btn-small btn-red" id="confirm-cancel-btn">Oui, résilier</button>
@@ -457,6 +456,13 @@
         const sb = createClient(SUPABASE_URL, SUPABASE_ANON, {
             auth: { storage: localStorage, persistSession: true, autoRefreshToken: true }
         })
+
+        // Date dynamique
+        const now = new Date()
+        document.getElementById('welcome-day').textContent = now.getDate().toString().padStart(2, '0')
+        const months = ['Janv','Févr','Mars','Avr','Mai','Juin','Juil','Août','Sept','Oct','Nov','Déc']
+        const days = ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi']
+        document.getElementById('welcome-date-label').textContent = `${months[now.getMonth()]} ${now.getFullYear()} · ${days[now.getDay()]}`
 
         function fmt(dateStr) {
             if (!dateStr) return '—'
@@ -523,7 +529,6 @@
             const firstName = meta.first_name || email.split('@')[0]
 
             document.getElementById('user-name').textContent = firstName
-            document.getElementById('user-avatar').textContent = firstName[0].toUpperCase()
 
             const userId = session.user.id
             const stripeUrl = `${STRIPE_BASE_URL}?prefilled_email=${encodeURIComponent(email)}&client_reference_id=${userId}`
@@ -544,6 +549,7 @@
             document.getElementById('no-sub-banner').style.display = isActive ? 'none' : 'flex'
 
             if (isActive) {
+                document.getElementById('nav-status-badge').style.display = 'flex'
                 const renewalDate = fmt(sub.current_period_end)
                 const sinceDate   = fmt(sub.member_since || sub.created_at)
 
@@ -576,13 +582,13 @@
                             <td>${p.invoice_pdf ? `<a class="payment-invoice" href="${p.invoice_pdf}" target="_blank">Télécharger PDF</a>` : '<span style="color:var(--text-muted)">—</span>'}</td>
                         </tr>`).join('')
                 } else {
-                    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:32px;">Aucun paiement trouvé.</td></tr>'
+                    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:40px;">Aucun paiement trouvé.</td></tr>'
                 }
             } else {
-                document.getElementById('card-status').textContent  = 'Inactif'
-                document.getElementById('card-status').className    = 'stat-card-val red'
-                document.getElementById('card-since').textContent   = '—'
-                document.getElementById('card-amount').textContent  = '—'
+                document.getElementById('card-status').textContent = 'Inactif'
+                document.getElementById('card-status').className   = 'stat-card-val red'
+                document.getElementById('card-since').textContent  = '—'
+                document.getElementById('card-amount').textContent = '—'
                 document.getElementById('card-renewal').textContent = '—'
                 const badge = document.getElementById('sub-badge')
                 badge.className   = 'badge badge-cancelled'
@@ -591,7 +597,7 @@
                 cancelBtn.disabled = true
                 cancelBtn.style.opacity = '0.4'
                 document.getElementById('payments-tbody').innerHTML =
-                    '<tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:32px;">Aucun paiement trouvé.</td></tr>'
+                    '<tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:40px;">Aucun paiement trouvé.</td></tr>'
             }
 
             renderEditions(isActive)
@@ -599,13 +605,14 @@
 
         loadDashboard()
 
-        /* Sidebar tabs */
-        document.querySelectorAll('.sidebar-item[data-tab]').forEach(btn => {
+        /* Tab nav */
+        document.querySelectorAll('.tab-nav-btn').forEach(btn => {
             btn.addEventListener('click', function() {
-                document.querySelectorAll('.sidebar-item').forEach(b => b.classList.remove('active'))
+                document.querySelectorAll('.tab-nav-btn').forEach(b => b.classList.remove('active'))
                 this.classList.add('active')
                 document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'))
                 document.getElementById('panel-' + this.dataset.tab).classList.add('active')
+                window.scrollTo({ top: 0, behavior: 'smooth' })
             })
         })
 
@@ -674,7 +681,8 @@
         })
 
         /* Hamburger */
-        const hamburger = document.getElementById('hamburger'), navMenu = document.getElementById('navMenu'), navOverlay = document.getElementById('navOverlay'), navClose = document.getElementById('navClose')
+        const hamburger = document.getElementById('hamburger'), navMenu = document.getElementById('navMenu'),
+              navOverlay = document.getElementById('navOverlay'), navClose = document.getElementById('navClose')
         function openMenu()  { hamburger.classList.add('open'); navMenu.classList.add('open'); navOverlay.classList.add('open'); document.body.style.overflow = 'hidden' }
         function closeMenu() { hamburger.classList.remove('open'); navMenu.classList.remove('open'); navOverlay.classList.remove('open'); document.body.style.overflow = '' }
         hamburger.addEventListener('click', openMenu)
