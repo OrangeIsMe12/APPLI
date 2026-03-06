@@ -107,23 +107,12 @@
 
 <body>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script>
-        const { createClient } = window.supabase
-        const sb = createClient(
-            'https://oehoqoaxcwiffbzuegou.supabase.co',
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9laG9xb2F4Y3dpZmZienVlZ291Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzMjI2MTMsImV4cCI6MjA4Nzg5ODYxM30.N5UP014MgNUBunZJuhKuUUlRYC_HY7lpAFAYD39CjvE'
-        )
-        sb.auth.getSession().then(({ data: { session } }) => {
-            if (!session) window.location.replace('login.html')
-        })
-    </script>
 
     <!-- NAV -->
     <nav class="top-nav">
         <a href="index.html" class="nav-brand">The Pro Xau</a>
         <div class="nav-right">
-            <!-- ✅ id ajouté pour pouvoir le cacher si abonné -->
-            <a href="https://buy.stripe.com/7sY9ALaso1b1bVGgCwfw400" class="nav-link" id="nav-subscribe-link">S'abonner</a>
+            <a href="register.html" class="nav-link" id="nav-subscribe-link">S'abonner</a>
             <a href="dashboard.html" class="nav-btn">Mon compte →</a>
         </div>
     </nav>
@@ -200,7 +189,7 @@
                 </div>
             </a>
 
-            <!-- ÉDITION 2 — VERROUILLÉE -->
+            <!-- ÉDITION 2 — VERROUILLÉE par défaut -->
             <div id="card-edition-2" class="card-small locked">
                 <div class="card-top">
                     <div class="card-edition-num">ÉDITION #002</div>
@@ -212,11 +201,11 @@
                 <div class="lock-overlay" id="lock-ed2">
                     <div class="lock-icon">🔒</div>
                     <div class="lock-text">Accès abonnés</div>
-                    <a href="https://buy.stripe.com/7sY9ALaso1b1bVGgCwfw400" class="lock-btn">S'abonner →</a>
+                    <a href="register.html" class="lock-btn">S'abonner →</a>
                 </div>
             </div>
 
-            <!-- ÉDITION 3 — VERROUILLÉE -->
+            <!-- ÉDITION 3 — VERROUILLÉE par défaut -->
             <div id="card-edition-3" class="card-small locked">
                 <div class="card-top">
                     <div class="card-edition-num">ÉDITION #003</div>
@@ -228,7 +217,7 @@
                 <div class="lock-overlay" id="lock-ed3">
                     <div class="lock-icon">🔒</div>
                     <div class="lock-text">Accès abonnés</div>
-                    <a href="https://buy.stripe.com/7sY9ALaso1b1bVGgCwfw400" class="lock-btn">S'abonner →</a>
+                    <a href="register.html" class="lock-btn">S'abonner →</a>
                 </div>
             </div>
         </div>
@@ -236,7 +225,7 @@
 
     <div class="gold-divider"></div>
 
-    <!-- ✅ id="pricing-section" ajouté ici -->
+    <!-- SECTION PRIX — cachée si abonné -->
     <section id="pricing-section" style="max-width:860px; margin:0 auto; padding:80px 24px;">
         <div style="text-align:center; margin-bottom:56px;">
             <div style="font-family:'DM Mono',monospace; font-size:9px; letter-spacing:5px; color:var(--gold); text-transform:uppercase; opacity:0.7; margin-bottom:16px;">Accès complet</div>
@@ -263,7 +252,7 @@
                 <div style="display:flex; align-items:center; gap:12px;"><span style="color:var(--gold); font-size:12px; flex-shrink:0;">◆</span><span style="font-family:'DM Sans',sans-serif; font-size:13px; color:var(--text);">Breaking news & agenda macro de la semaine</span></div>
                 <div style="display:flex; align-items:center; gap:12px;"><span style="color:var(--gold); font-size:12px; flex-shrink:0;">◆</span><span style="font-family:'DM Sans',sans-serif; font-size:13px; color:var(--text);">Concept éducatif + veille X chaque édition</span></div>
             </div>
-            <a href="https://buy.stripe.com/7sY9ALaso1b1bVGgCwfw400" style="display:block; text-align:center; background:var(--gold); color:#080804; font-family:'DM Mono',monospace; font-size:11px; font-weight:700; letter-spacing:3px; text-transform:uppercase; padding:18px 24px; text-decoration:none; transition:all 0.3s; border:2px solid rgba(201,168,76,0.4); box-shadow:0 0 20px rgba(201,168,76,0.2);"
+            <a href="register.html" style="display:block; text-align:center; background:var(--gold); color:#080804; font-family:'DM Mono',monospace; font-size:11px; font-weight:700; letter-spacing:3px; text-transform:uppercase; padding:18px 24px; text-decoration:none; transition:all 0.3s; border:2px solid rgba(201,168,76,0.4); box-shadow:0 0 20px rgba(201,168,76,0.2);"
                 onmouseover="this.style.background='#e2c97e';this.style.transform='translateY(-2px)'" onmouseout="this.style.background='#c9a84c';this.style.transform='translateY(0)'">
                 S'abonner maintenant →
             </a>
@@ -298,8 +287,8 @@
 
     <!-- FOOTER -->
     <footer class="footer">
-        <div class="footer-logo">THE <span>PRO</span> XAU</div
-         <a href="privacy.html" style="font-family:'DM Mono',monospace; font-size:9px; color:#4a4038; letter-spacing:2px; text-decoration:none; text-transform:uppercase;">Politique de confidentialité</a>
+        <div class="footer-logo">THE <span>PRO</span> XAU</div>
+        <a href="privacy.html" style="display:block; margin-bottom:10px; font-family:'DM Mono',monospace; font-size:9px; color:#4a4038; letter-spacing:2px; text-decoration:none; text-transform:uppercase;">Politique de confidentialité</a>
         <div class="footer-copy">© 2026 THE PRO XAU · TOUS DROITS RÉSERVÉS · CONTENU ÉDUCATIF UNIQUEMENT</div>
     </footer>
 
@@ -324,22 +313,28 @@
         async function checkSubscription() {
             try {
                 const { data: { session } } = await sb2.auth.getSession()
+
+                // ✅ Pas connecté → on ne fait rien, les cadenas restent
                 if (!session) return
 
+                // ✅ Cherche par email OU user_id (couvre les deux cas)
                 const { data: sub } = await sb2
                     .from('subscriptions')
                     .select('status')
-                    .eq('email', session.user.email)
+                    .or(`email.eq.${session.user.email},user_id.eq.${session.user.id}`)
+                    .order('created_at', { ascending: false })
+                    .limit(1)
                     .single()
 
+                // ✅ Pas d'abonnement ou statut inactif → cadenas restent
                 if (!sub) return
                 if (sub.status !== 'active' && sub.status !== 'trialing') return
 
-                // ✅ Déverrouille les éditions
+                // ✅ Abonné → déverrouille les éditions
                 unlockCard('card-edition-2', 'lock-ed2', 'badge-ed2', 'edition02/edition-02.html')
                 unlockCard('card-edition-3', 'lock-ed3', 'badge-ed3', 'edition03/edition-03.html')
 
-                // ✅ Cache la section prix
+                // ✅ Cache la section prix complète
                 const pricing = document.getElementById('pricing-section')
                 if (pricing) pricing.style.display = 'none'
 
@@ -348,7 +343,7 @@
                 if (navLink) navLink.style.display = 'none'
 
             } catch (e) {
-                console.warn(e)
+                console.warn('checkSubscription error:', e)
             }
         }
 
