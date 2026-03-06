@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Partenaires — The Pro Xau</title>
+    <link rel="icon" type="image/png" href="/icon.jpg">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #c9a84c;
+            --gold-light: #e8c97a;
+            --gold-dim: rgba(201,168,76,0.12);
+            --bg: #080808;
+            --bg2: #0e0e0e;
+            --bg3: #111111;
+            --bg4: #141414;
+            --border: #1e1a10;
+            --border2: #2a2420;
+            --text: #e8e0d0;
+            --text-dim: #9a9080;
+            --text-muted: #4a4038;
+            --green: #4caf7d;
+            --green-dim: rgba(76,175,125,0.08);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: var(--text); min-height: 100vh; overflow-x: hidden; }
+
+        /* ── NAV ── */
+        .top-nav { display: flex; justify-content: space-between; align-items: center; padding: 14px 32px; border-bottom: 1px solid var(--border); background: rgba(8,8,8,0.95); backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 100; }
+        .nav-brand { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--gold); text-decoration: none; }
+
+        /* hamburger */
+        .hamburger { background: none; border: 1px solid var(--border); padding: 8px 12px; cursor: pointer; display: flex; flex-direction: column; gap: 5px; transition: border-color 0.2s; }
+        .hamburger:hover { border-color: var(--gold); }
+        .hamburger span { display: block; width: 20px; height: 1px; background: var(--text-dim); transition: all 0.3s; }
+        .hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+        .hamburger.open span:nth-child(2) { opacity: 0; }
+        .hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+        .nav-menu { position: fixed; top: 0; right: -100%; width: 280px; height: 100vh; background: #060604; border-left: 1px solid var(--border); z-index: 200; transition: right 0.35s ease; display: flex; flex-direction: column; padding: 80px 40px 40px; gap: 4px; }
+        .nav-menu.open { right: 0; }
+        .nav-menu-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.65); z-index: 199; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+        .nav-menu-overlay.open { opacity: 1; pointer-events: all; }
+        .nav-menu-close { position: absolute; top: 20px; right: 24px; background: none; border: none; color: var(--text-muted); font-size: 20px; cursor: pointer; transition: color 0.2s; }
+        .nav-menu-close:hover { color: var(--gold); }
+        .nav-menu-label { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 4px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 16px; opacity: 0.5; }
+        .nav-menu a { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--text-dim); text-decoration: none; padding: 14px 0; border-bottom: 1px solid var(--border); transition: color 0.2s; display: flex; justify-content: space-between; align-items: center; }
+        .nav-menu a:hover { color: var(--gold); }
+        .nav-menu a:last-of-type { border-bottom: none; }
+        .nav-menu-cta { margin-top: auto; background: var(--gold); color: #080804 !important; font-weight: 700; padding: 14px 24px !important; text-align: center; justify-content: center !important; border: none !important; }
+        .nav-menu-cta:hover { filter: brightness(1.1); }
+
+        /* ── HERO ── */
+        .hero {
+            border-bottom: 1px solid var(--border);
+            padding: 80px 40px 64px;
+            position: relative; overflow: hidden;
+        }
+        .hero::before {
+            content: 'PARTNERS';
+            position: absolute; right: -20px; top: 50%; transform: translateY(-50%);
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(60px, 12vw, 150px);
+            font-weight: 900; color: var(--gold); opacity: 0.025;
+            pointer-events: none; white-space: nowrap;
+        }
+        .hero-inner { max-width: 1080px; margin: 0 auto; }
+        .hero-eyebrow { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 5px; color: var(--gold); text-transform: uppercase; opacity: 0.7; margin-bottom: 20px; display: flex; align-items: center; gap: 12px; }
+        .hero-eyebrow::before { content: ''; width: 32px; height: 1px; background: var(--gold); opacity: 0.4; }
+        .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(36px, 6vw, 64px); font-weight: 900; line-height: 1.05; letter-spacing: -1px; margin-bottom: 20px; }
+        .hero-title em { color: var(--gold-light); font-style: italic; }
+        .hero-sub { font-size: 14px; color: var(--text-dim); line-height: 1.8; max-width: 520px; }
+
+        /* ── MAIN ── */
+        .main { max-width: 1080px; margin: 0 auto; padding: 64px 40px 100px; }
+
+        /* ── FILTRES ── */
+        .filters {
+            display: flex; gap: 8px; flex-wrap: wrap;
+            margin-bottom: 48px;
+        }
+        .filter-btn {
+            padding: 8px 18px; background: transparent;
+            border: 1px solid var(--border2); cursor: pointer;
+            font-family: 'DM Mono', monospace; font-size: 9px;
+            letter-spacing: 2px; text-transform: uppercase;
+            color: var(--text-muted); transition: all 0.2s;
+        }
+        .filter-btn:hover { border-color: var(--gold); color: var(--gold); }
+        .filter-btn.active { border-color: var(--gold); color: var(--gold); background: var(--gold-dim); }
+
+        /* ── GRID PARTENAIRES ── */
+        .partners-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1px;
+            background: var(--border);
+            margin-bottom: 1px;
+        }
+        @media(max-width: 900px) { .partners-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media(max-width: 560px) { .partners-grid { grid-template-columns: 1fr; } }
+
+        .partner-card {
+            background: var(--bg2);
+            padding: 32px;
+            display: flex; flex-direction: column; gap: 0;
+            position: relative; overflow: hidden;
+            transition: background 0.25s;
+        }
+        .partner-card:hover { background: var(--bg3); }
+        .partner-card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            opacity: 0; transition: opacity 0.3s;
+        }
+        .partner-card:hover::before { opacity: 1; }
+
+        /* avatar placeholder */
+        .partner-avatar {
+            width: 52px; height: 52px; border-radius: 12px;
+            background: var(--bg4); border: 1px solid var(--border2);
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700;
+            color: var(--gold); margin-bottom: 20px;
+            flex-shrink: 0; overflow: hidden;
+        }
+        .partner-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 12px; }
+
+        .partner-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 6px; gap: 10px; }
+        .partner-name { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 700; color: var(--text); letter-spacing: -0.3px; line-height: 1.2; }
+        .partner-type {
+            font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 2px;
+            text-transform: uppercase; padding: 3px 8px; white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .partner-type.trader { border: 1px solid rgba(201,168,76,0.3); color: var(--gold); background: var(--gold-dim); }
+        .partner-type.affilie { border: 1px solid rgba(76,175,125,0.3); color: var(--green); background: var(--green-dim); }
+        .partner-type.contenu { border: 1px solid rgba(42,173,222,0.25); color: #5ac8e8; background: rgba(42,173,222,0.06); }
+
+        .partner-handle { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 14px; }
+        .partner-desc { font-size: 13px; color: var(--text-dim); line-height: 1.75; flex: 1; margin-bottom: 24px; }
+
+        /* promo code */
+        .partner-code {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 10px 14px; background: var(--bg4);
+            border: 1px solid var(--border2); margin-bottom: 14px;
+            cursor: pointer; transition: border-color 0.2s;
+        }
+        .partner-code:hover { border-color: rgba(201,168,76,0.3); }
+        .partner-code-label { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); }
+        .partner-code-val { font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 500; color: var(--gold-light); letter-spacing: 2px; }
+        .partner-code-copy { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 1px; color: var(--text-muted); transition: color 0.2s; }
+        .partner-code:hover .partner-code-copy { color: var(--gold); }
+
+        .partner-link {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 12px 16px; border: 1px solid var(--border2);
+            font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px;
+            text-transform: uppercase; color: var(--text-dim); text-decoration: none;
+            transition: all 0.2s; margin-top: auto;
+        }
+        .partner-link:hover { border-color: var(--gold); color: var(--gold); background: var(--gold-dim); }
+        .partner-link-arrow { transition: transform 0.2s; }
+        .partner-link:hover .partner-link-arrow { transform: translateX(4px); }
+
+        /* ── DEVENIR PARTENAIRE ── */
+        .cta-section {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            padding: 56px 48px;
+            text-align: center;
+            position: relative; overflow: hidden;
+            margin-top: 64px;
+        }
+        .cta-section::before {
+            content: ''; position: absolute; top: -80px; left: 50%; transform: translateX(-50%);
+            width: 300px; height: 300px;
+            background: radial-gradient(circle, rgba(201,168,76,0.06), transparent 70%);
+            pointer-events: none;
+        }
+        .cta-eyebrow { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 5px; text-transform: uppercase; color: var(--gold); opacity: 0.6; margin-bottom: 16px; }
+        .cta-title { font-family: 'Playfair Display', serif; font-size: clamp(24px, 4vw, 38px); font-weight: 900; line-height: 1.1; margin-bottom: 16px; }
+        .cta-title em { color: var(--gold-light); font-style: italic; }
+        .cta-sub { font-size: 14px; color: var(--text-dim); line-height: 1.8; max-width: 460px; margin: 0 auto 32px; }
+        .cta-btn {
+            display: inline-flex; align-items: center; gap: 10px;
+            padding: 15px 32px; background: var(--gold);
+            font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px;
+            text-transform: uppercase; color: #080804; font-weight: 700;
+            text-decoration: none; transition: filter 0.2s;
+        }
+        .cta-btn:hover { filter: brightness(1.1); }
+
+        /* ── FOOTER ── */
+        footer { border-top: 1px solid var(--border); padding: 40px 32px; text-align: center; display: flex; flex-direction: column; gap: 12px; }
+        .footer-logo { font-family: 'Playfair Display', serif; font-size: 20px; color: #201c10; }
+        .footer-logo span { color: var(--gold); opacity: 0.2; }
+        .footer-links { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; }
+        .footer-link { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); text-decoration: none; }
+        .footer-link:hover { color: var(--gold); }
+        .footer-copy { font-family: 'DM Mono', monospace; font-size: 9px; color: #181410; letter-spacing: 2px; }
+
+        /* toast copier */
+        .toast {
+            position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%) translateY(20px);
+            background: var(--bg3); border: 1px solid rgba(201,168,76,0.3);
+            padding: 12px 24px; font-family: 'DM Mono', monospace; font-size: 10px;
+            letter-spacing: 2px; text-transform: uppercase; color: var(--gold);
+            opacity: 0; transition: all 0.3s; pointer-events: none; z-index: 300;
+        }
+        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    </style>
+</head>
+<body>
+
+<div class="toast" id="toast">Code copié ✓</div>
+
+<div class="nav-menu-overlay" id="navOverlay"></div>
+<div class="nav-menu" id="navMenu">
+    <button class="nav-menu-close" id="navClose">✕</button>
+    <div class="nav-menu-label">Navigation</div>
+    <a href="index.html">Accueil <span>→</span></a>
+    <a href="about.html">À propos <span>→</span></a>
+        <a href="services.html">Services <span>→</span></a>
+    <a href="partenaires.html">Partenaires <span>→</span></a>
+    <a href="faq.html">FAQ <span>→</span></a>
+    <a href="privacy.html">Confidentialité <span>→</span></a>
+    <a href="terms.html">Conditions <span>→</span></a>
+    <a href="dashboard.html">Mon compte <span>→</span></a>
+    <a href="register.html" class="nav-menu-cta">S'abonner maintenant →</a>
+</div>
+
+
+    <!-- ── COMING SOON OVERLAY ── RETIRE CE BLOC QUAND PRÊT ── -->
+    <div id="coming-soon-overlay" style="
+        position: fixed; inset: 0; z-index: 9999;
+        background: #080808;
+        display: flex; flex-direction: column;
+        align-items: center; justify-content: center;
+        text-align: center; padding: 40px;
+    ">
+        <div style="font-family:'DM Mono',monospace; font-size:9px; letter-spacing:5px; text-transform:uppercase; color:#c9a84c; opacity:0.6; margin-bottom:24px; display:flex; align-items:center; gap:12px;">
+            <span style="display:block; width:32px; height:1px; background:#c9a84c; opacity:0.4;"></span>
+            Bientôt disponible
+            <span style="display:block; width:32px; height:1px; background:#c9a84c; opacity:0.4;"></span>
+        </div>
+        <h1 style="font-family:'Playfair Display',serif; font-size:clamp(36px,7vw,72px); font-weight:900; color:#e8e0d0; line-height:1.05; letter-spacing:-1px; margin-bottom:16px;">
+            En <em style="color:#e8c97a; font-style:italic;">développement</em>
+        </h1>
+        <p style="font-family:'DM Sans',sans-serif; font-size:14px; color:#9a9080; max-width:400px; line-height:1.8; margin-bottom:48px;">
+            Cette section est en cours de préparation. Reviens bientôt pour découvrir nos partenaires.
+        </p>
+        <a href="index.html" style="
+            font-family:'DM Mono',monospace; font-size:9px; letter-spacing:3px; text-transform:uppercase;
+            color:#080804; background:#c9a84c; padding:14px 28px; text-decoration:none;
+            transition:background 0.2s; display:inline-flex; align-items:center; gap:8px;
+        " onmouseover="this.style.background='#e8c97a'" onmouseout="this.style.background='#c9a84c'">
+            ← Retour à l'accueil
+        </a>
+        <div style="position:absolute; font-family:'Playfair Display',serif; font-size:clamp(80px,18vw,180px); font-weight:900; color:#c9a84c; opacity:0.02; pointer-events:none; user-select:none; white-space:nowrap;">
+            PARTENAIRES
+        </div>
+    </div>
+    <!-- ── FIN COMING SOON ── -->
+
+    <nav class="top-nav">
+    <a href="index.html" class="nav-brand">The Pro Xau</a>
+    <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+    <div class="hero-inner">
+        <div class="hero-eyebrow">Réseau & Collaborations</div>
+        <h1 class="hero-title">Nos<br><em>Partenaires</em></h1>
+        <p class="hero-sub">Des traders et créateurs de contenu que nous recommandons — sélectionnés pour leur sérieux, leur expertise et leurs valeurs communes.</p>
+    </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+    <!-- FILTRES -->
+    <div class="filters">
+        <button class="filter-btn active" data-filter="all">Tous</button>
+        <button class="filter-btn" data-filter="trader">Traders</button>
+        <button class="filter-btn" data-filter="affilie">Affiliés</button>
+        <button class="filter-btn" data-filter="contenu">Contenu</button>
+    </div>
+
+    <!-- GRILLE -->
+    <div class="partners-grid" id="partnersGrid">
+
+        <!-- Partenaire 1 — exemple trader + code promo -->
+        <div class="partner-card" data-type="trader">
+            <div class="partner-avatar">A</div>
+            <div class="partner-top">
+                <div class="partner-name">Nom du Trader</div>
+                <span class="partner-type trader">Trader</span>
+            </div>
+            <div class="partner-handle">@handle · Instagram / YouTube</div>
+            <div class="partner-desc">Description courte du partenaire — spécialité, style de trading, ce qu'il apporte à la communauté.</div>
+            <a href="#" class="partner-link" target="_blank">
+                <span>Voir le profil</span>
+                <span class="partner-link-arrow">→</span>
+            </a>
+        </div>
+
+        <!-- Partenaire 2 — exemple affilié avec code -->
+        <div class="partner-card" data-type="affilie">
+            <div class="partner-avatar">B</div>
+            <div class="partner-top">
+                <div class="partner-name">Nom du Partenaire</div>
+                <span class="partner-type affilie">Affilié</span>
+            </div>
+            <div class="partner-handle">@handle · Plateforme</div>
+            <div class="partner-desc">Description du partenaire affilié — service proposé, avantages pour la communauté The Pro Xau.</div>
+            <div class="partner-code" onclick="copyCode('PROXAU10', this)">
+                <div>
+                    <div class="partner-code-label">Code promo</div>
+                    <div class="partner-code-val">PROXAU10</div>
+                </div>
+                <span class="partner-code-copy">Copier ⧉</span>
+            </div>
+            <a href="#" class="partner-link" target="_blank">
+                <span>Visiter le site</span>
+                <span class="partner-link-arrow">→</span>
+            </a>
+        </div>
+
+        <!-- Partenaire 3 — exemple contenu -->
+        <div class="partner-card" data-type="contenu">
+            <div class="partner-avatar">C</div>
+            <div class="partner-top">
+                <div class="partner-name">Nom du Créateur</div>
+                <span class="partner-type contenu">Contenu</span>
+            </div>
+            <div class="partner-handle">@handle · YouTube / Podcast</div>
+            <div class="partner-desc">Description du créateur de contenu — thématiques couvertes, audience, pourquoi on le recommande.</div>
+            <a href="#" class="partner-link" target="_blank">
+                <span>Découvrir</span>
+                <span class="partner-link-arrow">→</span>
+            </a>
+        </div>
+
+        <!-- Partenaire 4 -->
+        <div class="partner-card" data-type="trader">
+            <div class="partner-avatar">D</div>
+            <div class="partner-top">
+                <div class="partner-name">Nom du Trader</div>
+                <span class="partner-type trader">Trader</span>
+            </div>
+            <div class="partner-handle">@handle · Plateforme</div>
+            <div class="partner-desc">Description courte du partenaire — spécialité, style de trading, ce qu'il apporte à la communauté.</div>
+            <a href="#" class="partner-link" target="_blank">
+                <span>Voir le profil</span>
+                <span class="partner-link-arrow">→</span>
+            </a>
+        </div>
+
+        <!-- Partenaire 5 -->
+        <div class="partner-card" data-type="affilie">
+            <div class="partner-avatar">E</div>
+            <div class="partner-top">
+                <div class="partner-name">Nom du Partenaire</div>
+                <span class="partner-type affilie">Affilié</span>
+            </div>
+            <div class="partner-handle">@handle · Plateforme</div>
+            <div class="partner-desc">Description du partenaire affilié — service proposé, avantages pour la communauté The Pro Xau.</div>
+            <div class="partner-code" onclick="copyCode('PROXAU20', this)">
+                <div>
+                    <div class="partner-code-label">Code promo</div>
+                    <div class="partner-code-val">PROXAU20</div>
+                </div>
+                <span class="partner-code-copy">Copier ⧉</span>
+            </div>
+            <a href="#" class="partner-link" target="_blank">
+                <span>Visiter le site</span>
+                <span class="partner-link-arrow">→</span>
+            </a>
+        </div>
+
+        <!-- Partenaire 6 -->
+        <div class="partner-card" data-type="contenu">
+            <div class="partner-avatar">F</div>
+            <div class="partner-top">
+                <div class="partner-name">Nom du Créateur</div>
+                <span class="partner-type contenu">Contenu</span>
+            </div>
+            <div class="partner-handle">@handle · Instagram</div>
+            <div class="partner-desc">Description du créateur de contenu — thématiques couvertes, audience, pourquoi on le recommande.</div>
+            <a href="#" class="partner-link" target="_blank">
+                <span>Découvrir</span>
+                <span class="partner-link-arrow">→</span>
+            </a>
+        </div>
+
+    </div>
+
+    <!-- CTA DEVENIR PARTENAIRE -->
+    <div class="cta-section">
+        <div class="cta-eyebrow">Tu es trader ou créateur ?</div>
+        <h2 class="cta-title">Devenir<br><em>Partenaire</em></h2>
+        <p class="cta-sub">Tu as une audience dans le trading ou la finance ? Parlons d'une collaboration — affiliation, contenu croisé ou recommandation mutuelle.</p>
+        <a href="/cdn-cgi/l/email-protection#671412171708151327130f0200080b030302140c4908090b0e0902" class="cta-btn">Nous contacter →</a>
+    </div>
+
+</div>
+
+<footer>
+    <div class="footer-logo">THE <span>PRO</span> XAU</div>
+    <div class="footer-links">
+        <a href="index.html" class="footer-link">Accueil</a>
+        <a href="about.html" class="footer-link">À propos</a>
+        <a href="partenaires.html" class="footer-link">Partenaires</a>
+        <a href="faq.html" class="footer-link">FAQ</a>
+        <a href="privacy.html" class="footer-link">Confidentialité</a>
+        <a href="terms.html" class="footer-link">Conditions</a>
+    </div>
+    <div class="footer-copy">© 2026 THE PRO XAU · TOUS DROITS RÉSERVÉS · CONTENU ÉDUCATIF UNIQUEMENT</div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    /* ── HAMBURGER ── */
+    const hamburger  = document.getElementById('hamburger');
+    const navMenu    = document.getElementById('navMenu');
+    const navOverlay = document.getElementById('navOverlay');
+    const navClose   = document.getElementById('navClose');
+    function openMenu()  { hamburger.classList.add('open'); navMenu.classList.add('open'); navOverlay.classList.add('open'); document.body.style.overflow = 'hidden'; }
+    function closeMenu() { hamburger.classList.remove('open'); navMenu.classList.remove('open'); navOverlay.classList.remove('open'); document.body.style.overflow = ''; }
+    hamburger.addEventListener('click', openMenu);
+    navClose.addEventListener('click', closeMenu);
+    navOverlay.addEventListener('click', closeMenu);
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
+
+    /* ── FILTRES ── */
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            const filter = btn.dataset.filter;
+            document.querySelectorAll('.partner-card').forEach(card => {
+                if (filter === 'all' || card.dataset.type === filter) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    });
+
+    /* ── COPIER CODE PROMO ── */
+    function copyCode(code, el) {
+        navigator.clipboard.writeText(code).then(() => {
+            const copy = el.querySelector('.partner-code-copy');
+            copy.textContent = 'Copié ✓';
+            copy.style.color = 'var(--green)';
+            const toast = document.getElementById('toast');
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show'
