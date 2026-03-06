@@ -62,14 +62,17 @@
     </div>
 
     <script>
-        // Auto redirect after 5s
-        let t = 5
-        const el = document.getElementById('timer')
-        const iv = setInterval(() => {
-            t--
-            el.textContent = t
-            if (t <= 0) { clearInterval(iv); window.location.href = 'dashboard.html' }
-        }, 1000)
+    // Attend 4 secondes que le webhook Supabase se mette à jour
+let t = 5
+const el = document.getElementById('timer')
+const iv = setInterval(() => {
+    t--
+    el.textContent = t
+    if (t <= 0) { 
+        clearInterval(iv)
+        window.location.href = 'dashboard.html'
+    }
+}, 1000)
     </script>
 </body>
 </html>
