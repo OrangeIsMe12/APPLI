@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Politique de confidentialité — TheProXau</title>
+    <link rel="icon" type="image/png" href="/icon.jpg">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #c9a84c;
+            --gold-light: #e8c97a;
+            --gold-dim: rgba(201,168,76,0.15);
+            --bg: #080808;
+            --bg2: #0e0e0e;
+            --bg3: #131313;
+            --border: #1e1a10;
+            --border2: #2a2420;
+            --text: #e8e0d0;
+            --text-dim: #9a9080;
+            --text-muted: #4a4038;
+            --green: #4caf7d;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: var(--bg);
+            font-family: 'DM Sans', sans-serif;
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ── NAV ── */
+        .top-nav {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 14px 32px; border-bottom: 1px solid var(--border);
+            background: rgba(8,8,8,0.95); backdrop-filter: blur(12px);
+            position: sticky; top: 0; z-index: 100;
+        }
+        .nav-brand { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--gold); text-decoration: none; }
+        .nav-back { font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text-dim); text-decoration: none; display: flex; align-items: center; gap: 8px; transition: color 0.2s; }
+        .nav-back:hover { color: var(--gold); }
+
+        /* ── HERO ── */
+        .hero {
+            border-bottom: 1px solid var(--border);
+            padding: 80px 32px 64px;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: 'PRIVACY';
+            position: absolute;
+            right: -20px; top: 50%; transform: translateY(-50%);
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(80px, 15vw, 180px);
+            font-weight: 900;
+            color: var(--gold);
+            opacity: 0.025;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+        .hero-inner { max-width: 860px; margin: 0 auto; }
+        .hero-eyebrow {
+            font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 5px;
+            color: var(--gold); text-transform: uppercase; opacity: 0.7;
+            margin-bottom: 20px; display: flex; align-items: center; gap: 12px;
+        }
+        .hero-eyebrow::before { content: ''; width: 32px; height: 1px; background: var(--gold); opacity: 0.4; }
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(36px, 6vw, 64px);
+            font-weight: 900; line-height: 1.05;
+            letter-spacing: -1px; color: var(--text);
+            margin-bottom: 24px;
+        }
+        .hero-title em { color: var(--gold); font-style: italic; }
+        .hero-meta {
+            display: flex; gap: 24px; flex-wrap: wrap;
+            font-family: 'DM Mono', monospace; font-size: 10px;
+            color: var(--text-muted); letter-spacing: 2px;
+        }
+        .hero-meta span { display: flex; align-items: center; gap: 6px; }
+        .dot { width: 4px; height: 4px; border-radius: 50%; background: var(--gold); opacity: 0.4; }
+
+        /* ── LAYOUT ── */
+        .layout { max-width: 860px; margin: 0 auto; display: grid; grid-template-columns: 220px 1fr; gap: 0; min-height: 60vh; }
+        @media(max-width:700px) { .layout { grid-template-columns: 1fr; } .toc { display: none; } }
+
+        /* ── TABLE OF CONTENTS ── */
+        .toc {
+            border-right: 1px solid var(--border);
+            padding: 48px 32px 48px 32px;
+            position: sticky; top: 57px;
+            height: calc(100vh - 57px);
+            overflow-y: auto;
+        }
+        .toc-label {
+            font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 3px;
+            text-transform: uppercase; color: var(--text-muted); margin-bottom: 20px;
+        }
+        .toc-item {
+            display: block; padding: 8px 12px; margin-bottom: 2px;
+            font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1px;
+            color: var(--text-muted); text-decoration: none;
+            transition: all 0.2s; border-left: 2px solid transparent;
+            cursor: pointer;
+        }
+        .toc-item:hover { color: var(--text-dim); border-left-color: var(--border2); }
+        .toc-item.active { color: var(--gold); border-left-color: var(--gold); background: var(--gold-dim); }
+
+        /* ── CONTENT ── */
+        .content { padding: 48px 48px 80px; }
+        @media(max-width:700px) { .content { padding: 32px 24px 64px; } }
+
+        /* ── SECTIONS ── */
+        .section {
+            padding-bottom: 48px;
+            margin-bottom: 48px;
+            border-bottom: 1px solid var(--border);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        .section.visible { opacity: 1; transform: translateY(0); }
+        .section:last-child { border-bottom: none; }
+
+        .section-num {
+            font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 3px;
+            color: var(--gold); opacity: 0.5; text-transform: uppercase; margin-bottom: 10px;
+        }
+        .section-title {
+            font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700;
+            color: var(--text); margin-bottom: 20px; line-height: 1.2;
+        }
+        .section-text {
+            font-size: 14px; color: var(--text-dim); line-height: 1.9;
+            margin-bottom: 14px;
+        }
+
+        /* ── INFO CARDS ── */
+        .cards-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; }
+        @media(max-width:500px) { .cards-row { grid-template-columns: 1fr; } }
+
+        .info-card {
+            background: var(--bg3); border: 1px solid var(--border2);
+            padding: 20px; transition: border-color 0.2s;
+        }
+        .info-card:hover { border-color: rgba(201,168,76,0.3); }
+        .info-card-icon { font-size: 18px; margin-bottom: 10px; }
+        .info-card-title { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+        .info-card-text { font-size: 12px; color: var(--text-muted); line-height: 1.7; }
+
+        /* ── PROVIDER BLOCKS ── */
+        .provider {
+            background: var(--bg3); border: 1px solid var(--border2);
+            border-left: 3px solid var(--gold);
+            padding: 20px 24px; margin: 12px 0;
+            display: flex; gap: 20px; align-items: flex-start;
+            transition: border-color 0.2s, background 0.2s;
+        }
+        .provider:hover { background: rgba(201,168,76,0.03); border-left-color: var(--gold-light); }
+        .provider-logo { font-family: 'Playfair Display', serif; font-size: 13px; font-weight: 700; color: var(--gold); white-space: nowrap; min-width: 80px; }
+        .provider-info { font-size: 12px; color: var(--text-muted); line-height: 1.7; }
+        .provider-info a { color: var(--gold); opacity: 0.6; text-decoration: none; font-family: 'DM Mono', monospace; font-size: 11px; }
+        .provider-info a:hover { opacity: 1; }
+
+        /* ── LIST ── */
+        .privacy-list { margin: 14px 0; padding: 0; list-style: none; }
+        .privacy-list li {
+            font-size: 14px; color: var(--text-dim); line-height: 1.85;
+            padding: 8px 0 8px 20px; border-bottom: 1px solid rgba(255,255,255,0.03);
+            position: relative;
+        }
+        .privacy-list li::before { content: '◆'; position: absolute; left: 0; color: var(--gold); font-size: 8px; top: 12px; opacity: 0.5; }
+        .privacy-list li:last-child { border-bottom: none; }
+
+        /* ── RIGHTS GRID ── */
+        .rights-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 20px 0; }
+        @media(max-width:500px) { .rights-grid { grid-template-columns: 1fr; } }
+        .right-item { background: var(--bg3); border: 1px solid var(--border2); padding: 16px; transition: border-color 0.2s; }
+        .right-item:hover { border-color: rgba(201,168,76,0.25); }
+        .right-item-title { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
+        .right-item-text { font-size: 12px; color: var(--text-muted); line-height: 1.6; }
+
+        /* ── CONTACT ── */
+        .contact-box {
+            background: linear-gradient(135deg, #0f0d06, #0a0905);
+            border: 1px solid rgba(201,168,76,0.25);
+            padding: 40px; text-align: center; margin-top: 24px;
+            position: relative; overflow: hidden;
+        }
+        .contact-box::before {
+            content: ''; position: absolute; top: -60px; right: -60px;
+            width: 200px; height: 200px;
+            background: radial-gradient(circle, rgba(201,168,76,0.08), transparent 70%);
+        }
+        .contact-box-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); opacity: 0.6; margin-bottom: 16px; }
+        .contact-email {
+            font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700;
+            color: var(--gold); text-decoration: none; display: block; margin-bottom: 16px;
+            transition: color 0.2s;
+        }
+        .contact-email:hover { color: var(--gold-light); }
+        .contact-sub { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; color: var(--text-muted); text-transform: uppercase; }
+
+        /* ── FOOTER ── */
+        footer {
+            border-top: 1px solid var(--border); padding: 40px 32px;
+            text-align: center; display: flex; flex-direction: column; gap: 12px;
+        }
+        .footer-logo { font-family: 'Playfair Display', serif; font-size: 20px; color: #201c10; }
+        .footer-logo span { color: var(--gold); opacity: 0.2; }
+        .footer-links { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; }
+        .footer-link { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); text-decoration: none; }
+        .footer-link:hover { color: var(--gold); }
+        .footer-copy { font-family: 'DM Mono', monospace; font-size: 9px; color: #181410; letter-spacing: 2px; }
+
+        /* ── SCROLL PROGRESS ── */
+        .progress-bar { position: fixed; top: 0; left: 0; height: 2px; background: var(--gold); z-index: 200; transition: width 0.1s; width: 0%; }
+    </style>
+</head>
+<body>
+
+<div class="progress-bar" id="progress"></div>
+
+<nav class="top-nav">
+    <a href="index.html" class="nav-brand">TheProXau</a>
+    <a href="index.html" class="nav-back">← Retour au site</a>
+</nav>
+
+<div class="hero">
+    <div class="hero-inner">
+        <div class="hero-eyebrow">Légal & Confidentialité</div>
+        <h1 class="hero-title">Politique de<br><em>confidentialité</em></h1>
+        <div class="hero-meta">
+            <span><span class="dot"></span> TheProXau</span>
+            <span><span class="dot"></span> Mise à jour : Mars 2026</span>
+            <span><span class="dot"></span> thegolddesk.online</span>
+        </div>
+    </div>
+</div>
+
+<div class="layout">
+
+    <!-- TABLE OF CONTENTS -->
+    <aside class="toc">
+        <div class="toc-label">Sommaire</div>
+        <a class="toc-item" data-target="s1">01 · Qui sommes-nous</a>
+        <a class="toc-item" data-target="s2">02 · Données collectées</a>
+        <a class="toc-item" data-target="s3">03 · Utilisation</a>
+        <a class="toc-item" data-target="s4">04 · Prestataires</a>
+        <a class="toc-item" data-target="s5">05 · Conservation</a>
+        <a class="toc-item" data-target="s6">06 · Tes droits</a>
+        <a class="toc-item" data-target="s7">07 · Sécurité</a>
+        <a class="toc-item" data-target="s8">08 · Modifications</a>
+        <a class="toc-item" data-target="s9">09 · Contact</a>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="content">
+
+        <!-- 01 -->
+        <div class="section" id="s1">
+            <div class="section-num">01 · Introduction</div>
+            <div class="section-title">Qui sommes-nous ?</div>
+            <p class="section-text"><strong style="color:var(--text)">TheProXau</strong> est une newsletter premium d'analyse financière dédiée aux marchés de l'or et des métaux précieux (XAUUSD, XAGUSD). Notre plateforme est accessible à l'adresse <strong style="color:var(--gold)">https://www.thegolddesk.online</strong>.</p>
+            <p class="section-text">Tout le contenu fourni est strictement éducatif et informatif. Il ne constitue en aucun cas un conseil en investissement ou une recommandation financière.</p>
+        </div>
+
+        <!-- 02 -->
+        <div class="section" id="s2">
+            <div class="section-num">02 · Collecte</div>
+            <div class="section-title">Données collectées</div>
+            <p class="section-text">Nous collectons uniquement les données strictement nécessaires au fonctionnement du service :</p>
+            <ul class="privacy-list">
+                <li><strong>Adresse email</strong> — création de compte et gestion de l'abonnement</li>
+                <li><strong>Prénom et nom</strong> — optionnel, pour personnaliser ton espace membre</li>
+                <li><strong>Pays</strong> — optionnel, pour personnaliser ton espace membre</li>
+                <li><strong>Données de paiement</strong> — traitées exclusivement par Stripe, nous n'avons jamais accès à tes informations bancaires</li>
+                <li><strong>Historique de paiements</strong> — montant, date, statut</li>
+                <li><strong>Statut d'abonnement</strong> — actif, inactif ou résilié</li>
+            </ul>
+            <div class="cards-row">
+                <div class="info-card">
+                    <div class="info-card-icon">🚫</div>
+                    <div class="info-card-title">Aucun tracking</div>
+                    <div class="info-card-text">Pas de cookies publicitaires, pas de pixel de suivi, pas d'analytics tiers.</div>
+                </div>
+                <div class="info-card">
+                    <div class="info-card-icon">💳</div>
+                    <div class="info-card-title">Zéro donnée bancaire</div>
+                    <div class="info-card-text">Numéros de carte jamais stockés. Tout passe par Stripe (PCI-DSS).</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 03 -->
+        <div class="section" id="s3">
+            <div class="section-num">03 · Utilisation</div>
+            <div class="section-title">Comment nous utilisons tes données</div>
+            <p class="section-text">Tes données sont utilisées <strong style="color:var(--text)">exclusivement</strong> pour :</p>
+            <ul class="privacy-list">
+                <li>Créer et gérer ton compte membre</li>
+                <li>Vérifier ton statut d'abonnement et t'accorder l'accès aux éditions premium</li>
+                <li>Traiter et suivre tes paiements mensuels</li>
+                <li>T'envoyer des notifications liées à ton abonnement</li>
+            </ul>
+            <p class="section-text">Nous ne vendons, ne louons et ne partageons <strong style="color:var(--text)">jamais</strong> tes données personnelles avec des tiers à des fins commerciales ou publicitaires.</p>
+        </div>
+
+        <!-- 04 -->
+        <div class="section" id="s4">
+            <div class="section-num">04 · Prestataires</div>
+            <div class="section-title">Nos prestataires techniques</div>
+            <p class="section-text">Pour faire fonctionner TheProXau, nous utilisons les prestataires suivants. Chacun est soumis à sa propre politique de confidentialité :</p>
+
+            <div class="provider">
+                <div class="provider-logo">Supabase</div>
+                <div class="provider-info">
+                    Base de données et authentification. Stocke ton email, profil et statut d'abonnement. Hébergé sur AWS (US-East).<br>
+                    <a href="https://supabase.com/privacy" target="_blank">→ supabase.com/privacy</a>
+                </div>
+            </div>
+
+            <div class="provider">
+                <div class="provider-logo">Stripe</div>
+                <div class="provider-info">
+                    Traitement des paiements. Certifié PCI-DSS niveau 1. Nous ne recevons que la confirmation du paiement et l'email associé — jamais les données de carte.<br>
+                    <a href="https://stripe.com/privacy" target="_blank">→ stripe.com/privacy</a>
+                </div>
+            </div>
+
+            <div class="provider">
+                <div class="provider-logo">Vercel</div>
+                <div class="provider-info">
+                    Hébergement du site web. Peut collecter des logs d'accès basiques (adresse IP, navigateur) à des fins de sécurité.<br>
+                    <a href="https://vercel.com/legal/privacy-policy" target="_blank">→ vercel.com/legal/privacy-policy</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 05 -->
+        <div class="section" id="s5">
+            <div class="section-num">05 · Conservation</div>
+            <div class="section-title">Conservation des données</div>
+            <p class="section-text">Tes données sont conservées tant que ton compte est actif. Si tu demandes la suppression de ton compte, toutes tes données personnelles sont effacées dans un délai de <strong style="color:var(--text)">30 jours</strong>.</p>
+            <p class="section-text">Les données de paiement (historique des transactions) peuvent être conservées jusqu'à 7 ans pour des raisons légales et comptables, conformément à la législation canadienne.</p>
+        </div>
+
+        <!-- 06 -->
+        <div class="section" id="s6">
+            <div class="section-num">06 · Droits</div>
+            <div class="section-title">Tes droits</div>
+            <p class="section-text">Conformément aux lois applicables sur la protection des données, tu disposes des droits suivants :</p>
+            <div class="rights-grid">
+                <div class="right-item">
+                    <div class="right-item-title">Accès</div>
+                    <div class="right-item-text">Consulter toutes tes données personnelles que nous détenons.</div>
+                </div>
+                <div class="right-item">
+                    <div class="right-item-title">Correction</div>
+                    <div class="right-item-text">Modifier tes informations depuis ton espace membre.</div>
+                </div>
+                <div class="right-item">
+                    <div class="right-item-title">Suppression</div>
+                    <div class="right-item-text">Supprimer ton compte et toutes tes données définitivement.</div>
+                </div>
+                <div class="right-item">
+                    <div class="right-item-title">Portabilité</div>
+                    <div class="right-item-text">Recevoir tes données dans un format exportable sur demande.</div>
+                </div>
+                <div class="right-item">
+                    <div class="right-item-title">Résiliation</div>
+                    <div class="right-item-text">Annuler ton abonnement à tout moment depuis ton dashboard.</div>
+                </div>
+                <div class="right-item">
+                    <div class="right-item-title">Opposition</div>
+                    <div class="right-item-text">T'opposer à tout traitement de tes données non essentiel.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 07 -->
+        <div class="section" id="s7">
+            <div class="section-num">07 · Sécurité</div>
+            <div class="section-title">Sécurité</div>
+            <p class="section-text">Nous appliquons les mesures de sécurité suivantes pour protéger tes données :</p>
+            <ul class="privacy-list">
+                <li>Connexion HTTPS chiffrée sur l'ensemble du site</li>
+                <li>Authentification sécurisée via Supabase Auth (JWT)</li>
+                <li>Aucune donnée bancaire stockée de notre côté</li>
+                <li>Accès aux données restreint par rôle (Row Level Security)</li>
+                <li>Secrets et clés API stockés dans des variables d'environnement sécurisées</li>
+            </ul>
+        </div>
+
+        <!-- 08 -->
+        <div class="section" id="s8">
+            <div class="section-num">08 · Modifications</div>
+            <div class="section-title">Modifications de cette politique</div>
+            <p class="section-text">Nous pouvons mettre à jour cette politique de confidentialité à tout moment. En cas de modification importante, nous t'en informerons par email. La date de dernière mise à jour est toujours indiquée en haut de cette page.</p>
+            <p class="section-text">La poursuite de l'utilisation de TheProXau après notification vaut acceptation des modifications.</p>
+        </div>
+
+        <!-- 09 -->
+        <div class="section" id="s9">
+            <div class="section-num">09 · Contact</div>
+            <div class="section-title">Nous contacter</div>
+            <p class="section-text">Pour toute question relative à ta vie privée, pour exercer tes droits ou demander la suppression de ton compte :</p>
+            <div class="contact-box">
+                <div class="contact-box-label">Support TheProXau</div>
+                <a href="mailto:support@thegolddesk.online" class="contact-email">support@thegolddesk.online</a>
+                <div class="contact-sub">Réponse sous 48h ouvrables</div>
+            </div>
+        </div>
+
+    </main>
+</div>
+
+<footer>
+    <div class="footer-logo">THE <span>PRO</span> XAU</div>
+    <div class="footer-links">
+        <a href="index.html" class="footer-link">Accueil</a>
+        <a href="dashboard.html" class="footer-link">Mon compte</a>
+        <a href="privacy.html" class="footer-link">Confidentialité</a>
+    </div>
+    <div class="footer-copy">© 2026 THEPROXAU · TOUS DROITS RÉSERVÉS · CONTENU ÉDUCATIF UNIQUEMENT</div>
+</footer>
+
+<script>
+    // Scroll progress bar
+    window.addEventListener('scroll', () => {
+        const scrolled = window.scrollY
+        const max = document.body.scrollHeight - window.innerHeight
+        document.getElementById('progress').style.width = (scrolled / max * 100) + '%'
+    })
+
+    // Intersection Observer — animate sections in
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible')
+                // Update TOC active state
+                const id = entry.target.id
+                document.querySelectorAll('.toc-item').forEach(item => {
+                    item.classList.toggle('active', item.dataset.target === id)
+                })
+            }
+        })
+    }, { threshold: 0.1 })
+
+    document.querySelectorAll('.section').forEach(s => observer.observe(s))
+
+    // TOC smooth scroll
+    document.querySelectorAll('.toc-item').forEach(item => {
+        item.addEventListener('click', () => {
+            const target = document.getElementById(item.dataset.target)
+            if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        })
+    })
+</script>
+
+</body>
+</html>
