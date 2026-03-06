@@ -148,8 +148,8 @@
         const SYMBOLS = [
             { symbol: 'XAU/USD', label: 'XAUUSD', decimals: 2, prefix: '$' },
             { symbol: 'XAG/USD', label: 'XAGUSD', decimals: 2, prefix: '$' },
-            { symbol: 'EUR/USD', label: 'EURUSD', decimals: 4, prefix: '' },
             { symbol: 'DXY',     label: 'DXY',    decimals: 2, prefix: '' },
+            { symbol: 'US10Y',   label: 'US10Y',  decimals: 2, prefix: '', suffix: '%' },
         ]
 
         function buildTicker(items) {
@@ -160,7 +160,7 @@
                 const price = (item.prefix || '') + item.price.toLocaleString('en-US', {
                     minimumFractionDigits: item.decimals,
                     maximumFractionDigits: item.decimals
-                })
+                }) + (item.suffix || '')
                 block += `<span class="ticker-item">
                     <span class="sym">${item.label}</span>
                     <span class="${cls}">${price}</span>
