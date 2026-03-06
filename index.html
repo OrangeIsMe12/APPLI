@@ -90,11 +90,6 @@
         .top-nav { display: flex; justify-content: space-between; align-items: center; padding: 14px 32px; border-bottom: 1px solid var(--border); background: var(--bg); position: sticky; top: 0; z-index: 100; }
         .nav-brand { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--gold); text-decoration: none; }
         .nav-right { display: flex; align-items: center; gap: 16px; }
-        .nav-link { font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--text-dim); text-decoration: none; transition: color 0.2s; }
-        .nav-link:hover { color: var(--gold); }
-        .nav-btn { font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #080804; background: var(--gold); padding: 9px 18px; text-decoration: none; transition: background 0.2s; }
-        .nav-btn:hover { filter: brightness(1.1); }
-        /* Hamburger */
         .hamburger { background: none; border: 1px solid var(--border); padding: 8px 12px; cursor: pointer; display: flex; flex-direction: column; gap: 5px; transition: border-color 0.2s; }
         .hamburger:hover { border-color: var(--gold); }
         .hamburger span { display: block; width: 20px; height: 1px; background: var(--text-dim); transition: all 0.3s; }
@@ -113,37 +108,35 @@
         .nav-menu a:last-child { border-bottom: none; }
         .nav-menu-cta { margin-top: auto; background: var(--gold); color: #080804 !important; font-weight: 700; padding: 14px 24px !important; text-align: center; justify-content: center !important; border: none !important; }
         .nav-menu-cta:hover { filter: brightness(1.1); }
-        @media(max-width:640px) { .cards-grid,.about-grid{grid-template-columns:1fr;} .card-featured{padding:28px 24px;} .card-tags{display:none;} .section-header{flex-direction:column;align-items:flex-start;gap:6px;} }
+        .service-card-inline { background: #090908; padding: 32px 28px; text-decoration: none; display: flex; flex-direction: column; transition: background 0.25s; }
+        .service-card-inline:hover { background: #0d0b05; }
+        @media(max-width:640px) { .cards-grid,.about-grid,.services-inline-grid{grid-template-columns:1fr;} .card-featured{padding:28px 24px;} .card-tags{display:none;} .section-header{flex-direction:column;align-items:flex-start;gap:6px;} }
     </style>
 </head>
 
 <body>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    <!-- NAV OVERLAY -->
     <div class="nav-menu-overlay" id="navOverlay"></div>
 
-    <!-- MENU LATÉRAL -->
     <div class="nav-menu" id="navMenu">
         <button class="nav-menu-close" id="navClose">✕</button>
         <div class="nav-menu-label">Navigation</div>
         <a href="index.html">Accueil <span>→</span></a>
         <a href="about.html">À propos <span>→</span></a>
+        <a href="services.html">Services <span>→</span></a>
+        <a href="partenaires.html">Partenaires <span>→</span></a>
         <a href="faq.html">FAQ <span>→</span></a>
         <a href="privacy.html">Confidentialité <span>→</span></a>
         <a href="terms.html">Conditions <span>→</span></a>
-        <a href="services.html">Services <span>→</span></a>
         <a href="dashboard.html">Mon compte <span>→</span></a>
         <a href="register.html" class="nav-menu-cta" id="nav-subscribe-link">S'abonner maintenant →</a>
     </div>
 
-    <!-- NAV -->
     <nav class="top-nav">
         <a href="index.html" class="nav-brand">The Pro Xau</a>
         <button class="hamburger" id="hamburger">
-            <span></span>
-            <span></span>
-            <span></span>
+            <span></span><span></span><span></span>
         </button>
     </nav>
 
@@ -156,13 +149,8 @@
             <span class="xau">Xau</span>
         </h1>
         <p class="hero-sub">Analyse · Macro · Technique · Setups</p>
-        <a href="#editions" class="hero-cta">
-            Voir toutes les éditions <span class="arrow">→</span>
-        </a>
-        <div class="hero-scroll">
-            <div class="scroll-line"></div>
-            Défiler
-        </div>
+        <a href="#editions" class="hero-cta">Voir toutes les éditions <span class="arrow">→</span></a>
+        <div class="hero-scroll"><div class="scroll-line"></div>Défiler</div>
     </section>
 
     <!-- EDITIONS -->
@@ -193,7 +181,6 @@
                     <div class="card-arrow">→</div>
                 </div>
             </a>
-
             <div id="card-edition-2" class="card-small locked">
                 <div class="card-top">
                     <div class="card-edition-num">ÉDITION #002</div>
@@ -208,7 +195,6 @@
                     <a href="register.html" class="lock-btn">S'abonner →</a>
                 </div>
             </div>
-
             <div id="card-edition-3" class="card-small locked">
                 <div class="card-top">
                     <div class="card-edition-num">ÉDITION #003</div>
@@ -264,6 +250,39 @@
         <p style="text-align:center; font-family:'DM Mono',monospace; font-size:10px; letter-spacing:2px; color:var(--text-muted); text-transform:uppercase; margin-top:24px;">Accès gratuit → Dernière édition uniquement</p>
     </section>
 
+    <div class="gold-divider"></div>
+
+    <!-- SERVICES -->
+    <section style="max-width:860px; margin:0 auto; padding:80px 24px;">
+        <div style="margin-bottom:40px;">
+            <div style="font-family:'DM Mono',monospace; font-size:9px; letter-spacing:5px; color:var(--gold); text-transform:uppercase; opacity:0.7; margin-bottom:12px;">▸ Communauté</div>
+            <div style="font-family:'Playfair Display',serif; font-size:32px; color:var(--text); font-weight:700;">Rejoins la communauté</div>
+        </div>
+        <div class="services-inline-grid" style="display:grid; grid-template-columns:repeat(3,1fr); gap:2px; background:var(--border); border:1px solid var(--border); border-radius:4px; overflow:hidden;">
+            <a href="services.html" class="service-card-inline">
+                <div style="font-size:22px; margin-bottom:16px;">🔵</div>
+                <div style="font-family:'DM Mono',monospace; font-size:8px; letter-spacing:3px; color:var(--gold); text-transform:uppercase; opacity:0.55; margin-bottom:8px;">Membres · Privé</div>
+                <div style="font-family:'Playfair Display',serif; font-size:18px; color:var(--text); margin-bottom:8px; font-weight:700;">Discord Privé</div>
+                <p style="font-size:12px; color:var(--text-muted); line-height:1.65; flex:1; margin-bottom:20px;">Serveur privé du coach — analyses exclusives et communauté réservée aux abonnés.</p>
+                <div style="font-family:'DM Mono',monospace; font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(--text-muted);">En savoir plus →</div>
+            </a>
+            <a href="services.html" class="service-card-inline">
+                <div style="font-size:22px; margin-bottom:16px;">✈️</div>
+                <div style="font-family:'DM Mono',monospace; font-size:8px; letter-spacing:3px; color:var(--gold); text-transform:uppercase; opacity:0.55; margin-bottom:8px;">Gratuit · Ouvert</div>
+                <div style="font-family:'Playfair Display',serif; font-size:18px; color:var(--text); margin-bottom:8px; font-weight:700;">Canal Telegram</div>
+                <p style="font-size:12px; color:var(--text-muted); line-height:1.65; flex:1; margin-bottom:20px;">Suis les défis et challenges du coach en temps réel, directement sur ton téléphone.</p>
+                <div style="font-family:'DM Mono',monospace; font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(--text-muted);">En savoir plus →</div>
+            </a>
+            <a href="services.html" class="service-card-inline">
+                <div style="font-size:22px; margin-bottom:16px;">📸</div>
+                <div style="font-family:'DM Mono',monospace; font-size:8px; letter-spacing:3px; color:var(--gold); text-transform:uppercase; opacity:0.55; margin-bottom:8px;">Page officielle</div>
+                <div style="font-family:'Playfair Display',serif; font-size:18px; color:var(--text); margin-bottom:8px; font-weight:700;">Instagram</div>
+                <p style="font-size:12px; color:var(--text-muted); line-height:1.65; flex:1; margin-bottom:20px;">Analyses, publications et toute l'actualité du site sur notre page Instagram officielle.</p>
+                <div style="font-family:'DM Mono',monospace; font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(--text-muted);">En savoir plus →</div>
+            </a>
+        </div>
+    </section>
+
     <!-- ABOUT -->
     <div class="about-section">
         <div class="about-grid">
@@ -293,10 +312,11 @@
         <div class="footer-logo">THE <span>PRO</span> XAU</div>
         <div style="display:flex; justify-content:center; gap:24px; margin-bottom:12px; flex-wrap:wrap;">
             <a href="about.html" style="font-family:'DM Mono',monospace; font-size:9px; color:#4a4038; letter-spacing:2px; text-decoration:none; text-transform:uppercase;">À propos</a>
+            <a href="services.html" style="font-family:'DM Mono',monospace; font-size:9px; color:#4a4038; letter-spacing:2px; text-decoration:none; text-transform:uppercase;">Services</a>
+            <a href="partenaires.html" style="font-family:'DM Mono',monospace; font-size:9px; color:#4a4038; letter-spacing:2px; text-decoration:none; text-transform:uppercase;">Partenaires</a>
             <a href="faq.html" style="font-family:'DM Mono',monospace; font-size:9px; color:#4a4038; letter-spacing:2px; text-decoration:none; text-transform:uppercase;">FAQ</a>
             <a href="privacy.html" style="font-family:'DM Mono',monospace; font-size:9px; color:#4a4038; letter-spacing:2px; text-decoration:none; text-transform:uppercase;">Confidentialité</a>
             <a href="terms.html" style="font-family:'DM Mono',monospace; font-size:9px; color:#4a4038; letter-spacing:2px; text-decoration:none; text-transform:uppercase;">Conditions</a>
-            <a href="services.html" style="font-family:'DM Mono',monospace; font-size:9px; color:#4a4038; letter-spacing:2px; text-decoration:none; text-transform:uppercase;">Services</a>
         </div>
         <div class="footer-copy">© 2026 THE PRO XAU · TOUS DROITS RÉSERVÉS · CONTENU ÉDUCATIF UNIQUEMENT</div>
     </footer>
@@ -345,13 +365,12 @@
 
         checkSubscription()
 
-        // Hamburger menu
-        const hamburger = document.getElementById('hamburger')
-        const navMenu   = document.getElementById('navMenu')
+        const hamburger  = document.getElementById('hamburger')
+        const navMenu    = document.getElementById('navMenu')
         const navOverlay = document.getElementById('navOverlay')
-        const navClose  = document.getElementById('navClose')
+        const navClose   = document.getElementById('navClose')
 
-        function openMenu() { hamburger.classList.add('open'); navMenu.classList.add('open'); navOverlay.classList.add('open'); document.body.style.overflow = 'hidden' }
+        function openMenu()  { hamburger.classList.add('open'); navMenu.classList.add('open'); navOverlay.classList.add('open'); document.body.style.overflow = 'hidden' }
         function closeMenu() { hamburger.classList.remove('open'); navMenu.classList.remove('open'); navOverlay.classList.remove('open'); document.body.style.overflow = '' }
 
         hamburger.addEventListener('click', openMenu)
