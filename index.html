@@ -139,62 +139,82 @@
 
     <!-- TICKER LIVE -->
     <div class="ticker-strip">
-        <div class="ticker-inner" id="tickerInner">
-            <span class="ticker-item"><span class="sym">Chargement des prix...</span></span>
+        <div style="overflow:hidden; white-space:nowrap;">
+            <div id="tickerInner" style="display:inline-block; animation: ticker 30s linear infinite;">
+                <span class="ticker-item"><span class="sym">Chargement...</span></span>
+            </div>
         </div>
     </div>
+    <style>
+        @keyframes ticker {
+            0%   { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+    </style>
     <script>
         const TD_KEY = '3e1a2a7a51f14dea87ed12138d0d6de9'
+
+        // Twelve Data utilise des endpoints différents selon le type d'instrument
         const SYMBOLS = [
-            { symbol: 'XAU/USD', label: 'XAUUSD', decimals: 2, prefix: '$' },
-            { symbol: 'XAG/USD', label: 'XAGUSD', decimals: 2, prefix: '$' },
-            { symbol: 'DXY',     label: 'DXY',    decimals: 2, prefix: '' },
-            { symbol: 'US10Y',   label: 'US10Y',  decimals: 2, prefix: '', suffix: '%' },
+            { symbol: 'XAU/USD', label: 'XAUUSD', decimals: 2, prefix: '$',  suffix: '' },
+            { symbol: 'XAG/USD', label: 'XAGUSD', decimals: 2, prefix: '$',  suffix: '' },
         ]
 
-        function buildTicker(items) {
+        function buildTickerHTML(items) {
             let block = ''
             items.forEach(item => {
                 const cls  = item.change >= 0 ? 'up' : 'down'
                 const sign = item.change >= 0 ? '+' : ''
-                const price = (item.prefix || '') + item.price.toLocaleString('en-US', {
-                    minimumFractionDigits: item.decimals,
-                    maximumFractionDigits: item.decimals
-                }) + (item.suffix || '')
+                const priceStr = (item.prefix || '')
+                    + item.price.toLocaleString('en-US', {
+                        minimumFractionDigits: item.decimals,
+                        maximumFractionDigits: item.decimals
+                    })
+                    + (item.suffix || '')
                 block += `<span class="ticker-item">
                     <span class="sym">${item.label}</span>
-                    <span class="${cls}">${price}</span>
+                    <span class="${cls}">${priceStr}</span>
                     <span class="${cls}">${sign}${item.change.toFixed(2)}%</span>
                 </span><span class="ticker-dot">◆</span>`
             })
-            // Répète 4x pour boucle continue
-            return block + block + block + block
+            // ✅ Répète 6x pour garantir le défilement infini sans saut
+            return block.repeat(10)
         }
 
         async function fetchTicker() {
             try {
-                const symbolList = SYMBOLS.map(s => s.symbol).join(',')
-                const url = `https://api.twelvedata.com/quote?symbol=${encodeURIComponent(symbolList)}&apikey=${TD_KEY}`
+                const symbolList = SYMBOLS.map(s => encodeURIComponent(s.symbol)).join('%2C')
+                const url = `https://api.twelvedata.com/quote?symbol=${symbolList}&apikey=${TD_KEY}`
                 const res  = await fetch(url)
                 const json = await res.json()
 
-                const items = SYMBOLS.map(s => {
-                    const data = json[s.symbol] || {}
-                    const price  = parseFloat(data.close || data.price || 0)
-                    const open   = parseFloat(data.open || price)
-                    const change = open > 0 ? ((price - open) / open) * 100 : 0
-                    return { ...s, price, change }
-                }).filter(i => i.price > 0)
+                const items = []
+                for (const s of SYMBOLS) {
+                    // Twelve Data retourne soit json[symbol] soit directement json si 1 seul symbole
+                    const data = json[s.symbol] || json
+                    if (!data || data.status === 'error') continue
+
+                    const close  = parseFloat(data.close)
+                    const open   = parseFloat(data.open)
+                    if (isNaN(close) || close === 0) continue
+
+                    const change = (open && open > 0) ? ((close - open) / open) * 100 : 0
+                    items.push({ ...s, price: close, change })
+                }
 
                 if (items.length > 0) {
-                    document.getElementById('tickerInner').innerHTML = buildTicker(items)
+                    const el = document.getElementById('tickerInner')
+                    el.innerHTML = buildTickerHTML(items)
+                    // ✅ Remet l'animation pour forcer le recalcul de la largeur
+                    el.style.animation = 'none'
+                    el.offsetHeight // reflow
+                    el.style.animation = 'ticker 30s linear infinite'
                 }
             } catch (err) {
                 console.warn('Ticker fetch error:', err)
             }
         }
 
-        // Charge immédiatement puis toutes les 60 secondes
         fetchTicker()
         setInterval(fetchTicker, 60000)
     </script>
@@ -328,6 +348,7 @@
     <!-- FOOTER -->
     <footer class="footer">
         <div class="footer-logo">THE <span>PRO</span> XAU</div>
+        <a href="privacy.html" style="display:block; margin-bottom:10px; font-family:'DM Mono',monospace; font-size:9px; color:#4a4038; letter-spacing:2px; text-decoration:none; text-transform:uppercase;">Politique de confidentialité</a>
         <div class="footer-copy">© 2026 THE PRO XAU · TOUS DROITS RÉSERVÉS · CONTENU ÉDUCATIF UNIQUEMENT</div>
     </footer>
 
