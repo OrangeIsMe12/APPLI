@@ -486,8 +486,12 @@
         }
 
         async function loadDashboard() {
-            const { data: { session } } = await sb.auth.getSession()
-            if (!session) { window.location.href = 'login.html'; return }
+            const { data: { session }, error: sessionError } = await sb.auth.getSession()
+if (!session || sessionError) {
+    await sb.auth.signOut()
+    window.location.href = 'login.html'
+    return
+}
 
             const email   = session.user.email
             const meta    = session.user.user_metadata || {}
