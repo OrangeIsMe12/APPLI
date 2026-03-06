@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paiement confirmé — The Pro Xau</title>
+    <link rel="icon" type="image/png" href="/icon.jpg">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #c9a84c; --gold-light: #e8c97a; --gold-dim: rgba(201,168,76,0.1);
+            --bg: #080808; --border: #1e1a10;
+            --text: #e8e0d0; --text-dim: #9a9080; --text-muted: #4a4038;
+            --green: #4caf7d; --green-dim: rgba(76,175,125,0.08);
+        }
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; -webkit-font-smoothing: antialiased; }
+
+        .top-nav { display: flex; justify-content: space-between; align-items: center; padding: 14px 32px; border-bottom: 1px solid var(--border); background: var(--bg); }
+        .nav-brand { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--gold); text-decoration: none; }
+
+        .page { min-height: calc(100vh - 57px); display: flex; align-items: center; justify-content: center; padding: 60px 24px; position: relative; overflow: hidden; }
+        .page::before { content: '✓'; position: absolute; font-family: 'Playfair Display', serif; font-size: clamp(180px, 35vw, 380px); font-weight: 900; color: var(--green); opacity: 0.02; pointer-events: none; user-select: none; }
+
+        .content { text-align: center; position: relative; z-index: 1; max-width: 520px; animation: fadeUp 0.5s ease both; }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+
+        .check-icon { width: 64px; height: 64px; border-radius: 50%; background: var(--green-dim); border: 1px solid rgba(76,175,125,0.3); display: flex; align-items: center; justify-content: center; margin: 0 auto 28px; font-size: 26px; }
+        .eyebrow { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 5px; text-transform: uppercase; color: var(--green); opacity: 0.8; margin-bottom: 16px; }
+        .title { font-family: 'Playfair Display', serif; font-size: clamp(32px, 5vw, 52px); font-weight: 900; line-height: 1.05; letter-spacing: -1px; margin-bottom: 16px; }
+        .title em { color: var(--gold-light); font-style: italic; }
+        .sub { font-size: 14px; color: var(--text-dim); line-height: 1.8; margin-bottom: 44px; }
+
+        .actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+        .btn-gold { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; background: var(--gold); color: #080804; padding: 14px 28px; text-decoration: none; font-weight: 700; transition: background 0.2s; }
+        .btn-gold:hover { background: var(--gold-light); }
+        .btn-outline { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; background: transparent; color: var(--text-muted); padding: 14px 28px; text-decoration: none; border: 1px solid var(--border); transition: all 0.2s; }
+        .btn-outline:hover { border-color: var(--gold); color: var(--gold); background: var(--gold-dim); }
+
+        .countdown { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-top: 20px; }
+        .countdown span { color: var(--gold); }
+    </style>
+</head>
+<body>
+
+    <nav class="top-nav">
+        <a href="index.html" class="nav-brand">The Pro Xau</a>
+    </nav>
+
+    <div class="page">
+        <div class="content">
+            <div class="check-icon">✓</div>
+            <div class="eyebrow">Paiement confirmé</div>
+            <h1 class="title">Bienvenue dans<br><em>The Pro Xau</em></h1>
+            <p class="sub">Ton abonnement est actif. Tu as maintenant accès à toutes les éditions et aux services inclus. Redirige-toi vers ton tableau de bord pour commencer.</p>
+            <div class="actions">
+                <a href="dashboard.html" class="btn-gold">Accéder à mon compte →</a>
+                <a href="index.html" class="btn-outline">Voir les éditions</a>
+            </div>
+            <div class="countdown">Redirection dans <span id="timer">5</span>s…</div>
+        </div>
+    </div>
+
+    <script>
+        // Auto redirect after 5s
+        let t = 5
+        const el = document.getElementById('timer')
+        const iv = setInterval(() => {
+            t--
+            el.textContent = t
+            if (t <= 0) { clearInterval(iv); window.location.href = 'dashboard.html' }
+        }, 1000)
+    </script>
+</body>
+</html>
