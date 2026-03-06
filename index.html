@@ -31,13 +31,6 @@
         .hero-scroll { position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%); font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 3px; color: var(--text-muted); text-transform: uppercase; display: flex; flex-direction: column; align-items: center; gap: 8px; animation: bob 2.5s ease-in-out infinite; }
         @keyframes bob { 0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(8px)} }
         .scroll-line { width: 1px; height: 36px; background: linear-gradient(to bottom, var(--gold-dim), transparent); }
-        .ticker-strip { background: #060604; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 10px 0; overflow: hidden; }
-        .ticker-inner { display: flex; gap: 40px; animation: ticker 22s linear infinite; white-space: nowrap; }
-        @keyframes ticker { 0%{transform:translateX(0)}100%{transform:translateX(-50%)} }
-        .ticker-item { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; color: var(--text-muted); display: flex; align-items: center; gap: 10px; }
-        .ticker-item .sym { color: var(--gold); opacity: 0.55; }
-        .up { color: var(--green); } .down { color: var(--red); }
-        .ticker-dot { color: var(--gold-dim); opacity: 0.25; }
         .editions-section { max-width: 860px; margin: 0 auto; padding: 80px 24px; }
         .section-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 40px; }
         .section-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 4px; color: var(--gold); text-transform: uppercase; opacity: 0.7; margin-bottom: 10px; }
@@ -101,22 +94,56 @@
         .nav-link:hover { color: var(--gold); }
         .nav-btn { font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #080804; background: var(--gold); padding: 9px 18px; text-decoration: none; transition: background 0.2s; }
         .nav-btn:hover { filter: brightness(1.1); }
-        @media(max-width:640px) { .nav-link{display:none;} .cards-grid,.about-grid{grid-template-columns:1fr;} .card-featured{padding:28px 24px;} .card-tags{display:none;} .section-header{flex-direction:column;align-items:flex-start;gap:6px;} }
+        /* Hamburger */
+        .hamburger { background: none; border: 1px solid var(--border); padding: 8px 12px; cursor: pointer; display: flex; flex-direction: column; gap: 5px; transition: border-color 0.2s; }
+        .hamburger:hover { border-color: var(--gold); }
+        .hamburger span { display: block; width: 20px; height: 1px; background: var(--text-dim); transition: all 0.3s; }
+        .hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+        .hamburger.open span:nth-child(2) { opacity: 0; }
+        .hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+        .nav-menu { position: fixed; top: 0; right: -100%; width: 280px; height: 100vh; background: #060604; border-left: 1px solid var(--border); z-index: 200; transition: right 0.35s ease; display: flex; flex-direction: column; padding: 80px 40px 40px; gap: 4px; }
+        .nav-menu.open { right: 0; }
+        .nav-menu-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 199; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+        .nav-menu-overlay.open { opacity: 1; pointer-events: all; }
+        .nav-menu-close { position: absolute; top: 20px; right: 24px; background: none; border: none; color: var(--text-muted); font-size: 20px; cursor: pointer; font-family: 'DM Mono', monospace; transition: color 0.2s; }
+        .nav-menu-close:hover { color: var(--gold); }
+        .nav-menu-label { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 4px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 16px; opacity: 0.5; }
+        .nav-menu a { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--text-dim); text-decoration: none; padding: 14px 0; border-bottom: 1px solid var(--border); transition: color 0.2s; display: flex; justify-content: space-between; align-items: center; }
+        .nav-menu a:hover { color: var(--gold); }
+        .nav-menu a:last-child { border-bottom: none; }
+        .nav-menu-cta { margin-top: auto; background: var(--gold); color: #080804 !important; font-weight: 700; padding: 14px 24px !important; text-align: center; justify-content: center !important; border: none !important; }
+        .nav-menu-cta:hover { filter: brightness(1.1); }
+        @media(max-width:640px) { .cards-grid,.about-grid{grid-template-columns:1fr;} .card-featured{padding:28px 24px;} .card-tags{display:none;} .section-header{flex-direction:column;align-items:flex-start;gap:6px;} }
     </style>
 </head>
 
 <body>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+    <!-- NAV OVERLAY -->
+    <div class="nav-menu-overlay" id="navOverlay"></div>
+
+    <!-- MENU LATÉRAL -->
+    <div class="nav-menu" id="navMenu">
+        <button class="nav-menu-close" id="navClose">✕</button>
+        <div class="nav-menu-label">Navigation</div>
+        <a href="index.html">Accueil <span>→</span></a>
+        <a href="about.html">À propos <span>→</span></a>
+        <a href="faq.html">FAQ <span>→</span></a>
+        <a href="privacy.html">Confidentialité <span>→</span></a>
+        <a href="terms.html">Conditions <span>→</span></a>
+        <a href="dashboard.html">Mon compte <span>→</span></a>
+        <a href="register.html" class="nav-menu-cta" id="nav-subscribe-link">S'abonner maintenant →</a>
+    </div>
+
     <!-- NAV -->
     <nav class="top-nav">
         <a href="index.html" class="nav-brand">The Pro Xau</a>
-        <div class="nav-right">
-            <a href="privacy.html" class="nav-link" style="font-size:9px; opacity:0.4;">Confidentialité</a>
-            <a href="terms.html" class="nav-link" style="font-size:9px; opacity:0.4;">Conditions</a>
-            <a href="register.html" class="nav-link" id="nav-subscribe-link">S'abonner</a>
-            <a href="dashboard.html" class="nav-btn">Mon compte →</a>
-        </div>
+        <button class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
     </nav>
 
     <!-- HERO -->
@@ -137,9 +164,6 @@
         </div>
     </section>
 
-
-
-
     <!-- EDITIONS -->
     <section class="editions-section" id="editions">
         <div class="section-header">
@@ -150,7 +174,6 @@
             <div class="edition-count">1 édition publiée</div>
         </div>
         <div class="cards-grid">
-            <!-- ÉDITION 1 — LIBRE -->
             <a class="card-featured" href="edition01/edition-01.html">
                 <div class="card-top">
                     <div class="card-edition-num">ÉDITION #001</div>
@@ -170,7 +193,6 @@
                 </div>
             </a>
 
-            <!-- ÉDITION 2 — VERROUILLÉE par défaut -->
             <div id="card-edition-2" class="card-small locked">
                 <div class="card-top">
                     <div class="card-edition-num">ÉDITION #002</div>
@@ -186,7 +208,6 @@
                 </div>
             </div>
 
-            <!-- ÉDITION 3 — VERROUILLÉE par défaut -->
             <div id="card-edition-3" class="card-small locked">
                 <div class="card-top">
                     <div class="card-edition-num">ÉDITION #003</div>
@@ -206,7 +227,7 @@
 
     <div class="gold-divider"></div>
 
-    <!-- SECTION PRIX — cachée si abonné -->
+    <!-- SECTION PRIX -->
     <section id="pricing-section" style="max-width:860px; margin:0 auto; padding:80px 24px;">
         <div style="text-align:center; margin-bottom:56px;">
             <div style="font-family:'DM Mono',monospace; font-size:9px; letter-spacing:5px; color:var(--gold); text-transform:uppercase; opacity:0.7; margin-bottom:16px;">Accès complet</div>
@@ -269,6 +290,12 @@
     <!-- FOOTER -->
     <footer class="footer">
         <div class="footer-logo">THE <span>PRO</span> XAU</div>
+        <div style="display:flex; justify-content:center; gap:24px; margin-bottom:12px; flex-wrap:wrap;">
+            <a href="about.html" style="font-family:'DM Mono',monospace; font-size:9px; color:#4a4038; letter-spacing:2px; text-decoration:none; text-transform:uppercase;">À propos</a>
+            <a href="faq.html" style="font-family:'DM Mono',monospace; font-size:9px; color:#4a4038; letter-spacing:2px; text-decoration:none; text-transform:uppercase;">FAQ</a>
+            <a href="privacy.html" style="font-family:'DM Mono',monospace; font-size:9px; color:#4a4038; letter-spacing:2px; text-decoration:none; text-transform:uppercase;">Confidentialité</a>
+            <a href="terms.html" style="font-family:'DM Mono',monospace; font-size:9px; color:#4a4038; letter-spacing:2px; text-decoration:none; text-transform:uppercase;">Conditions</a>
+        </div>
         <div class="footer-copy">© 2026 THE PRO XAU · TOUS DROITS RÉSERVÉS · CONTENU ÉDUCATIF UNIQUEMENT</div>
     </footer>
 
@@ -293,11 +320,7 @@
         async function checkSubscription() {
             try {
                 const { data: { session } } = await sb2.auth.getSession()
-
-                // ✅ Pas connecté → on ne fait rien, les cadenas restent
                 if (!session) return
-
-                // ✅ Cherche par email OU user_id (couvre les deux cas)
                 const { data: sub } = await sb2
                     .from('subscriptions')
                     .select('status')
@@ -305,29 +328,33 @@
                     .order('created_at', { ascending: false })
                     .limit(1)
                     .single()
-
-                // ✅ Pas d'abonnement ou statut inactif → cadenas restent
                 if (!sub) return
                 if (sub.status !== 'active' && sub.status !== 'trialing') return
-
-                // ✅ Abonné → déverrouille les éditions
                 unlockCard('card-edition-2', 'lock-ed2', 'badge-ed2', 'edition02/edition-02.html')
                 unlockCard('card-edition-3', 'lock-ed3', 'badge-ed3', 'edition03/edition-03.html')
-
-                // ✅ Cache la section prix complète
                 const pricing = document.getElementById('pricing-section')
                 if (pricing) pricing.style.display = 'none'
-
-                // ✅ Cache le lien "S'abonner" dans la nav
                 const navLink = document.getElementById('nav-subscribe-link')
                 if (navLink) navLink.style.display = 'none'
-
             } catch (e) {
                 console.warn('checkSubscription error:', e)
             }
         }
 
         checkSubscription()
+
+        // Hamburger menu
+        const hamburger = document.getElementById('hamburger')
+        const navMenu   = document.getElementById('navMenu')
+        const navOverlay = document.getElementById('navOverlay')
+        const navClose  = document.getElementById('navClose')
+
+        function openMenu() { hamburger.classList.add('open'); navMenu.classList.add('open'); navOverlay.classList.add('open'); document.body.style.overflow = 'hidden' }
+        function closeMenu() { hamburger.classList.remove('open'); navMenu.classList.remove('open'); navOverlay.classList.remove('open'); document.body.style.overflow = '' }
+
+        hamburger.addEventListener('click', openMenu)
+        navClose.addEventListener('click', closeMenu)
+        navOverlay.addEventListener('click', closeMenu)
     </script>
 
 </body>
