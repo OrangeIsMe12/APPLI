@@ -66,16 +66,54 @@
         .footer-copy { font-family: 'DM Mono', monospace; font-size: 9px; color: #181410; letter-spacing: 2px; }
 
         .progress-bar { position: fixed; top: 0; left: 0; height: 2px; background: var(--gold); z-index: 200; transition: width 0.1s; width: 0%; }
+        /* Hamburger */
+        .hamburger { background: none; border: 1px solid var(--border); padding: 8px 12px; cursor: pointer; display: flex; flex-direction: column; gap: 5px; transition: border-color 0.2s; }
+        .hamburger:hover { border-color: var(--gold); }
+        .hamburger span { display: block; width: 20px; height: 1px; background: var(--text-dim); transition: all 0.3s; }
+        .hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+        .hamburger.open span:nth-child(2) { opacity: 0; }
+        .hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+        .nav-menu { position: fixed; top: 0; right: -100%; width: 280px; height: 100vh; background: #060604; border-left: 1px solid var(--border); z-index: 200; transition: right 0.35s ease; display: flex; flex-direction: column; padding: 80px 40px 40px; gap: 4px; }
+        .nav-menu.open { right: 0; }
+        .nav-menu-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 199; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+        .nav-menu-overlay.open { opacity: 1; pointer-events: all; }
+        .nav-menu-close { position: absolute; top: 20px; right: 24px; background: none; border: none; color: var(--text-muted); font-size: 20px; cursor: pointer; font-family: 'DM Mono', monospace; transition: color 0.2s; }
+        .nav-menu-close:hover { color: var(--gold); }
+        .nav-menu-label { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 4px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 16px; opacity: 0.5; }
+        .nav-menu a { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--text-dim); text-decoration: none; padding: 14px 0; border-bottom: 1px solid var(--border); transition: color 0.2s; display: flex; justify-content: space-between; align-items: center; }
+        .nav-menu a:hover { color: var(--gold); }
+        .nav-menu a:last-child { border-bottom: none; }
+        .nav-menu-cta { margin-top: auto; background: var(--gold); color: #080804 !important; font-weight: 700; padding: 14px 24px !important; text-align: center; justify-content: center !important; border: none !important; }
+        .nav-menu-cta:hover { filter: brightness(1.1); }
+
     </style>
 </head>
 <body>
 
 <div class="progress-bar" id="progress"></div>
 
-<nav class="top-nav">
-    <a href="index.html" class="nav-brand">The Pro Xau</a>
-    <a href="index.html" class="nav-back">← Retour au site</a>
-</nav>
+    <!-- NAV OVERLAY -->
+    <div class="nav-menu-overlay" id="navOverlay"></div>
+    <!-- MENU LATÉRAL -->
+    <div class="nav-menu" id="navMenu">
+        <button class="nav-menu-close" id="navClose">✕</button>
+        <div class="nav-menu-label">Navigation</div>
+        <a href="index.html">Accueil <span>→</span></a>
+        <a href="about.html">À propos <span>→</span></a>
+        <a href="faq.html">FAQ <span>→</span></a>
+        <a href="privacy.html">Confidentialité <span>→</span></a>
+        <a href="terms.html">Conditions <span>→</span></a>
+        <a href="dashboard.html">Mon compte <span>→</span></a>
+        <a href="register.html" class="nav-menu-cta">S'abonner maintenant →</a>
+    </div>
+    <!-- NAV -->
+    <nav class="top-nav">
+        <a href="index.html" class="nav-brand">The Pro Xau</a>
+        <button class="hamburger" id="hamburger">
+            <span></span><span></span><span></span>
+        </button>
+    </nav>
+
 
 <div class="hero">
     <div class="hero-inner">
@@ -129,7 +167,7 @@
         </div>
         <div class="faq-item">
             <div class="faq-q"><span class="faq-q-text">Est-ce que je peux être remboursé ?</span><span class="faq-icon">+</span></div>
-            <div class="faq-a"><p>Les périodes déjà facturées ne sont généralement pas remboursées, sauf en cas d'erreur de notre part. Si tu as un problème, contacte-nous à <a href="mailto:support@thegolddesk.online">support@thegolddesk.online</a> et on trouvera une solution.</p></div>
+            <div class="faq-a"><p>Les périodes déjà facturées ne sont généralement pas remboursées, sauf en cas d'erreur de notre part. Si tu as un problème, contacte-nous à <a href="/cdn-cgi/l/email-protection#c9babcb9b9a6bbbd89bda1acaea6a5adadacbaa2e7a6a7a5a0a7ac"><span class="__cf_email__" data-cfemail="9be8eeebebf4e9efdbeff3fefcf4f7fffffee8f0b5f4f5f7f2f5fe">[email&#160;protected]</span></a> et on trouvera une solution.</p></div>
         </div>
     </div>
 
@@ -148,7 +186,7 @@
         </div>
         <div class="faq-item">
             <div class="faq-q"><span class="faq-q-text">Comment modifier ou supprimer mon compte ?</span><span class="faq-icon">+</span></div>
-            <div class="faq-a"><p>Tu peux modifier tes informations depuis ton <strong>espace membre</strong> (dashboard). Pour supprimer ton compte, contacte-nous à <a href="mailto:support@thegolddesk.online">support@thegolddesk.online</a> — on s'en occupe dans les 48h.</p></div>
+            <div class="faq-a"><p>Tu peux modifier tes informations depuis ton <strong>espace membre</strong> (dashboard). Pour supprimer ton compte, contacte-nous à <a href="/cdn-cgi/l/email-protection#6a191f1a1a05181e2a1e020f0d05060e0e0f19014405040603040f"><span class="__cf_email__" data-cfemail="9cefe9ececf3eee8dce8f4f9fbf3f0f8f8f9eff7b2f3f2f0f5f2f9">[email&#160;protected]</span></a> — on s'en occupe dans les 48h.</p></div>
         </div>
     </div>
 
@@ -157,7 +195,7 @@
         <div class="contact-label">Tu n'as pas trouvé ta réponse ?</div>
         <div class="contact-title">Contacte-nous directement</div>
         <p class="contact-sub">On répond sous 48h ouvrables.</p>
-        <a href="mailto:support@thegolddesk.online" class="contact-email">support@thegolddesk.online</a>
+        <a href="/cdn-cgi/l/email-protection#d2a1a7a2a2bda0a692a6bab7b5bdbeb6b6b7a1b9fcbdbcbebbbcb7" class="contact-email"><span class="__cf_email__" data-cfemail="72010702021d000632061a17151d1e16161701195c1d1c1e1b1c17">[email&#160;protected]</span></a>
     </div>
 
 </div>
@@ -174,21 +212,6 @@
     <div class="footer-copy">© 2026 THE PRO XAU · TOUS DROITS RÉSERVÉS · CONTENU ÉDUCATIF UNIQUEMENT</div>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
     window.addEventListener('scroll', () => {
-        const scrolled = window.scrollY
-        const max = document.body.scrollHeight - window.innerHeight
-        document.getElementById('progress').style.width = (scrolled / max * 100) + '%'
-    })
-
-    document.querySelectorAll('.faq-item').forEach(item => {
-        item.querySelector('.faq-q').addEventListener('click', () => {
-            const isOpen = item.classList.contains('open')
-            document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'))
-            if (!isOpen) item.classList.add('open')
-        })
-    })
-</script>
-
-</body>
-</html>
+        const scrolled = win
