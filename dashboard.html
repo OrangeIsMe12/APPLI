@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,31 +8,17 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Barlow:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-         :root {
-            --gold: #C9A84C;
-            --gold-light: #E8C97A;
-            --gold-dim: rgba(201, 168, 76, 0.1);
-            --red: #C94C4C;
-            --red-light: #E05A5A;
-            --green: #4CAF7A;
-            --dark: #080808;
-            --dark2: #0E0E0E;
-            --dark3: #151515;
-            --dark4: #1C1C1C;
-            --border: #242424;
-            --border-light: #2E2E2E;
-            --text: #D8D8D8;
-            --text-muted: #6A6A6A;
-            --text-dim: #444;
-            --font-display: 'Playfair Display', serif;
-            --font-body: 'DM Sans', sans-serif;
-            --font-mono: 'DM Mono', monospace;
-            --font-label: 'Barlow', sans-serif;
+        :root {
+            --gold: #C9A84C; --gold-light: #E8C97A; --gold-dim: rgba(201, 168, 76, 0.1);
+            --red: #C94C4C; --red-light: #E05A5A; --green: #4CAF7A;
+            --dark: #080808; --dark2: #0E0E0E; --dark3: #151515; --dark4: #1C1C1C;
+            --border: #242424; --border-light: #2E2E2E;
+            --text: #D8D8D8; --text-muted: #6A6A6A; --text-dim: #444;
+            --font-display: 'Playfair Display', serif; --font-body: 'DM Sans', sans-serif;
+            --font-mono: 'DM Mono', monospace; --font-label: 'Barlow', sans-serif;
         }
-        
         *,*::before,*::after { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: var(--font-body); background: var(--dark); color: var(--text); -webkit-font-smoothing: antialiased; }
-        
         .top-nav { display: flex; justify-content: space-between; align-items: center; padding: 12px 32px; border-bottom: 1px solid var(--border); background: var(--dark); position: sticky; top: 0; z-index: 100; }
         .nav-brand { font-family: var(--font-display); font-size: 20px; font-weight: 700; color: var(--gold); text-decoration: none; }
         .nav-right { display: flex; align-items: center; gap: 16px; }
@@ -42,10 +27,8 @@
         .nav-avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--gold-dim); border: 1px solid var(--gold); display: flex; align-items: center; justify-content: center; font-family: var(--font-label); font-size: 12px; font-weight: 700; color: var(--gold); cursor: pointer; text-decoration: none; }
         .nav-editions-btn { font-family: var(--font-label); font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--dark); background: var(--gold); padding: 7px 14px; text-decoration: none; transition: background 0.2s; }
         .nav-editions-btn:hover { background: var(--gold-light); }
-        
         .dashboard { display: grid; grid-template-columns: 220px 1fr; min-height: calc(100vh - 57px); }
         @media(max-width:768px) { .dashboard { grid-template-columns: 1fr; } .sidebar { display: none; } }
-        
         .sidebar { border-right: 1px solid var(--border); padding: 32px 0; background: var(--dark2); }
         .sidebar-section { margin-bottom: 8px; }
         .sidebar-label { font-family: var(--font-label); font-size: 9px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--text-dim); padding: 8px 24px; margin-bottom: 4px; }
@@ -56,19 +39,15 @@
         .sidebar-divider { border: none; border-top: 1px solid var(--border); margin: 12px 0; }
         .sidebar-item.danger { color: var(--red-light); }
         .sidebar-item.danger:hover { background: rgba(201, 76, 76, 0.05); }
-        
         .main { padding: 40px 36px; overflow-y: auto; }
         @media(max-width:640px) { .main { padding: 24px 16px; } }
-        
         .page-header { margin-bottom: 36px; }
         .page-eyebrow { font-family: var(--font-label); font-size: 9px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
         .page-title { font-family: var(--font-display); font-size: 28px; font-weight: 700; color: #fff; }
         .page-title em { font-style: italic; color: var(--gold); }
         .page-sub { font-family: var(--font-body); font-size: 13px; color: var(--text-muted); margin-top: 6px; }
-        
         .tab-panel { display: none; }
         .tab-panel.active { display: block; }
-        
         .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-bottom: 28px; }
         .stat-card { background: var(--dark3); border: 1px solid var(--border); padding: 20px; }
         .stat-card-label { font-family: var(--font-label); font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; }
@@ -76,7 +55,6 @@
         .stat-card-val.green { color: var(--green); }
         .stat-card-val.red { color: var(--red-light); }
         .stat-card-sub { font-family: var(--font-mono); font-size: 10px; color: var(--text-dim); margin-top: 6px; }
-        
         .sub-card { background: var(--dark3); border: 1px solid var(--border); padding: 24px; margin-bottom: 20px; }
         .sub-header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px; margin-bottom: 20px; }
         .sub-title { font-family: var(--font-label); font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
@@ -84,15 +62,11 @@
         .badge { display: inline-block; font-family: var(--font-label); font-size: 9px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; padding: 4px 10px; }
         .badge-active { background: rgba(76, 175, 122, 0.15); color: var(--green); border: 1px solid rgba(76, 175, 122, 0.3); }
         .badge-cancelled { background: rgba(201, 76, 76, 0.15); color: var(--red-light); border: 1px solid rgba(201, 76, 76, 0.3); }
-        .badge-pending { background: rgba(201, 168, 76, 0.15); color: var(--gold); border: 1px solid rgba(201, 168, 76, 0.3); }
-        
         .sub-details { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 14px; padding-top: 16px; border-top: 1px solid var(--border); }
         .sub-detail-label { font-family: var(--font-label); font-size: 9px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px; }
         .sub-detail-val { font-family: var(--font-mono); font-size: 13px; color: var(--text); }
         .sub-detail-val.gold { color: var(--gold); }
-        
         .sub-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border); }
-        
         .btn-small { font-family: var(--font-label); font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; padding: 9px 16px; cursor: pointer; transition: all 0.2s; border: none; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
         .btn-gold { background: var(--gold); color: var(--dark); }
         .btn-gold:hover { background: var(--gold-light); }
@@ -100,46 +74,39 @@
         .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
         .btn-red { background: rgba(201, 76, 76, 0.1); color: var(--red-light); border: 1px solid rgba(201, 76, 76, 0.25); }
         .btn-red:hover { background: rgba(201, 76, 76, 0.2); }
-        
         .section-title { font-family: var(--font-label); font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; }
-        
         .payments-table { width: 100%; border-collapse: collapse; font-size: 13px; }
         .payments-table th { background: var(--dark4); padding: 10px 14px; text-align: left; font-family: var(--font-label); font-size: 8px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); border-bottom: 1px solid var(--border); }
         .payments-table td { padding: 12px 14px; border-bottom: 1px solid var(--border); font-family: var(--font-body); font-size: 12px; color: var(--text-muted); vertical-align: middle; }
-        .payments-table tr:hover td { background: rgba(255, 255, 255, 0.01); }
+        .payments-table tr:hover td { background: rgba(255,255,255,0.01); }
         .payment-status { display: inline-block; font-family: var(--font-label); font-size: 8px; font-weight: 700; padding: 2px 8px; letter-spacing: 1px; text-transform: uppercase; }
         .payment-paid { background: rgba(76, 175, 122, 0.15); color: var(--green); }
         .payment-failed { background: rgba(201, 76, 76, 0.15); color: var(--red-light); }
         .payment-amount { font-family: var(--font-mono); color: var(--text); }
         .payment-invoice { font-family: var(--font-mono); font-size: 10px; color: var(--gold); text-decoration: none; cursor: pointer; }
         .payment-invoice:hover { text-decoration: underline; }
-        
         .editions-grid { display: flex; flex-direction: column; gap: 10px; }
         .edition-row { background: var(--dark3); border: 1px solid var(--border); padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; gap: 12px; text-decoration: none; transition: border-color 0.2s, background 0.2s; }
-        .edition-row:hover { border-color: rgba(201, 168, 76, 0.3); background: rgba(201, 168, 76, 0.02); }
+        .edition-row:hover { border-color: rgba(201,168,76,0.3); background: rgba(201,168,76,0.02); }
         .edition-row-left { display: flex; align-items: center; gap: 16px; }
         .edition-num { font-family: var(--font-mono); font-size: 11px; color: var(--gold); width: 36px; flex-shrink: 0; }
         .edition-title { font-family: var(--font-display); font-size: 15px; font-weight: 700; color: #fff; }
         .edition-date { font-family: var(--font-mono); font-size: 10px; color: var(--text-muted); margin-top: 3px; }
         .edition-arrow { color: var(--gold); font-size: 14px; flex-shrink: 0; }
-        .edition-tag { font-family: var(--font-label); font-size: 8px; font-weight: 700; padding: 2px 7px; letter-spacing: 1px; text-transform: uppercase; background: rgba(201, 168, 76, 0.12); color: var(--gold); border: 1px solid rgba(201, 168, 76, 0.25); flex-shrink: 0; }
+        .edition-tag { font-family: var(--font-label); font-size: 8px; font-weight: 700; padding: 2px 7px; letter-spacing: 1px; text-transform: uppercase; background: rgba(201,168,76,0.12); color: var(--gold); border: 1px solid rgba(201,168,76,0.25); flex-shrink: 0; }
         .edition-locked { opacity: 0.4; pointer-events: none; }
-        
         .profile-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
         @media(max-width:560px) { .profile-grid { grid-template-columns: 1fr; } }
-        
         .form-group { margin-bottom: 18px; }
         .form-label { display: block; font-family: var(--font-label); font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; }
         .form-input { width: 100%; background: var(--dark4); border: 1px solid var(--border-light); color: var(--text); font-family: var(--font-body); font-size: 14px; padding: 11px 14px; outline: none; transition: border-color 0.2s; border-radius: 0; -webkit-appearance: none; }
-        .form-input:focus { border-color: var(--gold); box-shadow: 0 0 0 2px rgba(201, 168, 76, 0.1); }
+        .form-input:focus { border-color: var(--gold); box-shadow: 0 0 0 2px rgba(201,168,76,0.1); }
         .form-input::placeholder { color: var(--text-dim); }
         .form-input:disabled { opacity: 0.5; cursor: not-allowed; }
-        
-        .danger-zone { background: rgba(201, 76, 76, 0.04); border: 1px solid rgba(201, 76, 76, 0.2); padding: 20px; margin-top: 24px; }
+        .danger-zone { background: rgba(201,76,76,0.04); border: 1px solid rgba(201,76,76,0.2); padding: 20px; margin-top: 24px; }
         .danger-title { font-family: var(--font-label); font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--red-light); margin-bottom: 8px; }
         .danger-text { font-family: var(--font-body); font-size: 12px; color: var(--text-muted); margin-bottom: 14px; line-height: 1.6; }
-        
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); z-index: 200; display: none; align-items: center; justify-content: center; padding: 20px; }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 200; display: none; align-items: center; justify-content: center; padding: 20px; }
         .modal-overlay.show { display: flex; }
         .modal { background: var(--dark3); border: 1px solid var(--border); padding: 32px; max-width: 420px; width: 100%; }
         .modal-title { font-family: var(--font-display); font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 10px; }
@@ -147,35 +114,29 @@
         .modal-text strong { color: var(--red-light); }
         .modal-actions { display: flex; gap: 10px; }
         .modal-actions .btn-small { flex: 1; justify-content: center; }
-        
         .alert-box { padding: 12px 16px; font-family: var(--font-mono); font-size: 11px; line-height: 1.6; margin-bottom: 16px; border-left: 3px solid; display: none; }
         .alert-box.show { display: block; }
-        .alert-box.success { border-color: var(--green); background: rgba(76, 175, 122, 0.06); color: #90D4A8; }
+        .alert-box.success { border-color: var(--green); background: rgba(76,175,122,0.06); color: #90D4A8; }
         .alert-box.info { border-color: var(--gold); background: var(--gold-dim); color: var(--gold-light); }
-        .alert-box.error { border-color: var(--red); background: rgba(201, 76, 76, 0.06); color: #E09090; }
-        .alert-box.warning { border-color: var(--red-light); background: rgba(201, 76, 76, 0.06); color: #E09090; }
-
-        /* Bannière "pas d'abonnement actif" */
-        .no-sub-banner { background: rgba(201, 76, 76, 0.08); border: 1px solid rgba(201, 76, 76, 0.3); padding: 20px 24px; margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+        .alert-box.error { border-color: var(--red); background: rgba(201,76,76,0.06); color: #E09090; }
+        .no-sub-banner { background: rgba(201,76,76,0.08); border: 1px solid rgba(201,76,76,0.3); padding: 20px 24px; margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
         .no-sub-text { font-family: var(--font-body); font-size: 13px; color: #E09090; }
         .no-sub-text strong { display: block; font-family: var(--font-label); font-size: 10px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 4px; }
         .btn-pay-now { font-family: var(--font-label); font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; background: var(--gold); color: var(--dark); padding: 10px 18px; text-decoration: none; white-space: nowrap; transition: background 0.2s; border: none; cursor: pointer; }
         .btn-pay-now:hover { background: var(--gold-light); }
     </style>
 </head>
-
 <body>
 
     <nav class="top-nav">
         <a href="index.html" class="nav-brand">The Pro Xau</a>
         <div class="nav-right">
-            <a href="edition01/edition-01.html" class="nav-editions-btn" id="nav-editions-link">📰 Mes Éditions</a>
+            <a href="edition01/edition-01.html" class="nav-editions-btn">📰 Mes Éditions</a>
             <a href="dashboard.html" class="nav-avatar" title="Mon compte" id="user-avatar">…</a>
         </div>
     </nav>
 
     <div class="dashboard">
-
         <aside class="sidebar">
             <div class="sidebar-section">
                 <div class="sidebar-label">Mon espace</div>
@@ -194,23 +155,21 @@
         </aside>
 
         <main class="main">
-
             <div class="page-header">
                 <div class="page-eyebrow">Espace Membre</div>
                 <h1 class="page-title">Bonjour, <em id="user-name">…</em></h1>
                 <p class="page-sub">Gère ton abonnement et accède à tes éditions premium.</p>
             </div>
 
-            <!-- ── ABONNEMENT ── -->
+            <!-- ABONNEMENT -->
             <div class="tab-panel active" id="panel-abonnement">
-
-                <!-- ✅ FIX PROBLÈME 4 : Bannière si pas d'abonnement actif (cadenas) -->
                 <div id="no-sub-banner" class="no-sub-banner" style="display:none;">
                     <div class="no-sub-text">
                         <strong>⚠ Aucun abonnement actif</strong>
                         Ton paiement n'a pas encore été confirmé. Si tu viens de payer, attends quelques secondes et rafraîchis la page.
                     </div>
-                    <a href="register.html" class="btn-pay-now">S'abonner maintenant →</a>
+                    <!-- ✅ FIX : href mis à jour dynamiquement avec l'email Supabase -->
+                    <a href="#" id="btn-subscribe" class="btn-pay-now">S'abonner maintenant →</a>
                 </div>
 
                 <div class="alert-box info show" id="edition-banner">
@@ -266,21 +225,14 @@
                         <button class="btn-small btn-red" id="cancel-btn">✕ Résilier l'abonnement</button>
                     </div>
                 </div>
-
             </div>
 
-            <!-- ── PAIEMENTS ── -->
+            <!-- PAIEMENTS -->
             <div class="tab-panel" id="panel-paiements">
                 <div class="section-title">Historique des paiements</div>
                 <table class="payments-table">
                     <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Description</th>
-                            <th>Montant</th>
-                            <th>Statut</th>
-                            <th>Reçu</th>
-                        </tr>
+                        <tr><th>Date</th><th>Description</th><th>Montant</th><th>Statut</th><th>Reçu</th></tr>
                     </thead>
                     <tbody id="payments-tbody">
                         <tr><td colspan="5" style="text-align:center;color:var(--text-dim);padding:24px;">Chargement…</td></tr>
@@ -288,15 +240,13 @@
                 </table>
             </div>
 
-            <!-- ── ÉDITIONS ── -->
+            <!-- ÉDITIONS -->
             <div class="tab-panel" id="panel-editions">
                 <div class="section-title">Toutes mes éditions</div>
-                <div class="editions-grid" id="editions-list">
-                    <!-- Rempli dynamiquement selon l'abonnement -->
-                </div>
+                <div class="editions-grid" id="editions-list"></div>
             </div>
 
-            <!-- ── PROFIL ── -->
+            <!-- PROFIL -->
             <div class="tab-panel" id="panel-profil">
                 <div class="section-title">Informations personnelles</div>
                 <div class="alert-box" id="profile-saved"></div>
@@ -328,7 +278,7 @@
                 </div>
             </div>
 
-            <!-- ── SÉCURITÉ ── -->
+            <!-- SÉCURITÉ -->
             <div class="tab-panel" id="panel-securite">
                 <div class="section-title">Changer le mot de passe</div>
                 <div class="alert-box" id="pw-saved"></div>
@@ -344,7 +294,6 @@
                     <button type="submit" class="btn-small btn-gold">Modifier le mot de passe</button>
                 </form>
             </div>
-
         </main>
     </div>
 
@@ -363,17 +312,14 @@
     </div>
 
     <script>
-        const SUPABASE_URL = 'https://oehoqoaxcwiffbzuegou.supabase.co'
+        const SUPABASE_URL  = 'https://oehoqoaxcwiffbzuegou.supabase.co'
         const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9laG9xb2F4Y3dpZmZienVlZ291Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzMjI2MTMsImV4cCI6MjA4Nzg5ODYxM30.N5UP014MgNUBunZJuhKuUUlRYC_HY7lpAFAYD39CjvE'
+        // ✅ URL de base Stripe — l'email sera ajouté dynamiquement
+        const STRIPE_BASE_URL = 'https://buy.stripe.com/7sY9ALaso1b1bVGgCwfw400'
 
         const { createClient } = supabase
-        // ✅ FIX PROBLÈME 2 : Même config que login.html → session partagée
         const sb = createClient(SUPABASE_URL, SUPABASE_ANON, {
-            auth: {
-                storage: localStorage,
-                persistSession: true,
-                autoRefreshToken: true,
-            }
+            auth: { storage: localStorage, persistSession: true, autoRefreshToken: true }
         })
 
         function fmt(dateStr) {
@@ -388,7 +334,6 @@
             setTimeout(() => { box.className = 'alert-box' }, 3500)
         }
 
-        // ✅ FIX PROBLÈME 4 : Rendu des éditions selon si abonné ou non
         function renderEditions(isActive) {
             const list = document.getElementById('editions-list')
             if (isActive) {
@@ -424,36 +369,33 @@
                     </div>`
                 document.getElementById('card-editions').textContent = '🔒'
                 document.getElementById('card-editions-sub').textContent = 'Abonnement requis'
-                // Cache la bannière édition si pas abonné
                 document.getElementById('edition-banner').style.display = 'none'
             }
         }
 
         async function loadDashboard() {
-            // 1. Vérifie session Supabase
             const { data: { session } } = await sb.auth.getSession()
-            if (!session) {
-                window.location.href = 'login.html'
-                return
-            }
+            if (!session) { window.location.href = 'login.html'; return }
 
             const email = session.user.email
-            const meta = session.user.user_metadata || {}
+            const meta  = session.user.user_metadata || {}
             const firstName = meta.first_name || email.split('@')[0]
-            const initial = firstName[0].toUpperCase()
 
-            // 2. Affiche nom + avatar
+            // Affiche nom + avatar
             document.getElementById('user-name').textContent = firstName
-            document.getElementById('user-avatar').textContent = initial
+            document.getElementById('user-avatar').textContent = firstName[0].toUpperCase()
 
-            // 3. Profil
+            // ✅ FIX PRINCIPAL : pré-remplit l'email Supabase dans le lien Stripe
+            const stripeUrl = `${STRIPE_BASE_URL}?prefilled_email=${encodeURIComponent(email)}`
+            document.getElementById('btn-subscribe').href = stripeUrl
+
+            // Profil
             document.getElementById('p-firstname').value = meta.first_name || ''
-            document.getElementById('p-lastname').value = meta.last_name || ''
-            document.getElementById('p-email').value = email
-            document.getElementById('p-country').value = meta.pays || ''
+            document.getElementById('p-lastname').value  = meta.last_name  || ''
+            document.getElementById('p-email').value     = email
+            document.getElementById('p-country').value   = meta.pays || ''
 
-            // ✅ FIX PROBLÈME 3 & 4 : Cherche l'abonnement par EMAIL (vient de Stripe webhook)
-            // ET aussi par user_id comme fallback
+            // Cherche abonnement par email OU user_id
             const { data: sub } = await sb
                 .from('subscriptions')
                 .select('*')
@@ -464,20 +406,19 @@
 
             const isActive = sub && (sub.status === 'active' || sub.status === 'trialing')
 
-            // ✅ FIX PROBLÈME 4 : Affiche ou cache la bannière "pas d'abonnement"
             document.getElementById('no-sub-banner').style.display = isActive ? 'none' : 'flex'
 
             if (isActive) {
                 const renewalDate = fmt(sub.current_period_end)
-                const sinceDate = fmt(sub.member_since || sub.created_at)
+                const sinceDate   = fmt(sub.member_since || sub.created_at)
 
-                document.getElementById('card-status').textContent = 'Actif'
-                document.getElementById('card-status').className = 'stat-card-val green'
-                document.getElementById('card-since').textContent = `Depuis ${sinceDate}`
-                document.getElementById('card-amount').textContent = '9.99$'
+                document.getElementById('card-status').textContent  = 'Actif'
+                document.getElementById('card-status').className    = 'stat-card-val green'
+                document.getElementById('card-since').textContent   = `Depuis ${sinceDate}`
+                document.getElementById('card-amount').textContent  = '9.99$'
                 document.getElementById('card-renewal').textContent = `Le ${renewalDate}`
                 document.getElementById('detail-renewal').textContent = renewalDate
-                document.getElementById('detail-since').textContent = sinceDate
+                document.getElementById('detail-since').textContent   = sinceDate
                 document.getElementById('modal-end-date').textContent = renewalDate
 
                 const badge = document.getElementById('sub-badge')
@@ -486,8 +427,7 @@
 
                 // Paiements
                 const { data: payments } = await sb
-                    .from('payments')
-                    .select('*')
+                    .from('payments').select('*')
                     .or(`email.eq.${email},stripe_customer_id.eq.${sub.stripe_customer_id || 'none'}`)
                     .order('paid_at', { ascending: false })
 
@@ -511,15 +451,14 @@
                 }
 
             } else {
-                // Pas d'abonnement actif
-                document.getElementById('card-status').textContent = 'Inactif'
-                document.getElementById('card-status').className = 'stat-card-val red'
-                document.getElementById('card-since').textContent = '—'
-                document.getElementById('card-amount').textContent = '—'
+                document.getElementById('card-status').textContent  = 'Inactif'
+                document.getElementById('card-status').className    = 'stat-card-val red'
+                document.getElementById('card-since').textContent   = '—'
+                document.getElementById('card-amount').textContent  = '—'
                 document.getElementById('card-renewal').textContent = '—'
 
                 const badge = document.getElementById('sub-badge')
-                badge.className = 'badge badge-cancelled'
+                badge.className   = 'badge badge-cancelled'
                 badge.textContent = sub ? '● Résilié' : '● Inactif'
 
                 const cancelBtn = document.getElementById('cancel-btn')
@@ -530,13 +469,12 @@
                     '<tr><td colspan="5" style="text-align:center;color:var(--text-dim);padding:24px;">Aucun paiement trouvé.</td></tr>'
             }
 
-            // ✅ Rendu des éditions selon statut
             renderEditions(isActive)
         }
 
         loadDashboard()
 
-        // Sidebar
+        // Sidebar navigation
         document.querySelectorAll('.sidebar-item[data-tab]').forEach(btn => {
             btn.addEventListener('click', function() {
                 document.querySelectorAll('.sidebar-item').forEach(b => b.classList.remove('active'))
@@ -571,8 +509,8 @@
             const { error } = await sb.auth.updateUser({
                 data: {
                     first_name: document.getElementById('p-firstname').value,
-                    last_name: document.getElementById('p-lastname').value,
-                    pays: document.getElementById('p-country').value,
+                    last_name:  document.getElementById('p-lastname').value,
+                    pays:       document.getElementById('p-country').value,
                 }
             })
             showAlert('profile-saved',
@@ -584,7 +522,7 @@
         // Mot de passe
         document.getElementById('security-form').addEventListener('submit', async (e) => {
             e.preventDefault()
-            const pw = document.getElementById('new-pw').value
+            const pw  = document.getElementById('new-pw').value
             const cpw = document.getElementById('confirm-pw').value
             if (pw !== cpw || pw.length < 8) {
                 showAlert('pw-saved', '❌ Les mots de passe ne correspondent pas ou font moins de 8 caractères.', 'error')
@@ -613,5 +551,4 @@
         })
     </script>
 </body>
-
 </html>
