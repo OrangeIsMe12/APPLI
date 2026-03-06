@@ -299,8 +299,7 @@
             localStorage.setItem('tpx_user_id', userId)
 
             setTimeout(() => {
-                window.location.href = `${STRIPE_PAYMENT_LINK}?prefilled_email=${encodeURIComponent(userEmail)}&client_reference_id=${userId}`
-            }, 1500)
+          window.location.href = 'checkout.html'
         })
     </script>
 </body>
