@@ -124,14 +124,25 @@
         .no-sub-text strong { display: block; font-family: var(--font-label); font-size: 10px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 4px; }
         .btn-pay-now { font-family: var(--font-label); font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; background: var(--gold); color: var(--dark); padding: 10px 18px; text-decoration: none; white-space: nowrap; transition: background 0.2s; border: none; cursor: pointer; }
         .btn-pay-now:hover { background: var(--gold-light); }
+
+        /* ✅ Loading overlay */
+        .loading-overlay { position: fixed; inset: 0; background: var(--dark); z-index: 999; display: flex; align-items: center; justify-content: center; }
+        .loading-overlay.hidden { display: none; }
+        .spinner-lg { width: 32px; height: 32px; border: 3px solid var(--border); border-top-color: var(--gold); border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg) } }
     </style>
 </head>
 <body>
 
+    <!-- ✅ Loading overlay pendant la vérification de session -->
+    <div class="loading-overlay" id="loading-overlay">
+        <div class="spinner-lg"></div>
+    </div>
+
     <nav class="top-nav">
         <a href="index.html" class="nav-brand">The Pro Xau</a>
         <div class="nav-right">
-            <a href="edition01/edition-01.html" class="nav-editions-btn">📰 Mes Éditions</a>
+            <a href="edition01/edition-01.html" class="nav-editions-btn" id="nav-editions-btn" style="display:none;">📰 Mes Éditions</a>
             <a href="dashboard.html" class="nav-avatar" title="Mon compte" id="user-avatar">…</a>
         </div>
     </nav>
@@ -168,11 +179,10 @@
                         <strong>⚠ Aucun abonnement actif</strong>
                         Ton paiement n'a pas encore été confirmé. Si tu viens de payer, attends quelques secondes et rafraîchis la page.
                     </div>
-                    <!-- ✅ FIX : href mis à jour dynamiquement avec l'email Supabase -->
                     <a href="#" id="btn-subscribe" class="btn-pay-now">S'abonner maintenant →</a>
                 </div>
 
-                <div class="alert-box info show" id="edition-banner">
+                <div class="alert-box info" id="edition-banner" style="display:none;">
                     📰 La nouvelle édition #001 est disponible — <a href="edition01/edition-01.html" style="color:var(--gold)">Lire maintenant →</a>
                 </div>
 
@@ -314,17 +324,20 @@
     <script>
         const SUPABASE_URL  = 'https://oehoqoaxcwiffbzuegou.supabase.co'
         const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9laG9xb2F4Y3dpZmZienVlZ291Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzMjI2MTMsImV4cCI6MjA4Nzg5ODYxM30.N5UP014MgNUBunZJuhKuUUlRYC_HY7lpAFAYD39CjvE'
-        // ✅ URL de base Stripe — l'email sera ajouté dynamiquement
         const STRIPE_BASE_URL = 'https://buy.stripe.com/7sY9ALaso1b1bVGgCwfw400'
+        const STRIPE_PORTAL_URL = 'https://billing.stripe.com/p/login/7sY9ALaso1b1bVGgCwfw400'
 
         const { createClient } = supabase
         const sb = createClient(SUPABASE_URL, SUPABASE_ANON, {
             auth: { storage: localStorage, persistSession: true, autoRefreshToken: true }
         })
 
+        // ✅ Format date sécurisé — jamais de crash si la date est nulle
         function fmt(dateStr) {
             if (!dateStr) return '—'
-            return new Date(dateStr).toLocaleDateString('fr-CA', { day: 'numeric', month: 'long', year: 'numeric' })
+            const d = new Date(dateStr)
+            if (isNaN(d.getTime())) return '—'
+            return d.toLocaleDateString('fr-CA', { day: 'numeric', month: 'long', year: 'numeric' })
         }
 
         function showAlert(id, msg, type) {
@@ -353,6 +366,9 @@
                     </a>`
                 document.getElementById('card-editions').textContent = '1'
                 document.getElementById('card-editions-sub').textContent = 'Édition #001 disponible'
+                // ✅ Affiche le bouton éditions dans la nav
+                document.getElementById('nav-editions-btn').style.display = ''
+                document.getElementById('edition-banner').style.display = 'block'
             } else {
                 list.innerHTML = `
                     <div class="edition-row edition-locked">
@@ -369,7 +385,6 @@
                     </div>`
                 document.getElementById('card-editions').textContent = '🔒'
                 document.getElementById('card-editions-sub').textContent = 'Abonnement requis'
-                document.getElementById('edition-banner').style.display = 'none'
             }
         }
 
@@ -377,16 +392,19 @@
             const { data: { session } } = await sb.auth.getSession()
             if (!session) { window.location.href = 'login.html'; return }
 
+            // ✅ Cache le loading overlay une fois la session confirmée
+            document.getElementById('loading-overlay').classList.add('hidden')
+
             const email = session.user.email
             const meta  = session.user.user_metadata || {}
             const firstName = meta.first_name || email.split('@')[0]
 
-            // Affiche nom + avatar
             document.getElementById('user-name').textContent = firstName
             document.getElementById('user-avatar').textContent = firstName[0].toUpperCase()
 
-            // ✅ FIX PRINCIPAL : pré-remplit l'email Supabase dans le lien Stripe
-            const stripeUrl = `${STRIPE_BASE_URL}?prefilled_email=${encodeURIComponent(email)}`
+            // ✅ Lien Stripe avec email pré-rempli ET user_id comme référence
+            const userId = session.user.id
+            const stripeUrl = `${STRIPE_BASE_URL}?prefilled_email=${encodeURIComponent(email)}&client_reference_id=${userId}`
             document.getElementById('btn-subscribe').href = stripeUrl
 
             // Profil
@@ -395,11 +413,11 @@
             document.getElementById('p-email').value     = email
             document.getElementById('p-country').value   = meta.pays || ''
 
-            // Cherche abonnement par email OU user_id
+            // ✅ Cherche abonnement par email OU user_id (les deux cas couverts)
             const { data: sub } = await sb
                 .from('subscriptions')
                 .select('*')
-                .or(`email.eq.${email},user_id.eq.${session.user.id}`)
+                .or(`email.eq.${email},user_id.eq.${userId}`)
                 .order('created_at', { ascending: false })
                 .limit(1)
                 .single()
@@ -409,6 +427,7 @@
             document.getElementById('no-sub-banner').style.display = isActive ? 'none' : 'flex'
 
             if (isActive) {
+                // ✅ fmt() gère les dates nulles sans crash
                 const renewalDate = fmt(sub.current_period_end)
                 const sinceDate   = fmt(sub.member_since || sub.created_at)
 
@@ -416,7 +435,7 @@
                 document.getElementById('card-status').className    = 'stat-card-val green'
                 document.getElementById('card-since').textContent   = `Depuis ${sinceDate}`
                 document.getElementById('card-amount').textContent  = '9.99$'
-                document.getElementById('card-renewal').textContent = `Le ${renewalDate}`
+                document.getElementById('card-renewal').textContent = renewalDate !== '—' ? `Le ${renewalDate}` : '—'
                 document.getElementById('detail-renewal').textContent = renewalDate
                 document.getElementById('detail-since').textContent   = sinceDate
                 document.getElementById('modal-end-date').textContent = renewalDate
@@ -428,7 +447,7 @@
                 // Paiements
                 const { data: payments } = await sb
                     .from('payments').select('*')
-                    .or(`email.eq.${email},stripe_customer_id.eq.${sub.stripe_customer_id || 'none'}`)
+                    .or(`email.eq.${email}${sub.stripe_customer_id ? `,stripe_customer_id.eq.${sub.stripe_customer_id}` : ''}`)
                     .order('paid_at', { ascending: false })
 
                 const tbody = document.getElementById('payments-tbody')
@@ -437,7 +456,7 @@
                         <tr>
                             <td>${fmt(p.paid_at)}</td>
                             <td>${p.description || 'The Pro Xau — Premium'}</td>
-                            <td class="payment-amount">${parseFloat(p.amount).toFixed(2)} ${p.currency || '$'}</td>
+                            <td class="payment-amount">${parseFloat(p.amount || 0).toFixed(2)} ${p.currency || 'USD'}</td>
                             <td><span class="payment-status ${p.status === 'paid' ? 'payment-paid' : 'payment-failed'}">
                                 ${p.status === 'paid' ? 'Payé' : 'Échoué'}
                             </span></td>
@@ -493,14 +512,14 @@
         })
         document.getElementById('confirm-cancel-btn').addEventListener('click', () => {
             document.getElementById('cancel-modal').classList.remove('show')
-            window.open('https://billing.stripe.com/p/login/7sY9ALaso1b1bVGgCwfw400', '_blank')
+            window.open(STRIPE_PORTAL_URL, '_blank')
         })
         document.querySelectorAll('.modal-overlay').forEach(o => {
             o.addEventListener('click', e => { if (e.target === o) o.classList.remove('show') })
         })
 
         document.getElementById('update-card-btn').addEventListener('click', () => {
-            window.open('https://billing.stripe.com/p/login/7sY9ALaso1b1bVGgCwfw400', '_blank')
+            window.open(STRIPE_PORTAL_URL, '_blank')
         })
 
         // Profil
