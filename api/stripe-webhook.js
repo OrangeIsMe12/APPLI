@@ -32,25 +32,31 @@ export default async function handler(req, res) {
 
     const data = event.data.object
 
-    // ── Abonnement créé ou activé
     if (event.type === 'checkout.session.completed') {
+    try {
         if (!data.subscription) return res.json({ received: true })
-
+        
         const subscription = await stripe.subscriptions.retrieve(data.subscription)
-
-        const email = data.customer_details && data.customer_details.email
-            ? data.customer_details.email
-            : (await stripe.customers.retrieve(subscription.customer)).email
+        const email = data.customer_details?.email 
+            || (await stripe.customers.retrieve(subscription.customer)).email
+        
+        if (!email) return res.json({ received: true })
 
         await sb.from('subscriptions').upsert({
             email,
-            stripe_customer_id: subscription.customer,
+            stripe_customer_id:     subscription.customer,
             stripe_subscription_id: subscription.id,
-            status: subscription.status,
-            current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
-            member_since: new Date(subscription.created * 1000).toISOString(),
+            status:                 subscription.status,
+            current_period_end:     new Date(subscription.current_period_end * 1000).toISOString(),
+            member_since:           new Date(subscription.created * 1000).toISOString(),
         }, { onConflict: 'email' })
+
+    } catch (err) {
+        console.error('checkout.session.completed error:', err.message)
+        // Retourne 200 quand même — Stripe ne retentera pas inutilement
+        return res.json({ received: true })
     }
+}
 
     // ── Paiement reçu
     if (event.type === 'invoice.payment_succeeded') {
@@ -78,3 +84,4 @@ export default async function handler(req, res) {
 
     return res.json({ received: true })
 }
+
