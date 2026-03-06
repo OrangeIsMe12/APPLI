@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Services — The Pro Xau</title>
+    <link rel="icon" type="image/png" href="/icon.jpg">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #c9a84c; --gold-light: #e8c97a; --gold-dim: rgba(201,168,76,0.1);
+            --bg: #080808; --bg2: #0e0e0e; --bg3: #111111;
+            --border: #1e1a10; --border2: #2a2420;
+            --text: #e8e0d0; --text-dim: #9a9080; --text-muted: #4a4038;
+            --green: #4caf7d; --green-dim: rgba(76,175,125,0.08);
+        }
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+
+        /* NAV */
+        .top-nav { display: flex; justify-content: space-between; align-items: center; padding: 16px 40px; border-bottom: 1px solid var(--border); background: rgba(8,8,8,0.97); backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 100; }
+        .nav-brand { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--gold); text-decoration: none; }
+        .hamburger { background: none; border: 1px solid var(--border); padding: 9px 13px; cursor: pointer; display: flex; flex-direction: column; gap: 5px; transition: border-color 0.2s; }
+        .hamburger:hover { border-color: var(--gold); }
+        .hamburger span { display: block; width: 20px; height: 1px; background: var(--text-dim); transition: all 0.3s; }
+        .hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+        .hamburger.open span:nth-child(2) { opacity: 0; }
+        .hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+        .nav-menu { position: fixed; top: 0; right: -100%; width: 300px; height: 100vh; background: #060604; border-left: 1px solid var(--border); z-index: 200; transition: right 0.35s ease; display: flex; flex-direction: column; padding: 80px 44px 44px; gap: 4px; }
+        .nav-menu.open { right: 0; }
+        .nav-menu-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 199; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+        .nav-menu-overlay.open { opacity: 1; pointer-events: all; }
+        .nav-menu-close { position: absolute; top: 22px; right: 28px; background: none; border: none; color: var(--text-muted); font-size: 20px; cursor: pointer; transition: color 0.2s; }
+        .nav-menu-close:hover { color: var(--gold); }
+        .nav-menu-label { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 4px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 20px; opacity: 0.5; }
+        .nav-menu a { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--text-dim); text-decoration: none; padding: 15px 0; border-bottom: 1px solid var(--border); transition: color 0.2s; display: flex; justify-content: space-between; align-items: center; }
+        .nav-menu a:hover, .nav-menu a.active { color: var(--gold); }
+        .nav-menu a:last-of-type { border-bottom: none; }
+        .nav-menu-cta { margin-top: auto; background: var(--gold); color: #080804 !important; font-weight: 700; padding: 15px 24px !important; text-align: center; justify-content: center !important; border: none !important; }
+        .nav-menu-cta:hover { filter: brightness(1.1); }
+
+        /* HERO */
+        .hero { border-bottom: 1px solid var(--border); padding: 80px 40px 64px; position: relative; overflow: hidden; }
+        .hero::before { content: 'SERVICES'; position: absolute; right: -20px; top: 50%; transform: translateY(-50%); font-family: 'Playfair Display', serif; font-size: clamp(60px, 12vw, 140px); font-weight: 900; color: var(--gold); opacity: 0.025; pointer-events: none; white-space: nowrap; line-height: 1; }
+        .hero-inner { max-width: 1080px; margin: 0 auto; }
+        .hero-eyebrow { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 5px; text-transform: uppercase; color: var(--gold); opacity: 0.65; margin-bottom: 18px; display: flex; align-items: center; gap: 12px; }
+        .hero-eyebrow::before { content: ''; width: 32px; height: 1px; background: var(--gold); opacity: 0.4; }
+        .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(36px, 6vw, 60px); font-weight: 900; line-height: 1.05; letter-spacing: -1px; margin-bottom: 16px; }
+        .hero-title em { color: var(--gold-light); font-style: italic; }
+        .hero-sub { font-size: 14px; color: var(--text-dim); line-height: 1.8; max-width: 480px; }
+
+        /* MAIN */
+        .main { max-width: 1080px; margin: 0 auto; padding: 72px 40px 100px; }
+        @media(max-width: 640px) { .main { padding: 48px 20px 80px; } }
+
+        /* SECTION EYEBROW */
+        .section-eyebrow { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); opacity: 0.5; margin-bottom: 28px; display: flex; align-items: center; gap: 16px; }
+        .section-eyebrow::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+        /* CARDS */
+        .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); }
+        @media(max-width: 800px) { .services-grid { grid-template-columns: 1fr; } }
+
+        .service-card { background: var(--bg2); padding: 44px 40px; display: flex; flex-direction: column; position: relative; overflow: hidden; transition: background 0.25s; text-decoration: none; }
+        .service-card:hover { background: var(--bg3); }
+        .service-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; opacity: 0; transition: opacity 0.3s; }
+        .service-card.discord::before  { background: linear-gradient(90deg, transparent, #5865F2, transparent); }
+        .service-card.telegram::before { background: linear-gradient(90deg, transparent, #2AADDE, transparent); }
+        .service-card.instagram::before { background: linear-gradient(90deg, transparent, #dc2743, transparent); }
+        .service-card:hover::before { opacity: 1; }
+
+        .service-glow { position: absolute; bottom: -60px; right: -60px; width: 200px; height: 200px; border-radius: 50%; opacity: 0; transition: all 0.4s; pointer-events: none; }
+        .service-card.discord .service-glow   { background: radial-gradient(circle, rgba(88,101,242,0.07), transparent 70%); }
+        .service-card.telegram .service-glow  { background: radial-gradient(circle, rgba(42,173,222,0.07), transparent 70%); }
+        .service-card.instagram .service-glow { background: radial-gradient(circle, rgba(220,39,67,0.07), transparent 70%); }
+        .service-card:hover .service-glow { opacity: 1; bottom: -40px; right: -40px; }
+
+        .service-icon { width: 52px; height: 52px; border-radius: 14px; display: flex; align-items: center; justify-content: center; margin-bottom: 24px; flex-shrink: 0; }
+        .service-card.discord .service-icon   { background: rgba(88,101,242,0.1);  border: 1px solid rgba(88,101,242,0.25); }
+        .service-card.telegram .service-icon  { background: rgba(42,173,222,0.1);  border: 1px solid rgba(42,173,222,0.25); }
+        .service-card.instagram .service-icon { background: rgba(220,39,67,0.07); border: 1px solid rgba(220,39,67,0.2); }
+
+        .service-name { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--text); margin-bottom: 12px; letter-spacing: -0.3px; }
+        .service-type { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 18px; }
+        .service-desc { font-size: 13px; color: var(--text-dim); line-height: 1.8; flex: 1; margin-bottom: 32px; }
+
+        .service-cta { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; border: 1px solid var(--border2); font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); transition: all 0.22s; }
+        .service-card.discord:hover .service-cta   { border-color: rgba(88,101,242,0.45); color: #7b88f5; background: rgba(88,101,242,0.04); }
+        .service-card.telegram:hover .service-cta  { border-color: rgba(42,173,222,0.45); color: #5ac8e8; background: rgba(42,173,222,0.04); }
+        .service-card.instagram:hover .service-cta { border-color: rgba(220,39,67,0.45); color: #e8607a; background: rgba(220,39,67,0.04); }
+        .service-arrow { transition: transform 0.2s; }
+        .service-card:hover .service-arrow { transform: translateX(5px); }
+
+        /* NOTE */
+        .service-note { background: var(--bg2); border-top: 1px solid var(--border); padding: 18px 40px; font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); display: flex; align-items: center; gap: 10px; }
+
+        /* FOOTER */
+        footer { border-top: 1px solid var(--border); padding: 40px 32px; text-align: center; display: flex; flex-direction: column; gap: 12px; }
+        .footer-logo { font-family: 'Playfair Display', serif; font-size: 20px; color: #201c10; }
+        .footer-logo span { color: var(--gold); opacity: 0.2; }
+        .footer-links { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; }
+        .footer-link { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); text-decoration: none; }
+        .footer-link:hover { color: var(--gold); }
+        .footer-copy { font-family: 'DM Mono', monospace; font-size: 9px; color: #181410; letter-spacing: 2px; }
+    </style>
+</head>
+<body>
+
+<div class="nav-menu-overlay" id="navOverlay"></div>
+<div class="nav-menu" id="navMenu">
+    <button class="nav-menu-close" id="navClose">✕</button>
+    <div class="nav-menu-label">Navigation</div>
+    <a href="index.html">Accueil <span>→</span></a>
+    <a href="about.html">À propos <span>→</span></a>
+    <a href="services.html" class="active">Services <span>→</span></a>
+    <a href="partenaires.html">Partenaires <span>→</span></a>
+    <a href="faq.html">FAQ <span>→</span></a>
+    <a href="terms.html">Conditions <span>→</span></a>
+    <a href="dashboard.html">Mon compte <span>→</span></a>
+    <a href="register.html" class="nav-menu-cta">S'abonner maintenant →</a>
+</div>
+
+<nav class="top-nav">
+    <a href="index.html" class="nav-brand">The Pro Xau</a>
+    <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+    <div class="hero-inner">
+        <div class="hero-eyebrow">Communauté & Plateformes</div>
+        <h1 class="hero-title">Nos<br><em>Services</em></h1>
+        <p class="hero-sub">Tout ce qui est inclus dans ton abonnement — rejoins la communauté et reste connecté en temps réel.</p>
+    </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+    <div class="section-eyebrow">Plateformes incluses</div>
+
+    <div class="services-grid">
+
+        <!-- DISCORD -->
+        <a class="service-card discord" href="#">
+            <div class="service-glow"></div>
+            <div class="service-icon">
+                <svg width="24" height="18" viewBox="0 0 71 55" fill="#5865F2"><path d="M60.105 4.898A58.55 58.55 0 0 0 45.653.415a.22.22 0 0 0-.233.11 40.784 40.784 0 0 0-1.8 3.698c-5.456-.817-10.886-.817-16.231 0a37.3 37.3 0 0 0-1.827-3.698.229.229 0 0 0-.233-.11 58.39 58.39 0 0 0-14.452 4.483.208.208 0 0 0-.095.082C1.578 18.73-.944 32.144.293 45.39a.244.244 0 0 0 .093.167c6.073 4.46 11.955 7.167 17.729 8.962a.23.23 0 0 0 .249-.082 42.08 42.08 0 0 0 3.627-5.9.225.225 0 0 0-.123-.312 38.772 38.772 0 0 1-5.539-2.64.228.228 0 0 1-.022-.378 31.17 31.17 0 0 0 1.1-.862.22.22 0 0 1 .23-.031c11.619 5.304 24.198 5.304 35.68 0a.219.219 0 0 1 .232.028c.356.293.728.586 1.103.865a.228.228 0 0 1-.02.378 36.384 36.384 0 0 1-5.54 2.637.227.227 0 0 0-.12.316 47.249 47.249 0 0 0 3.623 5.897.225.225 0 0 0 .249.084c5.801-1.794 11.684-4.502 17.757-8.961a.228.228 0 0 0 .092-.164c1.48-15.315-2.48-28.618-10.497-40.412a.18.18 0 0 0-.093-.084zm-36.38 32.427c-3.497 0-6.38-3.211-6.38-7.156 0-3.944 2.827-7.156 6.38-7.156 3.583 0 6.438 3.24 6.38 7.156 0 3.945-2.827 7.156-6.38 7.156zm23.593 0c-3.498 0-6.38-3.211-6.38-7.156 0-3.944 2.826-7.156 6.38-7.156 3.582 0 6.437 3.24 6.38 7.156 0 3.945-2.798 7.156-6.38 7.156z"/></svg>
+            </div>
+            <div class="service-name">Discord Privé</div>
+            <div class="service-type">Membres abonnés · Exclusif</div>
+            <div class="service-desc">Serveur privé du coach — communauté exclusive et analyses réservées aux membres abonnés. Pose tes questions, échange avec la communauté et suis les discussions en direct.</div>
+            <div class="service-cta"><span>Rejoindre le serveur</span><span class="service-arrow">→</span></div>
+        </a>
+
+        <!-- TELEGRAM -->
+        <a class="service-card telegram" href="#">
+            <div class="service-glow"></div>
+            <div class="service-icon">
+                <svg width="24" height="20" viewBox="0 0 24 20" fill="#2AADDE"><path d="M22.05.8L.72 9.04c-.47.19-.46.45-.08.56l5.43 1.67L18.69 3.6c.6-.37 1.15-.17.7.24L8.54 13.22l-.4 5.59c.58 0 .84-.27 1.16-.57l2.79-2.7 5.49 4.01c1.01.55 1.73.27 1.98-.93L23.98 2.6c.37-1.47-.57-2.13-1.93-1.8z"/></svg>
+            </div>
+            <div class="service-name">Canal Telegram</div>
+            <div class="service-type">Gratuit · Ouvert à tous</div>
+            <div class="service-desc">Canal gratuit — suis les défis et challenges lancés par le coach en temps réel. Notifications push instantanées directement sur ton téléphone.</div>
+            <div class="service-cta"><span>Accéder au canal</span><span class="service-arrow">→</span></div>
+        </a>
+
+        <!-- INSTAGRAM -->
+        <a class="service-card instagram" href="#">
+            <div class="service-glow"></div>
+            <div class="service-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <defs><linearGradient id="ig" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#f09433"/><stop offset="50%" stop-color="#dc2743"/><stop offset="100%" stop-color="#bc1888"/></linearGradient></defs>
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5" stroke="url(#ig)" fill="none"/>
+                    <circle cx="12" cy="12" r="4" stroke="url(#ig)" fill="none"/>
+                    <circle cx="17.5" cy="6.5" r="1.3" fill="#dc2743" stroke="none"/>
+                </svg>
+            </div>
+            <div class="service-name">Instagram</div>
+            <div class="service-type">Page officielle · The Pro Xau</div>
+            <div class="service-desc">Notre page Instagram officielle — on y partage nos analyses, nos publications et toute l'actualité du site. Suis-nous pour rester à jour.</div>
+            <div class="service-cta"><span>Voir la page</span><span class="service-arrow">→</span></div>
+        </a>
+
+    </div>
+
+    <div class="service-note">🔒 <strong style="color:var(--gold);font-weight:500;">Liens du Discord</strong> &nbsp;— réservés aux membres abonnés. Connecte-toi à ton compte pour y accéder.</div>
+
+</div>
+
+<footer>
+    <div class="footer-logo">THE <span>PRO</span> XAU</div>
+    <div class="footer-links">
+        <a href="index.html" class="footer-link">Accueil</a>
+        <a href="about.html" class="footer-link">À propos</a>
+        <a href="services.html" class="footer-link">Services</a>
+        <a href="partenaires.html" class="footer-link">Partenaires</a>
+        <a href="faq.html" class="footer-link">FAQ</a>
+        <a href="terms.html" class="footer-link">Conditions</a>
+    </div>
+    <div class="footer-copy">© 2026 THE PRO XAU · TOUS DROITS RÉSERVÉS · CONTENU ÉDUCATIF UNIQUEMENT</div>
+</footer>
+
+<script>
+    const hamburger  = document.getElementById('hamburger')
+    const navMenu    = document.getElementById('navMenu')
+    const navOverlay = document.getElementById('navOverlay')
+    const navClose   = document.getElementById('navClose')
+    function openMenu()  { hamburger.classList.add('open'); navMenu.classList.add('open'); navOverlay.classList.add('open'); document.body.style.overflow = 'hidden'; }
+    function closeMenu() { hamburger.classList.remove('open'); navMenu.classList.remove('open'); navOverlay.classList.remove('open'); document.body.style.overflow = ''; }
+    hamburger.addEventListener('click', openMenu)
+    navClose.addEventListener('click', closeMenu)
+    navOverlay.addEventListener('click', closeMenu)
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu() })
+</script>
+</body>
+</html>
