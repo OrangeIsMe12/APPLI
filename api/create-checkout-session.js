@@ -44,7 +44,7 @@ module.exports = async function handler(req, res) {
                 },
             ],
             subscription_data: {
-                trial_period_days: 7,   // ✅ Trial géré ici, pas sur le prix Stripe
+                trial_period_days: 30,   // ✅ Trial géré ici, pas sur le prix Stripe
             },
             return_url: `${req.headers.origin || 'https://www.thegolddesk.online'}/success.html?session_id={CHECKOUT_SESSION_ID}`,
         })
