@@ -39,8 +39,6 @@
             position: sticky; top: 0; z-index: 100;
         }
         .nav-brand { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--gold); text-decoration: none; }
-        .nav-back { font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text-dim); text-decoration: none; display: flex; align-items: center; gap: 8px; transition: color 0.2s; }
-        .nav-back:hover { color: var(--gold); }
 
         .hero {
             border-bottom: 1px solid var(--border);
@@ -187,54 +185,84 @@
         .footer-copy { font-family: 'DM Mono', monospace; font-size: 9px; color: #181410; letter-spacing: 2px; }
 
         .progress-bar { position: fixed; top: 0; left: 0; height: 2px; background: var(--gold); z-index: 200; transition: width 0.1s; width: 0%; }
-        /* Hamburger */
-        .hamburger { background: none; border: 1px solid var(--border); padding: 8px 12px; cursor: pointer; display: flex; flex-direction: column; gap: 5px; transition: border-color 0.2s; }
+
+        /* ── HAMBURGER ── */
+        .hamburger {
+            background: none; border: 1px solid var(--border);
+            padding: 8px 12px; cursor: pointer;
+            display: flex; flex-direction: column; gap: 5px;
+            transition: border-color 0.2s;
+        }
         .hamburger:hover { border-color: var(--gold); }
         .hamburger span { display: block; width: 20px; height: 1px; background: var(--text-dim); transition: all 0.3s; }
         .hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
         .hamburger.open span:nth-child(2) { opacity: 0; }
         .hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
-        .nav-menu { position: fixed; top: 0; right: -100%; width: 280px; height: 100vh; background: #060604; border-left: 1px solid var(--border); z-index: 200; transition: right 0.35s ease; display: flex; flex-direction: column; padding: 80px 40px 40px; gap: 4px; }
-        .nav-menu.open { right: 0; }
-        .nav-menu-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 199; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
-        .nav-menu-overlay.open { opacity: 1; pointer-events: all; }
-        .nav-menu-close { position: absolute; top: 20px; right: 24px; background: none; border: none; color: var(--text-muted); font-size: 20px; cursor: pointer; font-family: 'DM Mono', monospace; transition: color 0.2s; }
-        .nav-menu-close:hover { color: var(--gold); }
-        .nav-menu-label { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 4px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 16px; opacity: 0.5; }
-        .nav-menu a { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--text-dim); text-decoration: none; padding: 14px 0; border-bottom: 1px solid var(--border); transition: color 0.2s; display: flex; justify-content: space-between; align-items: center; }
-        .nav-menu a:hover { color: var(--gold); }
-        .nav-menu a:last-child { border-bottom: none; }
-        .nav-menu-cta { margin-top: auto; background: var(--gold); color: #080804 !important; font-weight: 700; padding: 14px 24px !important; text-align: center; justify-content: center !important; border: none !important; }
-        .nav-menu-cta:hover { filter: brightness(1.1); }
 
+        /* ── NAV MENU ── */
+        .nav-menu {
+            position: fixed; top: 0; right: -100%; width: 280px; height: 100vh;
+            background: #060604; border-left: 1px solid var(--border);
+            z-index: 200; transition: right 0.35s ease;
+            display: flex; flex-direction: column;
+            padding: 80px 40px 40px; gap: 4px;
+        }
+        .nav-menu.open { right: 0; }
+        .nav-menu-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+            z-index: 199; opacity: 0; pointer-events: none; transition: opacity 0.3s;
+        }
+        .nav-menu-overlay.open { opacity: 1; pointer-events: all; }
+        .nav-menu-close {
+            position: absolute; top: 20px; right: 24px;
+            background: none; border: none; color: var(--text-muted);
+            font-size: 20px; cursor: pointer; font-family: 'DM Mono', monospace;
+            transition: color 0.2s;
+        }
+        .nav-menu-close:hover { color: var(--gold); }
+        .nav-menu-label {
+            font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 4px;
+            text-transform: uppercase; color: var(--text-muted); margin-bottom: 16px; opacity: 0.5;
+        }
+        .nav-menu a {
+            font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 3px;
+            text-transform: uppercase; color: var(--text-dim); text-decoration: none;
+            padding: 14px 0; border-bottom: 1px solid var(--border);
+            transition: color 0.2s; display: flex; justify-content: space-between; align-items: center;
+        }
+        .nav-menu a:hover { color: var(--gold); }
+        .nav-menu a:last-of-type { border-bottom: none; }
+        .nav-menu-cta {
+            margin-top: auto; background: var(--gold); color: #080804 !important;
+            font-weight: 700; padding: 14px 24px !important;
+            text-align: center; justify-content: center !important; border: none !important;
+        }
+        .nav-menu-cta:hover { filter: brightness(1.1); }
     </style>
 </head>
 <body>
 
 <div class="progress-bar" id="progress"></div>
 
-    <!-- NAV OVERLAY -->
-    <div class="nav-menu-overlay" id="navOverlay"></div>
-    <!-- MENU LATÉRAL -->
-    <div class="nav-menu" id="navMenu">
-        <button class="nav-menu-close" id="navClose">✕</button>
-        <div class="nav-menu-label">Navigation</div>
-        <a href="index.html">Accueil <span>→</span></a>
-        <a href="about.html">À propos <span>→</span></a>
-        <a href="faq.html">FAQ <span>→</span></a>
-        <a href="privacy.html">Confidentialité <span>→</span></a>
-        <a href="terms.html">Conditions <span>→</span></a>
-        <a href="dashboard.html">Mon compte <span>→</span></a>
-        <a href="register.html" class="nav-menu-cta">S'abonner maintenant →</a>
-    </div>
-    <!-- NAV -->
-    <nav class="top-nav">
-        <a href="index.html" class="nav-brand">The Pro Xau</a>
-        <button class="hamburger" id="hamburger">
-            <span></span><span></span><span></span>
-        </button>
-    </nav>
+<div class="nav-menu-overlay" id="navOverlay"></div>
+<div class="nav-menu" id="navMenu">
+    <button class="nav-menu-close" id="navClose">✕</button>
+    <div class="nav-menu-label">Navigation</div>
+    <a href="index.html">Accueil <span>→</span></a>
+    <a href="about.html">À propos <span>→</span></a>
+    <a href="faq.html">FAQ <span>→</span></a>
+    <a href="privacy.html">Confidentialité <span>→</span></a>
+    <a href="terms.html">Conditions <span>→</span></a>
+    <a href="dashboard.html">Mon compte <span>→</span></a>
+    <a href="register.html" class="nav-menu-cta">S'abonner maintenant →</a>
+</div>
 
+<nav class="top-nav">
+    <a href="index.html" class="nav-brand">The Pro Xau</a>
+    <button class="hamburger" id="hamburger">
+        <span></span><span></span><span></span>
+    </button>
+</nav>
 
 <div class="hero">
     <div class="hero-inner">
@@ -249,7 +277,6 @@
 </div>
 
 <div class="layout">
-
     <aside class="toc">
         <div class="toc-label">Sommaire</div>
         <a class="toc-item" data-target="s1">01 · Acceptation</a>
@@ -265,7 +292,6 @@
 
     <main class="content">
 
-        <!-- 01 -->
         <div class="section" id="s1">
             <div class="section-num">01 · Acceptation</div>
             <div class="section-title">Acceptation des conditions</div>
@@ -273,7 +299,6 @@
             <p class="section-text">Si tu n'acceptes pas ces conditions, nous te demandons de ne pas utiliser notre service. L'utilisation continue du service après toute modification vaut acceptation des nouvelles conditions.</p>
         </div>
 
-        <!-- 02 -->
         <div class="section" id="s2">
             <div class="section-num">02 · Service</div>
             <div class="section-title">Description du service</div>
@@ -288,7 +313,6 @@
             <p class="section-text">Nous nous réservons le droit de modifier, suspendre ou interrompre tout ou partie du service à tout moment, avec ou sans préavis.</p>
         </div>
 
-        <!-- 03 -->
         <div class="section" id="s3">
             <div class="section-num">03 · Abonnement</div>
             <div class="section-title">Abonnement & Paiement</div>
@@ -302,7 +326,6 @@
             </ul>
         </div>
 
-        <!-- 04 -->
         <div class="section" id="s4">
             <div class="section-num">04 · Avertissement</div>
             <div class="section-title">Avertissement financier</div>
@@ -314,7 +337,6 @@
             <p class="section-text">TheProXau ne peut être tenu responsable des pertes financières résultant directement ou indirectement de l'utilisation de nos analyses ou contenus.</p>
         </div>
 
-        <!-- 05 -->
         <div class="section" id="s5">
             <div class="section-num">05 · Propriété</div>
             <div class="section-title">Propriété intellectuelle</div>
@@ -326,7 +348,6 @@
             </ul>
         </div>
 
-        <!-- 06 -->
         <div class="section" id="s6">
             <div class="section-num">06 · Compte</div>
             <div class="section-title">Ton compte</div>
@@ -340,7 +361,6 @@
             <p class="section-text">Tu es responsable de toutes les activités effectuées depuis ton compte.</p>
         </div>
 
-        <!-- 07 -->
         <div class="section" id="s7">
             <div class="section-num">07 · Résiliation</div>
             <div class="section-title">Résiliation</div>
@@ -348,7 +368,6 @@
             <p class="section-text">Nous nous réservons le droit de suspendre ou résilier tout compte en cas de violation des présentes conditions, sans remboursement.</p>
         </div>
 
-        <!-- 08 -->
         <div class="section" id="s8">
             <div class="section-num">08 · Responsabilité</div>
             <div class="section-title">Limitation de responsabilité</div>
@@ -362,14 +381,13 @@
             <p class="section-text">Ces conditions sont régies par les lois en vigueur au Québec, Canada. Tout litige sera soumis à la juridiction des tribunaux compétents de la province de Québec.</p>
         </div>
 
-        <!-- 09 -->
         <div class="section" id="s9">
             <div class="section-num">09 · Contact</div>
             <div class="section-title">Nous contacter</div>
             <p class="section-text">Pour toute question relative aux présentes conditions d'utilisation :</p>
             <div class="contact-box">
                 <div class="contact-box-label">Support TheProXau</div>
-                <a href="/cdn-cgi/l/email-protection#f5868085859a8781b5819d90929a99919190869edb9a9b999c9b90" class="contact-email"><span class="__cf_email__" data-cfemail="c3b0b6b3b3acb1b783b7aba6a4acafa7a7a6b0a8edacadafaaada6">[email&#160;protected]</span></a>
+                <a href="mailto:support@thegolddesk.online" class="contact-email">support@thegolddesk.online</a>
                 <div class="contact-sub">Réponse sous 48h ouvrables</div>
             </div>
         </div>
@@ -388,25 +406,67 @@
     <div class="footer-copy">© 2026 THEPROXAU · TOUS DROITS RÉSERVÉS · CONTENU ÉDUCATIF UNIQUEMENT</div>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
+    /* ── PROGRESS BAR ── */
     window.addEventListener('scroll', () => {
-        const scrolled = window.scrollY
-        const max = document.body.scrollHeight - window.innerHeight
-        document.getElementById('progress').style.width = (scrolled / max * 100) + '%'
-    })
+        const scrolled = window.scrollY;
+        const max = document.body.scrollHeight - window.innerHeight;
+        document.getElementById('progress').style.width = (scrolled / max * 100) + '%';
+    });
 
+    /* ── SECTIONS FADE-IN ── */
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                entry.target.classList.add('visible')
-                const id = entry.target.id
+                entry.target.classList.add('visible');
+                const id = entry.target.id;
                 document.querySelectorAll('.toc-item').forEach(item => {
-                    item.classList.toggle('active', item.dataset.target === id)
-                })
+                    item.classList.toggle('active', item.dataset.target === id);
+                });
             }
-        })
-    }, { threshold: 0.1 })
+        });
+    }, { threshold: 0.1 });
 
-    document.querySelectorAll('.section').forEach(s => observer.observe(s))
+    document.querySelectorAll('.section').forEach(s => observer.observe(s));
 
-    document.querySelectorAll('.toc-item').forEach(ite
+    /* ── TOC CLICK → SCROLL ── */
+    document.querySelectorAll('.toc-item').forEach(item => {
+        item.addEventListener('click', () => {
+            const target = document.getElementById(item.dataset.target);
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    });
+
+    /* ── HAMBURGER MENU ── */
+    const hamburger  = document.getElementById('hamburger');
+    const navMenu    = document.getElementById('navMenu');
+    const navOverlay = document.getElementById('navOverlay');
+    const navClose   = document.getElementById('navClose');
+
+    function openMenu() {
+        hamburger.classList.add('open');
+        navMenu.classList.add('open');
+        navOverlay.classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeMenu() {
+        hamburger.classList.remove('open');
+        navMenu.classList.remove('open');
+        navOverlay.classList.remove('open');
+        document.body.style.overflow = '';
+    }
+
+    hamburger.addEventListener('click', openMenu);
+    navClose.addEventListener('click', closeMenu);
+    navOverlay.addEventListener('click', closeMenu);
+
+    /* Fermer avec Escape */
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') closeMenu();
+    });
+</script>
+</body>
+</html>
