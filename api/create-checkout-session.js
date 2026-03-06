@@ -5,6 +5,8 @@
 //   STRIPE_SECRET_KEY  → ta clé secrète Stripe (sk_live_...)
 //   STRIPE_PRICE_ID    → l'ID du prix créé dans le dashboard Stripe
 //                        ex: price_1ABC123...
+//                        ⚠️ Ne PAS activer de trial sur le prix dans Stripe
+//                        Le trial est géré ici via subscription_data
 // ─────────────────────────────────────────────────────────────
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
 
@@ -24,10 +26,6 @@ module.exports = async function handler(req, res) {
             return res.status(400).json({ error: 'Email requis' })
         }
 
-        // ── IMPORTANT : utilise un Price ID créé dans le dashboard Stripe ──
-        // Va sur https://dashboard.stripe.com/products → crée un produit
-        // "The Pro Xau Premium" à 9.99$/mois avec trial 7 jours
-        // Copie le Price ID (price_xxx) et mets-le dans STRIPE_PRICE_ID dans Vercel
         const priceId = process.env.STRIPE_PRICE_ID
         if (!priceId) {
             return res.status(500).json({ error: 'STRIPE_PRICE_ID manquant dans les variables Vercel' })
@@ -41,10 +39,13 @@ module.exports = async function handler(req, res) {
             client_reference_id: userId || null,
             line_items: [
                 {
-                    price: priceId,
+                    price: priceId,   // Price ID Stripe — 9.99$/mois, sans trial configuré dessus
                     quantity: 1,
                 },
             ],
+            subscription_data: {
+                trial_period_days: 7,   // ✅ Trial géré ici, pas sur le prix Stripe
+            },
             return_url: `${req.headers.origin || 'https://www.thegolddesk.online'}/success.html?session_id={CHECKOUT_SESSION_ID}`,
         })
 
