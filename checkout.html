@@ -19,16 +19,17 @@
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; -webkit-font-smoothing: antialiased; }
 
-        .top-nav { display: flex; justify-content: space-between; align-items: center; padding: 14px 32px; border-bottom: 1px solid var(--border); background: var(--bg); }
+        .top-nav { display: flex; justify-content: space-between; align-items: center; padding: 14px 32px; border-bottom: 1px solid var(--border); background: var(--bg); flex-wrap: wrap; gap: 10px; }
         .nav-brand { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--gold); text-decoration: none; }
+        .nav-actions { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
         .nav-back { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
         .nav-back:hover { color: var(--gold); }
+        .nav-change-account { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); text-decoration: none; border: 1px solid var(--border); padding: 7px 14px; transition: all 0.2s; cursor: pointer; background: none; }
+        .nav-change-account:hover { border-color: var(--gold); color: var(--gold); background: var(--gold-dim); }
 
         .page { max-width: 960px; margin: 0 auto; padding: 56px 24px 80px; display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
         @media(max-width: 700px) { .page { grid-template-columns: 1fr; gap: 32px; padding: 32px 16px 60px; } }
 
-        /* LEFT — Offer summary */
-        .offer { }
         .offer-eyebrow { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); opacity: 0.65; margin-bottom: 16px; }
         .offer-title { font-family: 'Playfair Display', serif; font-size: clamp(28px, 4vw, 40px); font-weight: 900; line-height: 1.05; letter-spacing: -1px; margin-bottom: 20px; }
         .offer-title em { color: var(--gold-light); font-style: italic; }
@@ -43,13 +44,16 @@
         .offer-divider { height: 1px; background: var(--border); margin: 28px 0; }
         .secure-note { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 1px; color: var(--text-muted); display: flex; align-items: center; gap: 6px; }
 
-        /* RIGHT — Stripe embed */
+        /* Account info banner */
+        .account-banner { background: var(--gold-dim); border: 1px solid rgba(201,168,76,0.2); padding: 12px 18px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+        .account-banner-text { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1px; color: var(--gold); }
+        .account-banner-email { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--gold-light); font-weight: 700; }
+
         .checkout-wrap { background: var(--bg2); border: 1px solid var(--border); padding: 32px; }
         .checkout-header { margin-bottom: 24px; }
         .checkout-eyebrow { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); opacity: 0.6; margin-bottom: 8px; }
         .checkout-title { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; }
 
-        /* Stripe iframe container */
         #checkout { min-height: 300px; }
 
         .loading-checkout { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 48px 0; }
@@ -59,13 +63,28 @@
 
         .error-box { background: rgba(201,76,76,0.06); border: 1px solid rgba(201,76,76,0.2); border-left: 2px solid var(--red); padding: 14px 18px; font-family: 'DM Mono', monospace; font-size: 11px; color: #e09090; display: none; margin-bottom: 16px; }
         .error-box.show { display: block; }
+
+        /* Auth overlay */
+        .auth-overlay { position: fixed; inset: 0; background: var(--bg); z-index: 999; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 16px; }
+        .auth-overlay.hidden { display: none; }
+        .auth-spinner { width: 32px; height: 32px; border: 2px solid var(--border); border-top-color: var(--gold); border-radius: 50%; animation: spin 0.8s linear infinite; }
+        .auth-text { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 4px; text-transform: uppercase; color: var(--text-muted); }
     </style>
 </head>
 <body>
 
+    <!-- Auth check overlay -->
+    <div class="auth-overlay" id="authOverlay">
+        <div class="auth-spinner"></div>
+        <div class="auth-text">Vérification</div>
+    </div>
+
     <nav class="top-nav">
         <a href="index.html" class="nav-brand">The Pro Xau</a>
-        <a href="register.html" class="nav-back">← Retour</a>
+        <div class="nav-actions">
+            <a href="register.html" class="nav-back">← Retour</a>
+            <button class="nav-change-account" id="change-account-btn">⇄ Changer de compte</button>
+        </div>
     </nav>
 
     <div class="page">
@@ -81,7 +100,7 @@
             </div>
             <div class="offer-trial">✓ 30 jours gratuits — annulable à tout moment</div>
             <ul class="offer-features">
-                <li>Newsletter XAU/USD chaque dimanche soir</li>
+                <li>Newsletter XAU/USD chaque vendredi soir</li>
                 <li>Analyse technique complète + niveaux clés</li>
                 <li>3 catalyseurs macro détaillés</li>
                 <li>Setup de la semaine + scénarios bull/bear</li>
@@ -98,6 +117,13 @@
             <div class="checkout-header">
                 <div class="checkout-eyebrow">Étape 2 — Paiement</div>
                 <div class="checkout-title">Finaliser l'abonnement</div>
+            </div>
+            <div class="account-banner" id="account-banner">
+                <div>
+                    <div class="account-banner-text">Connecté en tant que</div>
+                    <div class="account-banner-email" id="account-email">—</div>
+                </div>
+                <button class="nav-change-account" id="change-account-btn-2" style="font-size:8px;">⇄ Changer</button>
             </div>
             <div class="error-box" id="error-box">Une erreur s'est produite. Recharge la page.</div>
             <div id="checkout">
@@ -119,10 +145,21 @@
         const { createClient } = supabase
         const sb = createClient(SUPABASE_URL, SUPABASE_ANON)
 
+        // ── Changer de compte ──
+        function changeAccount() {
+            sb.auth.signOut()
+            localStorage.clear()
+            window.location.href = 'login.html'
+        }
+
+        document.getElementById('change-account-btn').addEventListener('click', changeAccount)
+        document.getElementById('change-account-btn-2').addEventListener('click', changeAccount)
+
         async function initCheckout() {
             try {
-                // Récupérer la session Supabase
                 const { data: { session } } = await sb.auth.getSession()
+
+                // Pas connecté → register
                 if (!session) {
                     window.location.href = 'register.html'
                     return
@@ -131,7 +168,22 @@
                 const email  = session.user.email
                 const userId = session.user.id
 
-                // Créer la session Stripe via notre API Vercel
+                // ✅ Affiche l'email connecté
+                document.getElementById('account-email').textContent = email
+
+                // ✅ Vérifie si déjà abonné → redirect dashboard
+                const { data: sub } = await sb.from('subscriptions').select('status')
+                    .or(`email.eq.${email},user_id.eq.${userId}`)
+                    .limit(1).single()
+
+                if (sub && (sub.status === 'active' || sub.status === 'trialing')) {
+                    window.location.href = 'dashboard.html'
+                    return
+                }
+
+                // Pas encore abonné → afficher le checkout
+                document.getElementById('authOverlay').classList.add('hidden')
+
                 const res = await fetch('/api/create-checkout-session', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -141,7 +193,6 @@
                 const data = await res.json()
                 if (!data.clientSecret) throw new Error(data.error || 'Pas de clientSecret')
 
-                // Monter le formulaire Stripe embedded
                 const stripe = Stripe(STRIPE_PUBLIC_KEY)
                 const checkout = await stripe.initEmbeddedCheckout({ clientSecret: data.clientSecret })
                 document.getElementById('checkout').innerHTML = ''
@@ -149,6 +200,7 @@
 
             } catch (err) {
                 console.error(err)
+                document.getElementById('authOverlay').classList.add('hidden')
                 document.getElementById('error-box').textContent = 'Erreur : ' + err.message
                 document.getElementById('error-box').classList.add('show')
                 document.getElementById('checkout').innerHTML = ''
