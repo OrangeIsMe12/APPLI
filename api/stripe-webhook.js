@@ -16,6 +16,14 @@ async function getRawBody(req) {
     })
 }
 
+// ✅ Convertit un timestamp Unix en ISO string de façon sécurisée
+function safeTimestampToISO(ts) {
+    if (!ts || typeof ts !== 'number') return null
+    const d = new Date(ts * 1000)
+    if (isNaN(d.getTime())) return null
+    return d.toISOString()
+}
+
 export default async function handler(req, res) {
     if (req.method !== 'POST') return res.status(405).end()
 
@@ -32,53 +40,123 @@ export default async function handler(req, res) {
 
     const data = event.data.object
 
-    // ── Checkout complété → abonnement créé ──────────────────
+    // ── Checkout complété → abonnement créé ──────────────────────────────────
     if (event.type === 'checkout.session.completed') {
         try {
             if (!data.subscription) return res.json({ received: true })
 
             const subscription = await stripe.subscriptions.retrieve(data.subscription)
-            const email = data.customer_details?.email
-                || (await stripe.customers.retrieve(subscription.customer)).email
 
-            if (!email) return res.json({ received: true })
+            // ✅ Récupère l'email depuis plusieurs sources possibles
+            let email = data.customer_details?.email
+            if (!email && subscription.customer) {
+                const customer = await stripe.customers.retrieve(subscription.customer)
+                email = customer.email
+            }
+            if (!email) {
+                console.error('No email found for subscription', subscription.id)
+                return res.json({ received: true })
+            }
 
-            await sb.from('subscriptions').upsert({
+            // ✅ Récupère client_reference_id (= user_id Supabase envoyé depuis register.html)
+            const userId = data.client_reference_id || null
+
+            // ✅ Dates sécurisées — plus jamais de RangeError
+            const periodEnd  = safeTimestampToISO(subscription.current_period_end)
+            const periodStart = safeTimestampToISO(subscription.current_period_start)
+            const createdAt  = safeTimestampToISO(subscription.created)
+
+            console.log('checkout.session.completed:', {
+                email, userId,
+                status: subscription.status,
+                periodEnd, periodStart, createdAt
+            })
+
+            const upsertData = {
                 email,
                 stripe_customer_id:     subscription.customer,
                 stripe_subscription_id: subscription.id,
                 status:                 subscription.status,
-                current_period_end:     new Date(subscription.current_period_end * 1000).toISOString(),
-                member_since:           new Date(subscription.created * 1000).toISOString(),
-            }, { onConflict: 'email' })
+                member_since:           createdAt || new Date().toISOString(),
+            }
+
+            // Ajoute les dates seulement si valides
+            if (periodEnd)   upsertData.current_period_end   = periodEnd
+            if (periodStart) upsertData.current_period_start = periodStart
+
+            // ✅ Lie l'abonnement à l'user Supabase si client_reference_id présent
+            if (userId) upsertData.user_id = userId
+
+            await sb.from('subscriptions').upsert(upsertData, { onConflict: 'email' })
+
+            // ✅ Si on a le user_id, met aussi à jour la table auth.users metadata
+            if (userId) {
+                await sb.auth.admin.updateUserById(userId, {
+                    user_metadata: { is_subscribed: true }
+                })
+            }
 
         } catch (err) {
-            console.error('checkout.session.completed error:', err.message)
+            console.error('checkout.session.completed error:', err.message, err.stack)
             return res.json({ received: true })
         }
     }
 
-    // ── Paiement reçu → enregistre dans payments ─────────────
+    // ── Abonnement mis à jour (renouvellement, changement de statut) ──────────
+    if (event.type === 'customer.subscription.updated') {
+        try {
+            const periodEnd  = safeTimestampToISO(data.current_period_end)
+            const periodStart = safeTimestampToISO(data.current_period_start)
+
+            const updateData = { status: data.status }
+            if (periodEnd)   updateData.current_period_end   = periodEnd
+            if (periodStart) updateData.current_period_start = periodStart
+
+            await sb.from('subscriptions')
+                .update(updateData)
+                .eq('stripe_subscription_id', data.id)
+
+        } catch (err) {
+            console.error('customer.subscription.updated error:', err.message)
+        }
+    }
+
+    // ── Paiement reçu → enregistre dans payments ─────────────────────────────
     if (event.type === 'invoice.payment_succeeded') {
         try {
-            // ✅ FIX : essaie d'abord customer_email (évite un appel API)
-            const email = data.customer_email
-                || (await stripe.customers.retrieve(data.customer)).email
+            let email = data.customer_email
+            if (!email && data.customer) {
+                const customer = await stripe.customers.retrieve(data.customer)
+                email = customer.email
+            }
 
             if (!email) return res.json({ received: true })
+
+            // ✅ Date de paiement sécurisée
+            const paidAt = safeTimestampToISO(data.status_transitions?.paid_at)
+                        || new Date().toISOString()
 
             await sb.from('payments').insert({
                 stripe_customer_id: data.customer,
                 email,
-                amount:      data.amount_paid / 100,
-                currency:    data.currency.toUpperCase(),
+                amount:      (data.amount_paid || 0) / 100,
+                currency:    (data.currency || 'usd').toUpperCase(),
                 status:      'paid',
                 description: 'The Pro Xau — Premium',
-                invoice_pdf: data.invoice_pdf,
-                paid_at:     data.status_transitions?.paid_at
-                    ? new Date(data.status_transitions.paid_at * 1000).toISOString()
-                    : new Date().toISOString()
+                invoice_pdf: data.invoice_pdf || null,
+                paid_at:     paidAt
             })
+
+            // ✅ Met aussi à jour current_period_end dans subscriptions
+            if (data.subscription) {
+                const subscription = await stripe.subscriptions.retrieve(data.subscription)
+                const periodEnd = safeTimestampToISO(subscription.current_period_end)
+                if (periodEnd) {
+                    await sb.from('subscriptions')
+                        .update({ current_period_end: periodEnd, status: subscription.status })
+                        .eq('stripe_subscription_id', data.subscription)
+                }
+            }
 
         } catch (err) {
             console.error('invoice.payment_succeeded error:', err.message)
@@ -86,13 +164,12 @@ export default async function handler(req, res) {
         }
     }
 
-    // ── Abonnement annulé ─────────────────────────────────────
+    // ── Abonnement annulé ─────────────────────────────────────────────────────
     if (event.type === 'customer.subscription.deleted') {
         try {
-            const customer = await stripe.customers.retrieve(data.customer)
             await sb.from('subscriptions')
                 .update({ status: 'canceled' })
-                .eq('email', customer.email)
+                .eq('stripe_subscription_id', data.id)
         } catch (err) {
             console.error('subscription.deleted error:', err.message)
         }
