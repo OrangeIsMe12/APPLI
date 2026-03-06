@@ -112,8 +112,8 @@
     <nav class="top-nav">
         <a href="index.html" class="nav-brand">The Pro Xau</a>
         <div class="nav-right">
-            <a href="Privacy.html" class="nav-link" style="font-size:9px; opacity:0.4;">Confidentialité</a>
-            <a href="Terms.html" class="nav-link" style="font-size:9px; opacity:0.4;">Conditions</a>
+            <a href="privacy.html" class="nav-link" style="font-size:9px; opacity:0.4;">Confidentialité</a>
+            <a href="terms.html" class="nav-link" style="font-size:9px; opacity:0.4;">Conditions</a>
             <a href="register.html" class="nav-link" id="nav-subscribe-link">S'abonner</a>
             <a href="dashboard.html" class="nav-btn">Mon compte →</a>
         </div>
@@ -137,28 +137,66 @@
         </div>
     </section>
 
-    <!-- TICKER -->
+    <!-- TICKER LIVE -->
     <div class="ticker-strip">
-        <div class="ticker-inner" id="tickerInner"></div>
+        <div class="ticker-inner" id="tickerInner">
+            <span class="ticker-item"><span class="sym">Chargement des prix...</span></span>
+        </div>
     </div>
     <script>
-        const tickerData = [
-            { label: 'XAUUSD', price: 5183.30, changePct: +0.37, prefix: '$', decimals: 0 },
-            { label: 'XAGUSD', price: 87.30,   changePct: -2.06, prefix: '$', decimals: 2 },
-            { label: 'DXY',    price: 97.77,   changePct: +0.15, prefix: '',  decimals: 2 },
-            { label: 'US10Y',  price: 4.05,    changePct: -0.05, prefix: '',  decimals: 2, suffix: '%' },
+        const TD_KEY = '3e1a2a7a51f14dea87ed12138d0d6de9'
+        const SYMBOLS = [
+            { symbol: 'XAU/USD', label: 'XAUUSD', decimals: 2, prefix: '$' },
+            { symbol: 'XAG/USD', label: 'XAGUSD', decimals: 2, prefix: '$' },
+            { symbol: 'EUR/USD', label: 'EURUSD', decimals: 4, prefix: '' },
+            { symbol: 'DXY',     label: 'DXY',    decimals: 2, prefix: '' },
         ]
-        function buildTicker(data) {
+
+        function buildTicker(items) {
             let block = ''
-            data.forEach(item => {
-                const cls = item.changePct >= 0 ? 'up' : 'down'
-                const sign = item.changePct >= 0 ? '+' : ''
-                const price = (item.prefix||'') + item.price.toLocaleString('en-US',{minimumFractionDigits:item.decimals,maximumFractionDigits:item.decimals}) + (item.suffix||'')
-                block += `<span class="ticker-item"><span class="sym">${item.label}</span><span class="${cls}">${price}</span><span class="${cls}">${sign}${item.changePct.toFixed(2)}%</span></span><span class="ticker-dot">◆</span>`
+            items.forEach(item => {
+                const cls  = item.change >= 0 ? 'up' : 'down'
+                const sign = item.change >= 0 ? '+' : ''
+                const price = (item.prefix || '') + item.price.toLocaleString('en-US', {
+                    minimumFractionDigits: item.decimals,
+                    maximumFractionDigits: item.decimals
+                })
+                block += `<span class="ticker-item">
+                    <span class="sym">${item.label}</span>
+                    <span class="${cls}">${price}</span>
+                    <span class="${cls}">${sign}${item.change.toFixed(2)}%</span>
+                </span><span class="ticker-dot">◆</span>`
             })
+            // Répète 4x pour boucle continue
             return block + block + block + block
         }
-        document.getElementById('tickerInner').innerHTML = buildTicker(tickerData)
+
+        async function fetchTicker() {
+            try {
+                const symbolList = SYMBOLS.map(s => s.symbol).join(',')
+                const url = `https://api.twelvedata.com/quote?symbol=${encodeURIComponent(symbolList)}&apikey=${TD_KEY}`
+                const res  = await fetch(url)
+                const json = await res.json()
+
+                const items = SYMBOLS.map(s => {
+                    const data = json[s.symbol] || {}
+                    const price  = parseFloat(data.close || data.price || 0)
+                    const open   = parseFloat(data.open || price)
+                    const change = open > 0 ? ((price - open) / open) * 100 : 0
+                    return { ...s, price, change }
+                }).filter(i => i.price > 0)
+
+                if (items.length > 0) {
+                    document.getElementById('tickerInner').innerHTML = buildTicker(items)
+                }
+            } catch (err) {
+                console.warn('Ticker fetch error:', err)
+            }
+        }
+
+        // Charge immédiatement puis toutes les 60 secondes
+        fetchTicker()
+        setInterval(fetchTicker, 60000)
     </script>
 
     <!-- EDITIONS -->
