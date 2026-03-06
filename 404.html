@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page introuvable — The Pro Xau</title>
+    <link rel="icon" type="image/png" href="/icon.jpg">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #c9a84c; --gold-light: #e8c97a; --gold-dim: rgba(201,168,76,0.1);
+            --bg: #080808; --border: #1e1a10;
+            --text: #e8e0d0; --text-dim: #9a9080; --text-muted: #4a4038;
+        }
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+
+        .top-nav { display: flex; justify-content: space-between; align-items: center; padding: 14px 32px; border-bottom: 1px solid var(--border); background: var(--bg); position: sticky; top: 0; z-index: 100; }
+        .nav-brand { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--gold); text-decoration: none; }
+
+        .page { min-height: calc(100vh - 57px); display: flex; align-items: center; justify-content: center; padding: 60px 24px; position: relative; overflow: hidden; }
+
+        /* big watermark */
+        .page::before {
+            content: '404';
+            position: absolute;
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(160px, 30vw, 320px);
+            font-weight: 900;
+            color: var(--gold);
+            opacity: 0.025;
+            pointer-events: none;
+            user-select: none;
+            letter-spacing: -10px;
+            line-height: 1;
+        }
+
+        .content { text-align: center; position: relative; z-index: 1; max-width: 520px; }
+
+        .eyebrow { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 5px; text-transform: uppercase; color: var(--gold); opacity: 0.6; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; gap: 12px; }
+        .eyebrow::before, .eyebrow::after { content: ''; width: 32px; height: 1px; background: var(--gold); opacity: 0.35; }
+
+        .title { font-family: 'Playfair Display', serif; font-size: clamp(36px, 6vw, 64px); font-weight: 900; line-height: 1.05; letter-spacing: -1.5px; margin-bottom: 16px; }
+        .title em { color: var(--gold-light); font-style: italic; }
+
+        .sub { font-size: 14px; color: var(--text-dim); line-height: 1.8; margin-bottom: 44px; }
+
+        .actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+        .btn-gold { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; background: var(--gold); color: #080804; padding: 14px 28px; text-decoration: none; font-weight: 700; transition: background 0.2s; display: inline-flex; align-items: center; gap: 8px; }
+        .btn-gold:hover { background: var(--gold-light); }
+
+        .btn-outline { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; background: transparent; color: var(--text-muted); padding: 14px 28px; text-decoration: none; border: 1px solid var(--border); transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px; }
+        .btn-outline:hover { border-color: var(--gold); color: var(--gold); background: var(--gold-dim); }
+
+        .divider { height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); opacity: 0.1; max-width: 300px; margin: 48px auto 0; }
+
+        footer { border-top: 1px solid var(--border); padding: 28px 24px; text-align: center; }
+        .footer-copy { font-family: 'DM Mono', monospace; font-size: 9px; color: #181410; letter-spacing: 2px; }
+    </style>
+</head>
+<body>
+
+    <nav class="top-nav">
+        <a href="index.html" class="nav-brand">The Pro Xau</a>
+    </nav>
+
+    <div class="page">
+        <div class="content">
+            <div class="eyebrow">Erreur 404</div>
+            <h1 class="title">Page <em>introuvable</em></h1>
+            <p class="sub">La page que tu cherches n'existe pas ou a été déplacée. Vérifie l'URL ou retourne à l'accueil.</p>
+            <div class="actions">
+                <a href="index.html" class="btn-gold">← Retour à l'accueil</a>
+                <a href="dashboard.html" class="btn-outline">Mon compte →</a>
+            </div>
+            <div class="divider"></div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-copy">© 2026 THE PRO XAU · TOUS DROITS RÉSERVÉS</div>
+    </footer>
+
+</body>
+</html>
