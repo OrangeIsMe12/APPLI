@@ -3,8 +3,9 @@
 // Fonction Vercel — crée une session Stripe Embedded Checkout
 // Variables d'environnement requises dans Vercel :
 //   STRIPE_SECRET_KEY  → ta clé secrète Stripe (sk_live_...)
+//   STRIPE_PRICE_ID    → l'ID du prix créé dans le dashboard Stripe
+//                        ex: price_1ABC123...
 // ─────────────────────────────────────────────────────────────
-
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
 
 module.exports = async function handler(req, res) {
@@ -13,16 +14,23 @@ module.exports = async function handler(req, res) {
     res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS')
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
     if (req.method === 'OPTIONS') return res.status(200).end()
-
     if (req.method !== 'POST') {
         return res.status(405).json({ error: 'Method not allowed' })
     }
 
     try {
         const { email, userId } = req.body
-
         if (!email) {
             return res.status(400).json({ error: 'Email requis' })
+        }
+
+        // ── IMPORTANT : utilise un Price ID créé dans le dashboard Stripe ──
+        // Va sur https://dashboard.stripe.com/products → crée un produit
+        // "The Pro Xau Premium" à 9.99$/mois avec trial 7 jours
+        // Copie le Price ID (price_xxx) et mets-le dans STRIPE_PRICE_ID dans Vercel
+        const priceId = process.env.STRIPE_PRICE_ID
+        if (!priceId) {
+            return res.status(500).json({ error: 'STRIPE_PRICE_ID manquant dans les variables Vercel' })
         }
 
         const session = await stripe.checkout.sessions.create({
@@ -33,25 +41,11 @@ module.exports = async function handler(req, res) {
             client_reference_id: userId || null,
             line_items: [
                 {
-                    price_data: {
-                        currency: 'usd',
-                        product_data: {
-                            name: 'The Pro Xau — Premium',
-                            description: 'Accès complet à toutes les éditions hebdomadaires.',
-                        },
-                        unit_amount: 999, // 9.99$ en cents
-                        recurring: {
-                            interval: 'month',
-                        },
-                    },
+                    price: priceId,
                     quantity: 1,
                 },
             ],
-            // ── FREE TRIAL ──
-            subscription_data: {
-                trial_period_days: 7, // Retire cette ligne si pas de trial
-            },
-            return_url: `${req.headers.origin || 'https://www.thegolddesk.online/'}/success.html?session_id={CHECKOUT_SESSION_ID}`,
+            return_url: `${req.headers.origin || 'https://www.thegolddesk.online'}/success.html?session_id={CHECKOUT_SESSION_ID}`,
         })
 
         return res.status(200).json({ clientSecret: session.client_secret })
