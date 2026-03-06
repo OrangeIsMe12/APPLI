@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ — The Pro Xau</title>
+    <link rel="icon" type="image/png" href="/icon.jpg">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #c9a84c; --gold-light: #e8c97a; --gold-dim: rgba(201,168,76,0.15);
+            --bg: #080808; --bg2: #0e0e0e; --bg3: #131313;
+            --border: #1e1a10; --border2: #2a2420;
+            --text: #e8e0d0; --text-dim: #9a9080; --text-muted: #4a4038;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: var(--text); min-height: 100vh; overflow-x: hidden; }
+
+        .top-nav { display: flex; justify-content: space-between; align-items: center; padding: 14px 32px; border-bottom: 1px solid var(--border); background: rgba(8,8,8,0.95); backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 100; }
+        .nav-brand { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--gold); text-decoration: none; }
+        .nav-back { font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); text-decoration: none; display: flex; align-items: center; gap: 8px; transition: color 0.2s; }
+        .nav-back:hover { color: var(--gold); }
+
+        .hero { border-bottom: 1px solid var(--border); padding: 80px 32px 64px; position: relative; overflow: hidden; }
+        .hero::before { content: 'FAQ'; position: absolute; right: -20px; top: 50%; transform: translateY(-50%); font-family: 'Playfair Display', serif; font-size: clamp(100px,18vw,220px); font-weight: 900; color: var(--gold); opacity: 0.025; pointer-events: none; white-space: nowrap; }
+        .hero-inner { max-width: 860px; margin: 0 auto; }
+        .hero-eyebrow { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 5px; color: var(--gold); text-transform: uppercase; opacity: 0.7; margin-bottom: 20px; display: flex; align-items: center; gap: 12px; }
+        .hero-eyebrow::before { content: ''; width: 32px; height: 1px; background: var(--gold); opacity: 0.4; }
+        .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(36px,6vw,64px); font-weight: 900; line-height: 1.05; letter-spacing: -1px; color: var(--text); margin-bottom: 24px; }
+        .hero-title em { color: var(--gold); font-style: italic; }
+        .hero-sub { font-size: 14px; color: var(--text-dim); line-height: 1.7; max-width: 500px; }
+
+        .main { max-width: 860px; margin: 0 auto; padding: 64px 32px 80px; }
+
+        .faq-category { margin-bottom: 52px; }
+        .cat-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); opacity: 0.6; margin-bottom: 6px; }
+        .cat-title { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--text); margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+
+        .faq-item { border: 1px solid var(--border); margin-bottom: 2px; overflow: hidden; }
+        .faq-q { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; cursor: pointer; background: var(--bg2); transition: background 0.2s; gap: 16px; user-select: none; }
+        .faq-q:hover { background: #0f0d06; }
+        .faq-q-text { font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; color: var(--text); line-height: 1.4; }
+        .faq-icon { font-family: 'DM Mono', monospace; font-size: 20px; color: var(--gold); opacity: 0.5; flex-shrink: 0; transition: transform 0.3s, opacity 0.3s; }
+        .faq-item.open .faq-icon { transform: rotate(45deg); opacity: 1; }
+        .faq-a { max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.3s; background: #060504; padding: 0 24px; }
+        .faq-item.open .faq-a { max-height: 300px; padding: 20px 24px; }
+        .faq-a p { font-size: 13px; color: var(--text-dim); line-height: 1.9; }
+        .faq-a strong { color: var(--gold); }
+        .faq-a a { color: var(--gold); opacity: 0.7; text-decoration: none; }
+        .faq-a a:hover { opacity: 1; }
+
+        .contact-box { background: linear-gradient(135deg,#0f0d06,#0a0905); border: 1px solid rgba(201,168,76,0.25); padding: 48px; text-align: center; margin-top: 64px; position: relative; overflow: hidden; }
+        .contact-box::before { content: ''; position: absolute; top: -60px; right: -60px; width: 200px; height: 200px; background: radial-gradient(circle, rgba(201,168,76,0.08), transparent 70%); }
+        .contact-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); opacity: 0.6; margin-bottom: 16px; }
+        .contact-title { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; color: var(--text); margin-bottom: 10px; }
+        .contact-sub { font-size: 13px; color: var(--text-dim); margin-bottom: 24px; }
+        .contact-email { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--gold); text-decoration: none; display: inline-block; transition: color 0.2s; }
+        .contact-email:hover { color: var(--gold-light); }
+
+        footer { border-top: 1px solid var(--border); padding: 40px 32px; text-align: center; }
+        .footer-logo { font-family: 'Playfair Display', serif; font-size: 20px; color: #201c10; margin-bottom: 12px; }
+        .footer-logo span { color: var(--gold); opacity: 0.2; }
+        .footer-links { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; margin-bottom: 12px; }
+        .footer-link { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); text-decoration: none; }
+        .footer-link:hover { color: var(--gold); }
+        .footer-copy { font-family: 'DM Mono', monospace; font-size: 9px; color: #181410; letter-spacing: 2px; }
+
+        .progress-bar { position: fixed; top: 0; left: 0; height: 2px; background: var(--gold); z-index: 200; transition: width 0.1s; width: 0%; }
+    </style>
+</head>
+<body>
+
+<div class="progress-bar" id="progress"></div>
+
+<nav class="top-nav">
+    <a href="index.html" class="nav-brand">The Pro Xau</a>
+    <a href="index.html" class="nav-back">← Retour au site</a>
+</nav>
+
+<div class="hero">
+    <div class="hero-inner">
+        <div class="hero-eyebrow">Questions fréquentes</div>
+        <h1 class="hero-title">Tu as des<br><em>questions ?</em></h1>
+        <p class="hero-sub">Tout ce que tu dois savoir sur The Pro Xau — le service, l'abonnement, le contenu et la sécurité.</p>
+    </div>
+</div>
+
+<div class="main">
+
+    <!-- CATÉGORIE 1 — LE SERVICE -->
+    <div class="faq-category">
+        <div class="cat-label">01 · Le service</div>
+        <div class="cat-title">À propos de The Pro Xau</div>
+
+        <div class="faq-item">
+            <div class="faq-q"><span class="faq-q-text">C'est quoi exactement The Pro Xau ?</span><span class="faq-icon">+</span></div>
+            <div class="faq-a"><p>The Pro Xau est une <strong>newsletter premium hebdomadaire</strong> d'analyse des marchés de l'or. Chaque vendredi, tu reçois une analyse complète de XAU/USD et XAG/USD — contexte macro, structure technique, niveaux clés, setups bull/bear et un concept éducatif.</p></div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q"><span class="faq-q-text">Est-ce que c'est des signaux de trading ?</span><span class="faq-icon">+</span></div>
+            <div class="faq-a"><p>Non. The Pro Xau est une newsletter d'<strong>analyse éducative</strong>. Je partage ma lecture des marchés, les niveaux importants et les scénarios possibles — mais tu restes seul maître de tes décisions d'investissement. Tout le contenu est fourni à titre informatif uniquement.</p></div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q"><span class="faq-q-text">C'est pour quel niveau de trader ?</span><span class="faq-icon">+</span></div>
+            <div class="faq-a"><p>La newsletter est accessible aux <strong>débutants comme aux intermédiaires</strong>. Chaque édition inclut un concept éducatif pour ceux qui débutent, ainsi qu'une analyse approfondie pour les traders qui ont déjà de l'expérience sur les marchés.</p></div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q"><span class="faq-q-text">À quelle fréquence les éditions sont-elles publiées ?</span><span class="faq-icon">+</span></div>
+            <div class="faq-a"><p>Une édition est publiée <strong>chaque semaine, le vendredi soir</strong>. Elle couvre l'analyse de la semaine écoulée et les perspectives pour la semaine suivante. En t'abonnant, tu accèdes aussi à toutes les éditions précédentes depuis ton espace membre.</p></div>
+        </div>
+    </div>
+
+    <!-- CATÉGORIE 2 — ABONNEMENT -->
+    <div class="faq-category">
+        <div class="cat-label">02 · Abonnement</div>
+        <div class="cat-title">Paiement & accès</div>
+
+        <div class="faq-item">
+            <div class="faq-q"><span class="faq-q-text">Combien ça coûte ?</span><span class="faq-icon">+</span></div>
+            <div class="faq-a"><p>L'abonnement est à <strong>9,99 $ USD par mois</strong>, renouvelé automatiquement. Tu peux annuler à tout moment sans frais. Pas d'engagement, pas de contrat.</p></div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q"><span class="faq-q-text">Puis-je annuler à tout moment ?</span><span class="faq-icon">+</span></div>
+            <div class="faq-a"><p><strong>Oui, sans condition.</strong> Tu peux annuler depuis ton espace membre en un clic, ou en nous contactant par email. Tu conserves l'accès jusqu'à la fin de ta période déjà payée. Aucun frais d'annulation.</p></div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q"><span class="faq-q-text">Y a-t-il une période d'essai gratuite ?</span><span class="faq-icon">+</span></div>
+            <div class="faq-a"><p>Oui ! Tu bénéficies d'un <strong>essai gratuit de 30 jours</strong> lors de ton premier abonnement. Tu peux annuler avant la fin de la période d'essai sans être débité.</p></div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q"><span class="faq-q-text">Est-ce que je peux être remboursé ?</span><span class="faq-icon">+</span></div>
+            <div class="faq-a"><p>Les périodes déjà facturées ne sont généralement pas remboursées, sauf en cas d'erreur de notre part. Si tu as un problème, contacte-nous à <a href="mailto:support@thegolddesk.online">support@thegolddesk.online</a> et on trouvera une solution.</p></div>
+        </div>
+    </div>
+
+    <!-- CATÉGORIE 3 — SÉCURITÉ -->
+    <div class="faq-category">
+        <div class="cat-label">03 · Sécurité</div>
+        <div class="cat-title">Paiement & données</div>
+
+        <div class="faq-item">
+            <div class="faq-q"><span class="faq-q-text">Mon paiement est-il sécurisé ?</span><span class="faq-icon">+</span></div>
+            <div class="faq-a"><p>Oui. Les paiements sont traités exclusivement par <strong>Stripe</strong>, certifié PCI-DSS niveau 1 — le standard de sécurité le plus élevé pour les paiements en ligne. Nous ne stockons jamais tes données bancaires.</p></div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q"><span class="faq-q-text">Quelles données personnelles collectez-vous ?</span><span class="faq-icon">+</span></div>
+            <div class="faq-a"><p>Uniquement ce qui est nécessaire : ton <strong>email, prénom/nom</strong> (optionnel) et le statut de ton abonnement. Nous ne vendons jamais tes données. Pour plus de détails, consulte notre <a href="privacy.html">politique de confidentialité</a>.</p></div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q"><span class="faq-q-text">Comment modifier ou supprimer mon compte ?</span><span class="faq-icon">+</span></div>
+            <div class="faq-a"><p>Tu peux modifier tes informations depuis ton <strong>espace membre</strong> (dashboard). Pour supprimer ton compte, contacte-nous à <a href="mailto:support@thegolddesk.online">support@thegolddesk.online</a> — on s'en occupe dans les 48h.</p></div>
+        </div>
+    </div>
+
+    <!-- CONTACT -->
+    <div class="contact-box">
+        <div class="contact-label">Tu n'as pas trouvé ta réponse ?</div>
+        <div class="contact-title">Contacte-nous directement</div>
+        <p class="contact-sub">On répond sous 48h ouvrables.</p>
+        <a href="mailto:support@thegolddesk.online" class="contact-email">support@thegolddesk.online</a>
+    </div>
+
+</div>
+
+<footer>
+    <div class="footer-logo">THE <span>PRO</span> XAU</div>
+    <div class="footer-links">
+        <a href="index.html" class="footer-link">Accueil</a>
+        <a href="about.html" class="footer-link">À propos</a>
+        <a href="faq.html" class="footer-link">FAQ</a>
+        <a href="privacy.html" class="footer-link">Confidentialité</a>
+        <a href="terms.html" class="footer-link">Conditions</a>
+    </div>
+    <div class="footer-copy">© 2026 THE PRO XAU · TOUS DROITS RÉSERVÉS · CONTENU ÉDUCATIF UNIQUEMENT</div>
+</footer>
+
+<script>
+    window.addEventListener('scroll', () => {
+        const scrolled = window.scrollY
+        const max = document.body.scrollHeight - window.innerHeight
+        document.getElementById('progress').style.width = (scrolled / max * 100) + '%'
+    })
+
+    document.querySelectorAll('.faq-item').forEach(item => {
+        item.querySelector('.faq-q').addEventListener('click', () => {
+            const isOpen = item.classList.contains('open')
+            document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'))
+            if (!isOpen) item.classList.add('open')
+        })
+    })
+</script>
+
+</body>
+</html>
