@@ -192,9 +192,6 @@
     <script>
         const SUPABASE_URL = 'https://oehoqoaxcwiffbzuegou.supabase.co'
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9laG9xb2F4Y3dpZmZienVlZ291Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzMjI2MTMsImV4cCI6MjA4Nzg5ODYxM30.N5UP014MgNUBunZJuhKuUUlRYC_HY7lpAFAYD39CjvE'
-
-        // ⚠️ REMPLACE PAR TON VRAI LIEN STRIPE PAYMENT LINK
-        // Va dans Stripe Dashboard → Payment Links → copie le lien
         const STRIPE_PAYMENT_LINK = 'https://buy.stripe.com/7sY9ALaso1b1bVGgCwfw400'
 
         const { createClient } = supabase
@@ -268,7 +265,7 @@
             submitBtn.disabled = true
             submitBtn.innerHTML = '<span class="spinner"></span> Création du compte...'
 
-            // 1. Créer le compte Supabase
+            // Créer le compte Supabase
             const { data, error } = await sb.auth.signUp({
                 email: em.value,
                 password: pw.value,
@@ -281,7 +278,6 @@
             })
 
             if (error) {
-                // Email déjà utilisé → diriger vers login
                 if (error.message.includes('already registered') || error.message.includes('already been registered')) {
                     document.getElementById('alert-error').textContent = 'Cet email est déjà utilisé. Connecte-toi à la place.'
                 } else {
@@ -293,21 +289,16 @@
                 return
             }
 
-            // ✅ FIX PROBLÈME 1, 2 & 3 :
-            // On redirige vers Stripe avec l'email PRÉ-REMPLI et l'user ID comme référence.
-            // Comme ça : Stripe connaît l'email, le webhook peut faire le lien avec Supabase.
             document.getElementById('alert-success').classList.add('show')
 
             const userId = data.user.id
             const userEmail = em.value.trim()
 
-            // Sauvegarde l'email localement pour le dashboard après retour de Stripe
-            localStorage.setItem('tpx_pending_email', userEmail)
+            // ✅ FIX : clé cohérente avec dashboard.html (tpx_user_email au lieu de tpx_pending_email)
+            localStorage.setItem('tpx_user_email', userEmail)
             localStorage.setItem('tpx_user_id', userId)
 
             setTimeout(() => {
-                // Redirige vers Stripe avec email pré-rempli + client_reference_id = userId
-                // Le webhook Stripe utilisera client_reference_id pour retrouver l'utilisateur Supabase
                 window.location.href = `${STRIPE_PAYMENT_LINK}?prefilled_email=${encodeURIComponent(userEmail)}&client_reference_id=${userId}`
             }, 1500)
         })
