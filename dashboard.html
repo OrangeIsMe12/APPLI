@@ -59,10 +59,14 @@
 
         /* ── DASHBOARD LAYOUT ── */
         .dashboard { display: grid; grid-template-columns: 280px 1fr; min-height: calc(100vh - 57px); }
-        @media(max-width: 900px) { .dashboard { grid-template-columns: 1fr; display: block; } .sidebar { display: none; } }
 
         /* ── SIDEBAR ── */
         .sidebar { background: var(--bg2); border-right: 1px solid var(--border); display: flex; flex-direction: column; position: sticky; top: 57px; height: calc(100vh - 57px); overflow-y: auto; }
+
+        @media(max-width: 900px) {
+            .dashboard { display: block !important; grid-template-columns: 1fr !important; }
+            .sidebar { display: none !important; }
+        }
 
         /* user card top */
         .sidebar-user { padding: 36px 32px 28px; border-bottom: 1px solid var(--border); }
@@ -87,8 +91,8 @@
         /* ── MAIN ── */
         .main { padding: 56px 60px 100px; overflow-y: auto; min-width: 0; }
         @media(max-width: 1100px) { .main { padding: 48px 40px 80px; } }
-        @media(max-width: 900px) { .main { overflow-y: visible; overflow: visible; } }
-        @media(max-width: 640px) { .main { padding: 32px 20px 60px; } }
+        @media(max-width: 900px) { .main { overflow: visible !important; width: 100% !important; max-width: 100% !important; } }
+        @media(max-width: 640px) { .main { padding: 28px 16px 110px !important; } }
 
         /* ── PAGE HEADER ── */
         .page-header { margin-bottom: 52px; padding-bottom: 44px; border-bottom: 1px solid var(--border); position: relative; overflow: hidden; animation: fadeIn 0.4s ease; }
