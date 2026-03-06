@@ -1025,61 +1025,63 @@ sb.auth.getSession().then(({ data: { session } }) => {
     </div>
 
     <!-- FOOTER -->
-    <footer class="footer">
-        <div class="footer-logo">THE <span>PRO</span> XAU</div>
-        <div class="footer-copy">© 2026 THE PRO XAU · TOUS DROITS RÉSERVÉS · CONTENU ÉDUCATIF UNIQUEMENT</div>
-    </footer>
-    <script>
-        const SUPABASE_URL = 'https://oehoqoaxcwiffbzuegou.supabase.co'
-        const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9laG9xb2F4Y3dpZmZienVlZ291Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzMjI2MTMsImV4cCI6MjA4Nzg5ODYxM30.N5UP014MgNUBunZJuhKuUUlRYC_HY7lpAFAYD39CjvE'
-        const {
-            createClient
-        } = supabase
-        const sb = createClient(SUPABASE_URL, SUPABASE_ANON)
+   <script>
+    const SUPABASE_URL  = 'https://oehoqoaxcwiffbzuegou.supabase.co'
+    const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9laG9xb2F4Y3dpZmZienVlZ291Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzMjI2MTMsImV4cCI6MjA4Nzg5ODYxM30.N5UP014MgNUBunZJuhKuUUlRYC_HY7lpAFAYD39CjvE'
+    const { createClient } = supabase
+    const sb = createClient(SUPABASE_URL, SUPABASE_ANON)
 
-        function unlockCard(cardId, lockId, badgeId, href) {
-            const card = document.getElementById(cardId)
-            const lock = document.getElementById(lockId)
-            const badge = document.getElementById(badgeId)
-            if (!card) return
-            if (lock) lock.remove()
-            card.classList.remove('locked')
-            card.classList.add('unlocked')
-            if (badge) {
-                badge.className = 'badge badge-subscriber';
-                badge.textContent = '✓ Abonné'
-            }
-            if (href) {
-                card.style.cursor = 'pointer';
-                card.addEventListener('click', () => {
-                    window.location.href = href
-                })
-            }
+    function unlockCard(cardId, lockId, badgeId, href) {
+        const card  = document.getElementById(cardId)
+        const lock  = document.getElementById(lockId)
+        const badge = document.getElementById(badgeId)
+        if (!card) return
+        if (lock) lock.remove()
+        card.classList.remove('locked')
+        card.classList.add('unlocked')
+        if (badge) {
+            badge.className   = 'badge badge-subscriber'
+            badge.textContent = '✓ Abonné'
         }
-
-        async function checkSubscription() {
-            try {
-                const {
-                    data: {
-                        session
-                    }
-                } = await sb.auth.getSession()
-                if (!session) return
-                const {
-                    data: sub
-                } = await sb.from('subscriptions').select('status').eq('email', session.user.email).single()
-                if (!sub) return
-                if (sub.status !== 'active' && sub.status !== 'trialing') return
-                    // ✅ Abonné actif — déverrouille les cartes !
-                unlockCard('card-edition-2', 'lock-ed2', 'badge-ed2', 'edition02/edition-02.html')
-                unlockCard('card-edition-3', 'lock-ed3', 'badge-ed3', 'edition03/edition-03.html')
-            } catch (e) {
-                console.warn(e)
-            }
+        if (href) {
+            card.style.cursor = 'pointer'
+            card.addEventListener('click', () => { window.location.href = href })
         }
+    }
 
-        checkSubscription()
-    </script>
+    async function checkSubscription() {
+        try {
+            const { data: { session } } = await sb.auth.getSession()
+            if (!session) return
+
+            const { data: sub } = await sb
+                .from('subscriptions')
+                .select('status')
+                .eq('email', session.user.email)
+                .single()
+
+            if (!sub) return
+            if (sub.status !== 'active' && sub.status !== 'trialing') return
+
+            // ✅ Déverrouille les éditions
+            unlockCard('card-edition-2', 'lock-ed2', 'badge-ed2', 'edition02/edition-02.html')
+            unlockCard('card-edition-3', 'lock-ed3', 'badge-ed3', 'edition03/edition-03.html')
+
+            // ✅ Cache la section prix
+            const pricing = document.getElementById('pricing-section')
+            if (pricing) pricing.style.display = 'none'
+
+            // ✅ Cache le lien "S'abonner" dans la nav
+            const navSubscribe = document.querySelector('.nav-link')
+            if (navSubscribe) navSubscribe.style.display = 'none'
+
+        } catch (e) {
+            console.warn(e)
+        }
+    }
+
+    checkSubscription()
+</script>
 
 </body>
 
