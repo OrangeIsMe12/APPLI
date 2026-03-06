@@ -233,6 +233,30 @@
         .modal-text strong { color: var(--red-light); }
         .modal-actions { display: flex; gap: 12px; }
         .modal-actions .btn-small { flex: 1; justify-content: center; }
+
+        /* ── MOBILE BOTTOM NAV ── */
+        .mobile-nav { display: none; }
+        @media(max-width: 900px) {
+            .mobile-nav {
+                display: flex; position: fixed; bottom: 0; left: 0; right: 0;
+                background: #0a0a08; border-top: 1px solid var(--border);
+                z-index: 150; padding: 0; safe-area-inset-bottom: env(safe-area-inset-bottom);
+                padding-bottom: env(safe-area-inset-bottom);
+            }
+            .mobile-nav-item {
+                flex: 1; display: flex; flex-direction: column; align-items: center;
+                justify-content: center; gap: 5px; padding: 10px 4px 12px;
+                border: none; background: none; cursor: pointer;
+                font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 1px;
+                text-transform: uppercase; color: var(--text-muted);
+                transition: all 0.18s; border-top: 2px solid transparent;
+            }
+            .mobile-nav-item.active { color: var(--gold); border-top-color: var(--gold); background: var(--gold-dim); }
+            .mobile-nav-item:hover { color: var(--text-dim); }
+            .mobile-nav-item .mn-icon { font-size: 18px; line-height: 1; }
+            /* push main content up so it's not hidden behind mobile nav */
+            .main { padding-bottom: 90px !important; }
+        }
     </style>
 </head>
 <body>
@@ -461,6 +485,31 @@
         </main>
     </div>
 
+
+    <!-- ── MOBILE BOTTOM NAV ── -->
+    <nav class="mobile-nav" id="mobileNav">
+        <button class="mobile-nav-item active" data-tab="abonnement">
+            <span class="mn-icon">💎</span>
+            <span>Abonnement</span>
+        </button>
+        <button class="mobile-nav-item" data-tab="paiements">
+            <span class="mn-icon">🧾</span>
+            <span>Paiements</span>
+        </button>
+        <button class="mobile-nav-item" data-tab="editions">
+            <span class="mn-icon">📰</span>
+            <span>Éditions</span>
+        </button>
+        <button class="mobile-nav-item" data-tab="profil">
+            <span class="mn-icon">👤</span>
+            <span>Profil</span>
+        </button>
+        <button class="mobile-nav-item" data-tab="securite">
+            <span class="mn-icon">🔒</span>
+            <span>Sécurité</span>
+        </button>
+    </nav>
+
     <!-- MODAL RÉSILIATION -->
     <div class="modal-overlay" id="cancel-modal">
         <div class="modal">
@@ -611,15 +660,20 @@
 
         loadDashboard()
 
-        /* Sidebar tabs */
+        /* Tab switching — sidebar + mobile nav synced */
+        function switchTab(tabName) {
+            document.querySelectorAll('.sidebar-item[data-tab], .mobile-nav-item[data-tab]').forEach(b => b.classList.remove('active'))
+            document.querySelectorAll('[data-tab="' + tabName + '"]').forEach(b => b.classList.add('active'))
+            document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'))
+            document.getElementById('panel-' + tabName).classList.add('active')
+            window.scrollTo({ top: 0, behavior: 'smooth' })
+        }
+
         document.querySelectorAll('.sidebar-item[data-tab]').forEach(btn => {
-            btn.addEventListener('click', function() {
-                document.querySelectorAll('.sidebar-item').forEach(b => b.classList.remove('active'))
-                this.classList.add('active')
-                document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'))
-                document.getElementById('panel-' + this.dataset.tab).classList.add('active')
-                window.scrollTo({ top: 0, behavior: 'smooth' })
-            })
+            btn.addEventListener('click', function() { switchTab(this.dataset.tab) })
+        })
+        document.querySelectorAll('.mobile-nav-item[data-tab]').forEach(btn => {
+            btn.addEventListener('click', function() { switchTab(this.dataset.tab) })
         })
 
         /* Résiliation */
