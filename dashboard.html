@@ -5,138 +5,228 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mon Compte — The Pro Xau</title>
     <link rel="icon" type="image/png" href="/icon.jpg">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Barlow:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         :root {
-            --gold: #C9A84C; --gold-light: #E8C97A; --gold-dim: rgba(201, 168, 76, 0.1);
-            --red: #C94C4C; --red-light: #E05A5A; --green: #4CAF7A;
-            --dark: #080808; --dark2: #0E0E0E; --dark3: #151515; --dark4: #1C1C1C;
-            --border: #242424; --border-light: #2E2E2E;
-            --text: #D8D8D8; --text-muted: #6A6A6A; --text-dim: #444;
-            --font-display: 'Playfair Display', serif; --font-body: 'DM Sans', sans-serif;
-            --font-mono: 'DM Mono', monospace; --font-label: 'Barlow', sans-serif;
+            --gold: #c9a84c; --gold-light: #e8c97a; --gold-dim: rgba(201,168,76,0.1);
+            --bg: #080808; --bg2: #0e0e0e; --bg3: #111111; --bg4: #161616;
+            --border: #1e1a10; --border2: #2a2420;
+            --text: #e8e0d0; --text-dim: #9a9080; --text-muted: #4a4038;
+            --green: #4caf7d; --green-dim: rgba(76,175,125,0.08);
+            --red: #c94c4c; --red-light: #e05a5a; --red-dim: rgba(201,76,76,0.08);
         }
-        *,*::before,*::after { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: var(--font-body); background: var(--dark); color: var(--text); -webkit-font-smoothing: antialiased; }
-        .top-nav { display: flex; justify-content: space-between; align-items: center; padding: 12px 32px; border-bottom: 1px solid var(--border); background: var(--dark); position: sticky; top: 0; z-index: 100; }
-        .nav-brand { font-family: var(--font-display); font-size: 20px; font-weight: 700; color: var(--gold); text-decoration: none; }
-        .nav-right { display: flex; align-items: center; gap: 16px; }
-        .nav-link { font-family: var(--font-label); font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
-        .nav-link:hover { color: var(--gold); }
-        .nav-avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--gold-dim); border: 1px solid var(--gold); display: flex; align-items: center; justify-content: center; font-family: var(--font-label); font-size: 12px; font-weight: 700; color: var(--gold); cursor: pointer; text-decoration: none; }
-        .nav-editions-btn { font-family: var(--font-label); font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--dark); background: var(--gold); padding: 7px 14px; text-decoration: none; transition: background 0.2s; }
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+
+        /* LOADING */
+        .loading-overlay { position: fixed; inset: 0; background: var(--bg); z-index: 999; display: flex; align-items: center; justify-content: center; }
+        .loading-overlay.hidden { display: none; }
+        .spinner-lg { width: 32px; height: 32px; border: 2px solid var(--border); border-top-color: var(--gold); border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+        /* NAV */
+        .top-nav { display: flex; justify-content: space-between; align-items: center; padding: 14px 32px; border-bottom: 1px solid var(--border); background: rgba(8,8,8,0.97); backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 100; }
+        .nav-brand { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--gold); text-decoration: none; }
+        .nav-right { display: flex; align-items: center; gap: 14px; }
+        .nav-editions-btn { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--bg); background: var(--gold); padding: 8px 16px; text-decoration: none; transition: background 0.2s; }
         .nav-editions-btn:hover { background: var(--gold-light); }
-        .dashboard { display: grid; grid-template-columns: 220px 1fr; min-height: calc(100vh - 57px); }
-        @media(max-width:768px) { .dashboard { grid-template-columns: 1fr; } .sidebar { display: none; } }
-        .sidebar { border-right: 1px solid var(--border); padding: 32px 0; background: var(--dark2); }
+        .nav-avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--gold-dim); border: 1px solid rgba(201,168,76,0.3); display: flex; align-items: center; justify-content: center; font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 700; color: var(--gold); cursor: pointer; text-decoration: none; transition: border-color 0.2s; }
+        .nav-avatar:hover { border-color: var(--gold); }
+        .hamburger { background: none; border: 1px solid var(--border); padding: 8px 12px; cursor: pointer; display: flex; flex-direction: column; gap: 5px; transition: border-color 0.2s; }
+        .hamburger:hover { border-color: var(--gold); }
+        .hamburger span { display: block; width: 20px; height: 1px; background: var(--text-dim); transition: all 0.3s; }
+        .hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+        .hamburger.open span:nth-child(2) { opacity: 0; }
+        .hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+        .nav-menu { position: fixed; top: 0; right: -100%; width: 280px; height: 100vh; background: #060604; border-left: 1px solid var(--border); z-index: 200; transition: right 0.35s ease; display: flex; flex-direction: column; padding: 80px 40px 40px; gap: 4px; }
+        .nav-menu.open { right: 0; }
+        .nav-menu-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.65); z-index: 199; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+        .nav-menu-overlay.open { opacity: 1; pointer-events: all; }
+        .nav-menu-close { position: absolute; top: 20px; right: 24px; background: none; border: none; color: var(--text-muted); font-size: 20px; cursor: pointer; transition: color 0.2s; }
+        .nav-menu-close:hover { color: var(--gold); }
+        .nav-menu-label { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 4px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 16px; opacity: 0.5; }
+        .nav-menu a { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--text-dim); text-decoration: none; padding: 14px 0; border-bottom: 1px solid var(--border); transition: color 0.2s; display: flex; justify-content: space-between; align-items: center; }
+        .nav-menu a:hover { color: var(--gold); }
+        .nav-menu a:last-of-type { border-bottom: none; }
+        .nav-menu-cta { margin-top: auto; background: var(--gold); color: #080804 !important; font-weight: 700; padding: 14px 24px !important; text-align: center; justify-content: center !important; border: none !important; }
+        .nav-menu-cta:hover { filter: brightness(1.1); }
+
+        /* LAYOUT */
+        .dashboard { display: grid; grid-template-columns: 240px 1fr; min-height: calc(100vh - 57px); }
+        @media(max-width: 768px) { .dashboard { grid-template-columns: 1fr; } .sidebar { display: none; } }
+
+        /* SIDEBAR */
+        .sidebar { border-right: 1px solid var(--border); padding: 40px 0; background: var(--bg2); }
         .sidebar-section { margin-bottom: 8px; }
-        .sidebar-label { font-family: var(--font-label); font-size: 9px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--text-dim); padding: 8px 24px; margin-bottom: 4px; }
-        .sidebar-item { display: flex; align-items: center; gap: 10px; padding: 10px 24px; font-family: var(--font-label); font-size: 12px; font-weight: 600; color: var(--text-muted); text-decoration: none; transition: background 0.15s, color 0.15s; cursor: pointer; border: none; background: none; width: 100%; text-align: left; }
-        .sidebar-item:hover { background: rgba(201, 168, 76, 0.05); color: var(--text); }
-        .sidebar-item.active { background: var(--gold-dim); color: var(--gold); border-right: 2px solid var(--gold); }
-        .sidebar-icon { font-size: 14px; width: 18px; text-align: center; }
-        .sidebar-divider { border: none; border-top: 1px solid var(--border); margin: 12px 0; }
-        .sidebar-item.danger { color: var(--red-light); }
-        .sidebar-item.danger:hover { background: rgba(201, 76, 76, 0.05); }
-        .main { padding: 40px 36px; overflow-y: auto; }
-        @media(max-width:640px) { .main { padding: 24px 16px; } }
-        .page-header { margin-bottom: 36px; }
-        .page-eyebrow { font-family: var(--font-label); font-size: 9px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
-        .page-title { font-family: var(--font-display); font-size: 28px; font-weight: 700; color: #fff; }
-        .page-title em { font-style: italic; color: var(--gold); }
-        .page-sub { font-family: var(--font-body); font-size: 13px; color: var(--text-muted); margin-top: 6px; }
+        .sidebar-label { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: var(--text-muted); padding: 8px 28px; margin-bottom: 4px; }
+        .sidebar-item { display: flex; align-items: center; gap: 10px; padding: 11px 28px; font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); text-decoration: none; transition: background 0.15s, color 0.15s; cursor: pointer; border: none; border-left: 2px solid transparent; background: none; width: 100%; text-align: left; }
+        .sidebar-item:hover { background: rgba(201,168,76,0.04); color: var(--text-dim); }
+        .sidebar-item.active { background: var(--gold-dim); color: var(--gold); border-left-color: var(--gold); }
+        .sidebar-icon { font-size: 13px; width: 18px; text-align: center; flex-shrink: 0; }
+        .sidebar-divider { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
+        .sidebar-item.danger { color: rgba(201,76,76,0.6); }
+        .sidebar-item.danger:hover { background: var(--red-dim); color: var(--red-light); }
+
+        /* MAIN */
+        .main { padding: 48px 48px 80px; overflow-y: auto; }
+        @media(max-width: 640px) { .main { padding: 28px 20px 60px; } }
+
+        /* PAGE HEADER */
+        .page-header { margin-bottom: 40px; padding-bottom: 32px; border-bottom: 1px solid var(--border); position: relative; overflow: hidden; }
+        .page-header::before { content: 'XAU'; position: absolute; right: -10px; top: 50%; transform: translateY(-50%); font-family: 'Playfair Display', serif; font-size: clamp(60px, 10vw, 100px); font-weight: 900; color: var(--gold); opacity: 0.025; pointer-events: none; white-space: nowrap; line-height: 1; }
+        .page-eyebrow { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 5px; text-transform: uppercase; color: var(--gold); opacity: 0.6; margin-bottom: 12px; display: flex; align-items: center; gap: 12px; }
+        .page-eyebrow::before { content: ''; width: 28px; height: 1px; background: var(--gold); opacity: 0.4; }
+        .page-title { font-family: 'Playfair Display', serif; font-size: clamp(26px, 4vw, 36px); font-weight: 900; line-height: 1.1; margin-bottom: 8px; }
+        .page-title em { color: var(--gold-light); font-style: italic; }
+        .page-sub { font-size: 13px; color: var(--text-dim); line-height: 1.7; }
+
+        /* TABS */
         .tab-panel { display: none; }
         .tab-panel.active { display: block; }
-        .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-bottom: 28px; }
-        .stat-card { background: var(--dark3); border: 1px solid var(--border); padding: 20px; }
-        .stat-card-label { font-family: var(--font-label); font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; }
-        .stat-card-val { font-family: var(--font-display); font-size: 26px; font-weight: 700; color: var(--gold); line-height: 1; }
+
+        /* SECTION EYEBROW */
+        .section-eyebrow { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); opacity: 0.55; margin-bottom: 20px; display: flex; align-items: center; gap: 14px; }
+        .section-eyebrow::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+        /* STAT CARDS */
+        .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1px; background: var(--border); margin-bottom: 1px; }
+        .stat-card { background: var(--bg2); padding: 24px 28px; transition: background 0.2s; }
+        .stat-card:hover { background: var(--bg3); }
+        .stat-card-label { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 12px; }
+        .stat-card-val { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: var(--gold); line-height: 1; margin-bottom: 6px; }
         .stat-card-val.green { color: var(--green); }
         .stat-card-val.red { color: var(--red-light); }
-        .stat-card-sub { font-family: var(--font-mono); font-size: 10px; color: var(--text-dim); margin-top: 6px; }
-        .sub-card { background: var(--dark3); border: 1px solid var(--border); padding: 24px; margin-bottom: 20px; }
-        .sub-header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px; margin-bottom: 20px; }
-        .sub-title { font-family: var(--font-label); font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
-        .sub-name { font-family: var(--font-display); font-size: 22px; font-weight: 700; color: #fff; }
-        .badge { display: inline-block; font-family: var(--font-label); font-size: 9px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; padding: 4px 10px; }
-        .badge-active { background: rgba(76, 175, 122, 0.15); color: var(--green); border: 1px solid rgba(76, 175, 122, 0.3); }
-        .badge-cancelled { background: rgba(201, 76, 76, 0.15); color: var(--red-light); border: 1px solid rgba(201, 76, 76, 0.3); }
-        .sub-details { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 14px; padding-top: 16px; border-top: 1px solid var(--border); }
-        .sub-detail-label { font-family: var(--font-label); font-size: 9px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px; }
-        .sub-detail-val { font-family: var(--font-mono); font-size: 13px; color: var(--text); }
-        .sub-detail-val.gold { color: var(--gold); }
-        .sub-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border); }
-        .btn-small { font-family: var(--font-label); font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; padding: 9px 16px; cursor: pointer; transition: all 0.2s; border: none; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
-        .btn-gold { background: var(--gold); color: var(--dark); }
+        .stat-card-sub { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text-muted); }
+
+        /* SUB CARD */
+        .sub-card { background: var(--bg2); border: 1px solid var(--border); padding: 32px; margin-top: 1px; position: relative; overflow: hidden; }
+        .sub-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--gold), transparent); opacity: 0.4; }
+        .sub-header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px; margin-bottom: 24px; }
+        .sub-title { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); opacity: 0.6; margin-bottom: 8px; }
+        .sub-name { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--text); }
+        .badge { display: inline-flex; align-items: center; gap: 5px; font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 2px; text-transform: uppercase; padding: 5px 12px; }
+        .badge-active { background: var(--green-dim); color: var(--green); border: 1px solid rgba(76,175,125,0.3); }
+        .badge-active::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--green); animation: blink 2s infinite; }
+        .badge-cancelled { background: var(--red-dim); color: var(--red-light); border: 1px solid rgba(201,76,76,0.3); }
+        .sub-details { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 20px; padding-top: 20px; border-top: 1px solid var(--border); }
+        .sub-detail-label { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px; }
+        .sub-detail-val { font-family: 'DM Mono', monospace; font-size: 13px; color: var(--text-dim); }
+        .sub-detail-val.gold { color: var(--gold-light); }
+        .sub-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--border); }
+
+        /* BUTTONS */
+        .btn-small { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; padding: 11px 18px; cursor: pointer; transition: all 0.2s; border: none; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
+        .btn-gold { background: var(--gold); color: var(--bg); font-weight: 700; }
         .btn-gold:hover { background: var(--gold-light); }
-        .btn-outline { background: transparent; color: var(--text-muted); border: 1px solid var(--border-light); }
-        .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
-        .btn-red { background: rgba(201, 76, 76, 0.1); color: var(--red-light); border: 1px solid rgba(201, 76, 76, 0.25); }
-        .btn-red:hover { background: rgba(201, 76, 76, 0.2); }
-        .section-title { font-family: var(--font-label); font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; }
-        .payments-table { width: 100%; border-collapse: collapse; font-size: 13px; }
-        .payments-table th { background: var(--dark4); padding: 10px 14px; text-align: left; font-family: var(--font-label); font-size: 8px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); border-bottom: 1px solid var(--border); }
-        .payments-table td { padding: 12px 14px; border-bottom: 1px solid var(--border); font-family: var(--font-body); font-size: 12px; color: var(--text-muted); vertical-align: middle; }
+        .btn-outline { background: transparent; color: var(--text-muted); border: 1px solid var(--border2); }
+        .btn-outline:hover { border-color: var(--gold); color: var(--gold); background: var(--gold-dim); }
+        .btn-red { background: var(--red-dim); color: var(--red-light); border: 1px solid rgba(201,76,76,0.25); }
+        .btn-red:hover { background: rgba(201,76,76,0.15); border-color: rgba(201,76,76,0.5); }
+
+        /* PAYMENTS TABLE */
+        .payments-table { width: 100%; border-collapse: collapse; }
+        .payments-table th { background: var(--bg3); padding: 10px 16px; text-align: left; font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); border-bottom: 1px solid var(--border); font-weight: 400; }
+        .payments-table td { padding: 14px 16px; border-bottom: 1px solid rgba(255,255,255,0.03); font-size: 12px; color: var(--text-dim); vertical-align: middle; }
         .payments-table tr:hover td { background: rgba(255,255,255,0.01); }
-        .payment-status { display: inline-block; font-family: var(--font-label); font-size: 8px; font-weight: 700; padding: 2px 8px; letter-spacing: 1px; text-transform: uppercase; }
-        .payment-paid { background: rgba(76, 175, 122, 0.15); color: var(--green); }
-        .payment-failed { background: rgba(201, 76, 76, 0.15); color: var(--red-light); }
-        .payment-amount { font-family: var(--font-mono); color: var(--text); }
-        .payment-invoice { font-family: var(--font-mono); font-size: 10px; color: var(--gold); text-decoration: none; cursor: pointer; }
+        .payment-status { display: inline-block; font-family: 'DM Mono', monospace; font-size: 8px; padding: 3px 8px; letter-spacing: 1px; text-transform: uppercase; }
+        .payment-paid { background: var(--green-dim); color: var(--green); border: 1px solid rgba(76,175,125,0.2); }
+        .payment-failed { background: var(--red-dim); color: var(--red-light); border: 1px solid rgba(201,76,76,0.2); }
+        .payment-amount { font-family: 'DM Mono', monospace; color: var(--text); }
+        .payment-invoice { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--gold); text-decoration: none; }
         .payment-invoice:hover { text-decoration: underline; }
-        .editions-grid { display: flex; flex-direction: column; gap: 10px; }
-        .edition-row { background: var(--dark3); border: 1px solid var(--border); padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; gap: 12px; text-decoration: none; transition: border-color 0.2s, background 0.2s; }
-        .edition-row:hover { border-color: rgba(201,168,76,0.3); background: rgba(201,168,76,0.02); }
-        .edition-row-left { display: flex; align-items: center; gap: 16px; }
-        .edition-num { font-family: var(--font-mono); font-size: 11px; color: var(--gold); width: 36px; flex-shrink: 0; }
-        .edition-title { font-family: var(--font-display); font-size: 15px; font-weight: 700; color: #fff; }
-        .edition-date { font-family: var(--font-mono); font-size: 10px; color: var(--text-muted); margin-top: 3px; }
+
+        /* EDITIONS */
+        .editions-grid { display: flex; flex-direction: column; gap: 1px; background: var(--border); }
+        .edition-row { background: var(--bg2); padding: 18px 24px; display: flex; align-items: center; justify-content: space-between; gap: 12px; text-decoration: none; transition: background 0.2s; }
+        .edition-row:hover { background: var(--bg3); }
+        .edition-row-left { display: flex; align-items: center; gap: 18px; }
+        .edition-num { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--gold); width: 36px; flex-shrink: 0; }
+        .edition-title { font-family: 'Playfair Display', serif; font-size: 15px; font-weight: 700; color: var(--text); }
+        .edition-date { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--text-muted); margin-top: 4px; letter-spacing: 1px; }
         .edition-arrow { color: var(--gold); font-size: 14px; flex-shrink: 0; }
-        .edition-tag { font-family: var(--font-label); font-size: 8px; font-weight: 700; padding: 2px 7px; letter-spacing: 1px; text-transform: uppercase; background: rgba(201,168,76,0.12); color: var(--gold); border: 1px solid rgba(201,168,76,0.25); flex-shrink: 0; }
-        .edition-locked { opacity: 0.4; pointer-events: none; }
+        .edition-tag { font-family: 'DM Mono', monospace; font-size: 8px; padding: 3px 8px; letter-spacing: 1px; text-transform: uppercase; background: var(--gold-dim); color: var(--gold); border: 1px solid rgba(201,168,76,0.25); flex-shrink: 0; }
+        .edition-locked { opacity: 0.35; pointer-events: none; }
+
+        /* SERVICES */
+        .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); }
+        @media(max-width: 700px) { .services-grid { grid-template-columns: 1fr; } }
+        .service-card { background: var(--bg2); padding: 28px; display: flex; flex-direction: column; position: relative; overflow: hidden; transition: background 0.25s; text-decoration: none; }
+        .service-card:hover { background: var(--bg3); }
+        .service-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; opacity: 0; transition: opacity 0.3s; }
+        .service-card.discord::before { background: linear-gradient(90deg, transparent, #5865F2, transparent); }
+        .service-card.telegram::before { background: linear-gradient(90deg, transparent, #2AADDE, transparent); }
+        .service-card.instagram::before { background: linear-gradient(90deg, transparent, #dc2743, transparent); }
+        .service-card:hover::before { opacity: 1; }
+        .service-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+        .service-card.discord .service-icon { background: rgba(88,101,242,0.1); border: 1px solid rgba(88,101,242,0.25); }
+        .service-card.telegram .service-icon { background: rgba(42,173,222,0.1); border: 1px solid rgba(42,173,222,0.25); }
+        .service-card.instagram .service-icon { background: rgba(220,39,67,0.07); border: 1px solid rgba(220,39,67,0.2); }
+        .service-name { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+        .service-desc { font-size: 12px; color: var(--text-dim); line-height: 1.7; flex: 1; margin-bottom: 20px; }
+        .service-cta { display: flex; align-items: center; justify-content: space-between; padding: 11px 16px; border: 1px solid var(--border2); font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); transition: all 0.2s; margin-top: auto; }
+        .service-card.discord:hover .service-cta { border-color: rgba(88,101,242,0.4); color: #7b88f5; }
+        .service-card.telegram:hover .service-cta { border-color: rgba(42,173,222,0.4); color: #5ac8e8; }
+        .service-card.instagram:hover .service-cta { border-color: rgba(220,39,67,0.4); color: #e8607a; }
+        .service-arrow { transition: transform 0.2s; }
+        .service-card:hover .service-arrow { transform: translateX(4px); }
+        .service-note { background: var(--bg2); padding: 14px 28px; font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); display: flex; align-items: center; gap: 10px; margin-top: 1px; }
+
+        /* FORMS */
         .profile-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-        @media(max-width:560px) { .profile-grid { grid-template-columns: 1fr; } }
-        .form-group { margin-bottom: 18px; }
-        .form-label { display: block; font-family: var(--font-label); font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; }
-        .form-input { width: 100%; background: var(--dark4); border: 1px solid var(--border-light); color: var(--text); font-family: var(--font-body); font-size: 14px; padding: 11px 14px; outline: none; transition: border-color 0.2s; border-radius: 0; -webkit-appearance: none; }
-        .form-input:focus { border-color: var(--gold); box-shadow: 0 0 0 2px rgba(201,168,76,0.1); }
-        .form-input::placeholder { color: var(--text-dim); }
-        .form-input:disabled { opacity: 0.5; cursor: not-allowed; }
-        .danger-zone { background: rgba(201,76,76,0.04); border: 1px solid rgba(201,76,76,0.2); padding: 20px; margin-top: 24px; }
-        .danger-title { font-family: var(--font-label); font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--red-light); margin-bottom: 8px; }
-        .danger-text { font-family: var(--font-body); font-size: 12px; color: var(--text-muted); margin-bottom: 14px; line-height: 1.6; }
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 200; display: none; align-items: center; justify-content: center; padding: 20px; }
+        @media(max-width: 560px) { .profile-grid { grid-template-columns: 1fr; } }
+        .form-group { margin-bottom: 20px; }
+        .form-label { display: block; font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; }
+        .form-input { width: 100%; background: var(--bg3); border: 1px solid var(--border2); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px; padding: 12px 16px; outline: none; transition: border-color 0.2s; -webkit-appearance: none; border-radius: 0; }
+        .form-input:focus { border-color: var(--gold); box-shadow: 0 0 0 2px rgba(201,168,76,0.08); }
+        .form-input::placeholder { color: var(--text-muted); }
+        .form-input:disabled { opacity: 0.4; cursor: not-allowed; }
+        .danger-zone { background: rgba(201,76,76,0.03); border: 1px solid rgba(201,76,76,0.15); padding: 24px; margin-top: 32px; }
+        .danger-title { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--red-light); margin-bottom: 10px; }
+        .danger-text { font-size: 12px; color: var(--text-muted); margin-bottom: 16px; line-height: 1.7; }
+
+        /* ALERTS */
+        .alert-box { padding: 12px 18px; font-family: 'DM Mono', monospace; font-size: 11px; line-height: 1.6; margin-bottom: 20px; border-left: 2px solid; display: none; }
+        .alert-box.show { display: block; }
+        .alert-box.success { border-color: var(--green); background: var(--green-dim); color: #90d4a8; }
+        .alert-box.info { border-color: var(--gold); background: var(--gold-dim); color: var(--gold-light); }
+        .alert-box.error { border-color: var(--red); background: var(--red-dim); color: #e09090; }
+
+        /* NO SUB BANNER */
+        .no-sub-banner { background: var(--red-dim); border: 1px solid rgba(201,76,76,0.25); padding: 20px 24px; margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+        .no-sub-text { font-size: 13px; color: #e09090; }
+        .no-sub-text strong { display: block; font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 4px; }
+        .btn-pay-now { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; background: var(--gold); color: var(--bg); padding: 10px 18px; text-decoration: none; white-space: nowrap; transition: background 0.2s; border: none; cursor: pointer; font-weight: 700; }
+        .btn-pay-now:hover { background: var(--gold-light); }
+
+        /* MODAL */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 300; display: none; align-items: center; justify-content: center; padding: 20px; }
         .modal-overlay.show { display: flex; }
-        .modal { background: var(--dark3); border: 1px solid var(--border); padding: 32px; max-width: 420px; width: 100%; }
-        .modal-title { font-family: var(--font-display); font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 10px; }
-        .modal-text { font-family: var(--font-body); font-size: 13px; color: var(--text-muted); line-height: 1.7; margin-bottom: 24px; }
+        .modal { background: var(--bg2); border: 1px solid var(--border); padding: 40px; max-width: 420px; width: 100%; position: relative; }
+        .modal::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--red-light), transparent); opacity: 0.4; }
+        .modal-title { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--text); margin-bottom: 12px; }
+        .modal-text { font-size: 13px; color: var(--text-dim); line-height: 1.8; margin-bottom: 28px; }
         .modal-text strong { color: var(--red-light); }
         .modal-actions { display: flex; gap: 10px; }
         .modal-actions .btn-small { flex: 1; justify-content: center; }
-        .alert-box { padding: 12px 16px; font-family: var(--font-mono); font-size: 11px; line-height: 1.6; margin-bottom: 16px; border-left: 3px solid; display: none; }
-        .alert-box.show { display: block; }
-        .alert-box.success { border-color: var(--green); background: rgba(76,175,122,0.06); color: #90D4A8; }
-        .alert-box.info { border-color: var(--gold); background: var(--gold-dim); color: var(--gold-light); }
-        .alert-box.error { border-color: var(--red); background: rgba(201,76,76,0.06); color: #E09090; }
-        .no-sub-banner { background: rgba(201,76,76,0.08); border: 1px solid rgba(201,76,76,0.3); padding: 20px 24px; margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
-        .no-sub-text { font-family: var(--font-body); font-size: 13px; color: #E09090; }
-        .no-sub-text strong { display: block; font-family: var(--font-label); font-size: 10px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 4px; }
-        .btn-pay-now { font-family: var(--font-label); font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; background: var(--gold); color: var(--dark); padding: 10px 18px; text-decoration: none; white-space: nowrap; transition: background 0.2s; border: none; cursor: pointer; }
-        .btn-pay-now:hover { background: var(--gold-light); }
-
-        /* ✅ Loading overlay */
-        .loading-overlay { position: fixed; inset: 0; background: var(--dark); z-index: 999; display: flex; align-items: center; justify-content: center; }
-        .loading-overlay.hidden { display: none; }
-        .spinner-lg { width: 32px; height: 32px; border: 3px solid var(--border); border-top-color: var(--gold); border-radius: 50%; animation: spin 0.8s linear infinite; }
-        @keyframes spin { to { transform: rotate(360deg) } }
     </style>
 </head>
 <body>
 
-    <!-- ✅ Loading overlay pendant la vérification de session -->
-    <div class="loading-overlay" id="loading-overlay">
-        <div class="spinner-lg"></div>
+    <div class="loading-overlay" id="loading-overlay"><div class="spinner-lg"></div></div>
+
+    <div class="nav-menu-overlay" id="navOverlay"></div>
+    <div class="nav-menu" id="navMenu">
+        <button class="nav-menu-close" id="navClose">✕</button>
+        <div class="nav-menu-label">Navigation</div>
+        <a href="index.html">Accueil <span>→</span></a>
+        <a href="about.html">À propos <span>→</span></a>
+        <a href="faq.html">FAQ <span>→</span></a>
+        <a href="privacy.html">Confidentialité <span>→</span></a>
+        <a href="terms.html">Conditions <span>→</span></a>
+        <a href="dashboard.html">Mon compte <span>→</span></a>
+        <a href="register.html" class="nav-menu-cta">S'abonner maintenant →</a>
     </div>
 
     <nav class="top-nav">
@@ -144,16 +234,19 @@
         <div class="nav-right">
             <a href="edition01/edition-01.html" class="nav-editions-btn" id="nav-editions-btn" style="display:none;">📰 Mes Éditions</a>
             <a href="dashboard.html" class="nav-avatar" title="Mon compte" id="user-avatar">…</a>
+            <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
         </div>
     </nav>
 
     <div class="dashboard">
+
         <aside class="sidebar">
             <div class="sidebar-section">
                 <div class="sidebar-label">Mon espace</div>
                 <button class="sidebar-item active" data-tab="abonnement"><span class="sidebar-icon">💎</span> Abonnement</button>
                 <button class="sidebar-item" data-tab="paiements"><span class="sidebar-icon">🧾</span> Paiements</button>
                 <button class="sidebar-item" data-tab="editions"><span class="sidebar-icon">📰</span> Mes éditions</button>
+                <button class="sidebar-item" data-tab="services"><span class="sidebar-icon">🔗</span> Services</button>
             </div>
             <hr class="sidebar-divider">
             <div class="sidebar-section">
@@ -166,6 +259,7 @@
         </aside>
 
         <main class="main">
+
             <div class="page-header">
                 <div class="page-eyebrow">Espace Membre</div>
                 <h1 class="page-title">Bonjour, <em id="user-name">…</em></h1>
@@ -181,11 +275,9 @@
                     </div>
                     <a href="#" id="btn-subscribe" class="btn-pay-now">S'abonner maintenant →</a>
                 </div>
-
                 <div class="alert-box info" id="edition-banner" style="display:none;">
                     📰 La nouvelle édition #001 est disponible — <a href="edition01/edition-01.html" style="color:var(--gold)">Lire maintenant →</a>
                 </div>
-
                 <div class="cards-grid">
                     <div class="stat-card">
                         <div class="stat-card-label">Statut</div>
@@ -203,14 +295,13 @@
                         <div class="stat-card-sub" id="card-editions-sub">—</div>
                     </div>
                 </div>
-
                 <div class="sub-card">
                     <div class="sub-header">
                         <div>
                             <div class="sub-title">Plan actif</div>
                             <div class="sub-name">The Pro Xau — Premium</div>
                         </div>
-                        <span class="badge badge-active" id="sub-badge">● Chargement…</span>
+                        <span class="badge badge-active" id="sub-badge">Chargement…</span>
                     </div>
                     <div class="sub-details">
                         <div>
@@ -239,26 +330,61 @@
 
             <!-- PAIEMENTS -->
             <div class="tab-panel" id="panel-paiements">
-                <div class="section-title">Historique des paiements</div>
+                <div class="section-eyebrow">Historique des paiements</div>
                 <table class="payments-table">
-                    <thead>
-                        <tr><th>Date</th><th>Description</th><th>Montant</th><th>Statut</th><th>Reçu</th></tr>
-                    </thead>
+                    <thead><tr><th>Date</th><th>Description</th><th>Montant</th><th>Statut</th><th>Reçu</th></tr></thead>
                     <tbody id="payments-tbody">
-                        <tr><td colspan="5" style="text-align:center;color:var(--text-dim);padding:24px;">Chargement…</td></tr>
+                        <tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:32px;">Chargement…</td></tr>
                     </tbody>
                 </table>
             </div>
 
             <!-- ÉDITIONS -->
             <div class="tab-panel" id="panel-editions">
-                <div class="section-title">Toutes mes éditions</div>
+                <div class="section-eyebrow">Toutes mes éditions</div>
                 <div class="editions-grid" id="editions-list"></div>
+            </div>
+
+            <!-- SERVICES -->
+            <div class="tab-panel" id="panel-services">
+                <div class="section-eyebrow">Services inclus</div>
+                <div class="services-grid">
+                    <a class="service-card discord" href="#">
+                        <div class="service-icon">
+                            <svg width="18" height="14" viewBox="0 0 71 55" fill="#5865F2"><path d="M60.105 4.898A58.55 58.55 0 0 0 45.653.415a.22.22 0 0 0-.233.11 40.784 40.784 0 0 0-1.8 3.698c-5.456-.817-10.886-.817-16.231 0a37.3 37.3 0 0 0-1.827-3.698.229.229 0 0 0-.233-.11 58.39 58.39 0 0 0-14.452 4.483.208.208 0 0 0-.095.082C1.578 18.73-.944 32.144.293 45.39a.244.244 0 0 0 .093.167c6.073 4.46 11.955 7.167 17.729 8.962a.23.23 0 0 0 .249-.082 42.08 42.08 0 0 0 3.627-5.9.225.225 0 0 0-.123-.312 38.772 38.772 0 0 1-5.539-2.64.228.228 0 0 1-.022-.378 31.17 31.17 0 0 0 1.1-.862.22.22 0 0 1 .23-.031c11.619 5.304 24.198 5.304 35.68 0a.219.219 0 0 1 .232.028c.356.293.728.586 1.103.865a.228.228 0 0 1-.02.378 36.384 36.384 0 0 1-5.54 2.637.227.227 0 0 0-.12.316 47.249 47.249 0 0 0 3.623 5.897.225.225 0 0 0 .249.084c5.801-1.794 11.684-4.502 17.757-8.961a.228.228 0 0 0 .092-.164c1.48-15.315-2.48-28.618-10.497-40.412a.18.18 0 0 0-.093-.084zm-36.38 32.427c-3.497 0-6.38-3.211-6.38-7.156 0-3.944 2.827-7.156 6.38-7.156 3.583 0 6.438 3.24 6.38 7.156 0 3.945-2.827 7.156-6.38 7.156zm23.593 0c-3.498 0-6.38-3.211-6.38-7.156 0-3.944 2.826-7.156 6.38-7.156 3.582 0 6.437 3.24 6.38 7.156 0 3.945-2.798 7.156-6.38 7.156z"/></svg>
+                        </div>
+                        <div class="service-name">Discord Privé</div>
+                        <div class="service-desc">Serveur privé du coach — communauté exclusive et analyses réservées aux membres abonnés.</div>
+                        <div class="service-cta"><span>Rejoindre le serveur</span><span class="service-arrow">→</span></div>
+                    </a>
+                    <a class="service-card telegram" href="#">
+                        <div class="service-icon">
+                            <svg width="18" height="16" viewBox="0 0 24 20" fill="#2AADDE"><path d="M22.05.8L.72 9.04c-.47.19-.46.45-.08.56l5.43 1.67L18.69 3.6c.6-.37 1.15-.17.7.24L8.54 13.22l-.4 5.59c.58 0 .84-.27 1.16-.57l2.79-2.7 5.49 4.01c1.01.55 1.73.27 1.98-.93L23.98 2.6c.37-1.47-.57-2.13-1.93-1.8z"/></svg>
+                        </div>
+                        <div class="service-name">Canal Telegram</div>
+                        <div class="service-desc">Canal gratuit — suis les défis et challenges lancés par le coach en temps réel.</div>
+                        <div class="service-cta"><span>Accéder au canal</span><span class="service-arrow">→</span></div>
+                    </a>
+                    <a class="service-card instagram" href="#">
+                        <div class="service-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <defs><linearGradient id="ig2" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#f09433"/><stop offset="50%" stop-color="#dc2743"/><stop offset="100%" stop-color="#bc1888"/></linearGradient></defs>
+                                <rect x="2" y="2" width="20" height="20" rx="5" ry="5" stroke="url(#ig2)" fill="none"/>
+                                <circle cx="12" cy="12" r="4" stroke="url(#ig2)" fill="none"/>
+                                <circle cx="17.5" cy="6.5" r="1.2" fill="#dc2743" stroke="none"/>
+                            </svg>
+                        </div>
+                        <div class="service-name">Instagram</div>
+                        <div class="service-desc">Notre page Instagram — on y partage nos analyses, nos publications et toute l'actualité du site.</div>
+                        <div class="service-cta"><span>Voir la page</span><span class="service-arrow">→</span></div>
+                    </a>
+                </div>
+                <div class="service-note">🔒 <strong style="color:var(--gold);font-weight:500;">Liens personnels</strong> &nbsp;— générés uniquement pour ton compte. Ne pas partager.</div>
             </div>
 
             <!-- PROFIL -->
             <div class="tab-panel" id="panel-profil">
-                <div class="section-title">Informations personnelles</div>
+                <div class="section-eyebrow">Informations personnelles</div>
                 <div class="alert-box" id="profile-saved"></div>
                 <form id="profile-form">
                     <div class="profile-grid">
@@ -279,7 +405,7 @@
                         <label class="form-label">Pays</label>
                         <input class="form-input" type="text" id="p-country" placeholder="Canada">
                     </div>
-                    <button type="submit" class="btn-small btn-gold" style="margin-top:4px;">Sauvegarder</button>
+                    <button type="submit" class="btn-small btn-gold">Sauvegarder →</button>
                 </form>
                 <div class="danger-zone">
                     <div class="danger-title">⚠ Zone de danger</div>
@@ -290,24 +416,25 @@
 
             <!-- SÉCURITÉ -->
             <div class="tab-panel" id="panel-securite">
-                <div class="section-title">Changer le mot de passe</div>
+                <div class="section-eyebrow">Sécurité</div>
                 <div class="alert-box" id="pw-saved"></div>
-                <form id="security-form" style="max-width:380px;">
+                <form id="security-form" style="max-width:400px;">
                     <div class="form-group">
                         <label class="form-label">Nouveau mot de passe</label>
                         <input class="form-input" type="password" placeholder="Min. 8 caractères" id="new-pw">
                     </div>
                     <div class="form-group">
-                        <label class="form-label">Confirmer le nouveau mot de passe</label>
+                        <label class="form-label">Confirmer le mot de passe</label>
                         <input class="form-input" type="password" placeholder="••••••••" id="confirm-pw">
                     </div>
-                    <button type="submit" class="btn-small btn-gold">Modifier le mot de passe</button>
+                    <button type="submit" class="btn-small btn-gold">Modifier le mot de passe →</button>
                 </form>
             </div>
+
         </main>
     </div>
 
-    <!-- MODAL Résiliation -->
+    <!-- MODAL RÉSILIATION -->
     <div class="modal-overlay" id="cancel-modal">
         <div class="modal">
             <div class="modal-title">Résilier l'abonnement</div>
@@ -325,14 +452,12 @@
         const SUPABASE_URL  = 'https://oehoqoaxcwiffbzuegou.supabase.co'
         const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9laG9xb2F4Y3dpZmZienVlZ291Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzMjI2MTMsImV4cCI6MjA4Nzg5ODYxM30.N5UP014MgNUBunZJuhKuUUlRYC_HY7lpAFAYD39CjvE'
         const STRIPE_BASE_URL = 'https://buy.stripe.com/7sY9ALaso1b1bVGgCwfw400'
-        const STRIPE_PORTAL_URL = 'https://billing.stripe.com/p/login/7sY9ALaso1b1bVGgCwfw400'
 
         const { createClient } = supabase
         const sb = createClient(SUPABASE_URL, SUPABASE_ANON, {
             auth: { storage: localStorage, persistSession: true, autoRefreshToken: true }
         })
 
-        // ✅ Format date sécurisé — jamais de crash si la date est nulle
         function fmt(dateStr) {
             if (!dateStr) return '—'
             const d = new Date(dateStr)
@@ -366,7 +491,6 @@
                     </a>`
                 document.getElementById('card-editions').textContent = '1'
                 document.getElementById('card-editions-sub').textContent = 'Édition #001 disponible'
-                // ✅ Affiche le bouton éditions dans la nav
                 document.getElementById('nav-editions-btn').style.display = ''
                 document.getElementById('edition-banner').style.display = 'block'
             } else {
@@ -392,7 +516,6 @@
             const { data: { session } } = await sb.auth.getSession()
             if (!session) { window.location.href = 'login.html'; return }
 
-            // ✅ Cache le loading overlay une fois la session confirmée
             document.getElementById('loading-overlay').classList.add('hidden')
 
             const email = session.user.email
@@ -402,32 +525,25 @@
             document.getElementById('user-name').textContent = firstName
             document.getElementById('user-avatar').textContent = firstName[0].toUpperCase()
 
-            // ✅ Lien Stripe avec email pré-rempli ET user_id comme référence
             const userId = session.user.id
             const stripeUrl = `${STRIPE_BASE_URL}?prefilled_email=${encodeURIComponent(email)}&client_reference_id=${userId}`
             document.getElementById('btn-subscribe').href = stripeUrl
 
-            // Profil
             document.getElementById('p-firstname').value = meta.first_name || ''
             document.getElementById('p-lastname').value  = meta.last_name  || ''
             document.getElementById('p-email').value     = email
             document.getElementById('p-country').value   = meta.pays || ''
 
-            // ✅ Cherche abonnement par email OU user_id (les deux cas couverts)
             const { data: sub } = await sb
-                .from('subscriptions')
-                .select('*')
+                .from('subscriptions').select('*')
                 .or(`email.eq.${email},user_id.eq.${userId}`)
                 .order('created_at', { ascending: false })
-                .limit(1)
-                .single()
+                .limit(1).single()
 
             const isActive = sub && (sub.status === 'active' || sub.status === 'trialing')
-
             document.getElementById('no-sub-banner').style.display = isActive ? 'none' : 'flex'
 
             if (isActive) {
-                // ✅ fmt() gère les dates nulles sans crash
                 const renewalDate = fmt(sub.current_period_end)
                 const sinceDate   = fmt(sub.member_since || sub.created_at)
 
@@ -442,9 +558,8 @@
 
                 const badge = document.getElementById('sub-badge')
                 badge.className = 'badge badge-active'
-                badge.textContent = '● Actif'
+                badge.textContent = 'Actif'
 
-                // Paiements
                 const { data: payments } = await sb
                     .from('payments').select('*')
                     .or(`email.eq.${email}${sub.stripe_customer_id ? `,stripe_customer_id.eq.${sub.stripe_customer_id}` : ''}`)
@@ -457,35 +572,26 @@
                             <td>${fmt(p.paid_at)}</td>
                             <td>${p.description || 'The Pro Xau — Premium'}</td>
                             <td class="payment-amount">${parseFloat(p.amount || 0).toFixed(2)} ${p.currency || 'USD'}</td>
-                            <td><span class="payment-status ${p.status === 'paid' ? 'payment-paid' : 'payment-failed'}">
-                                ${p.status === 'paid' ? 'Payé' : 'Échoué'}
-                            </span></td>
-                            <td>${p.invoice_pdf
-                                ? `<a class="payment-invoice" href="${p.invoice_pdf}" target="_blank">Télécharger PDF</a>`
-                                : '<span style="color:var(--text-dim)">—</span>'}
-                            </td>
+                            <td><span class="payment-status ${p.status === 'paid' ? 'payment-paid' : 'payment-failed'}">${p.status === 'paid' ? 'Payé' : 'Échoué'}</span></td>
+                            <td>${p.invoice_pdf ? `<a class="payment-invoice" href="${p.invoice_pdf}" target="_blank">Télécharger PDF</a>` : '<span style="color:var(--text-muted)">—</span>'}</td>
                         </tr>`).join('')
                 } else {
-                    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--text-dim);padding:24px;">Aucun paiement trouvé.</td></tr>'
+                    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:32px;">Aucun paiement trouvé.</td></tr>'
                 }
-
             } else {
                 document.getElementById('card-status').textContent  = 'Inactif'
                 document.getElementById('card-status').className    = 'stat-card-val red'
                 document.getElementById('card-since').textContent   = '—'
                 document.getElementById('card-amount').textContent  = '—'
                 document.getElementById('card-renewal').textContent = '—'
-
                 const badge = document.getElementById('sub-badge')
                 badge.className   = 'badge badge-cancelled'
-                badge.textContent = sub ? '● Résilié' : '● Inactif'
-
+                badge.textContent = sub ? 'Résilié' : 'Inactif'
                 const cancelBtn = document.getElementById('cancel-btn')
                 cancelBtn.disabled = true
                 cancelBtn.style.opacity = '0.4'
-
                 document.getElementById('payments-tbody').innerHTML =
-                    '<tr><td colspan="5" style="text-align:center;color:var(--text-dim);padding:24px;">Aucun paiement trouvé.</td></tr>'
+                    '<tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:32px;">Aucun paiement trouvé.</td></tr>'
             }
 
             renderEditions(isActive)
@@ -493,7 +599,7 @@
 
         loadDashboard()
 
-        // Sidebar navigation
+        /* Sidebar tabs */
         document.querySelectorAll('.sidebar-item[data-tab]').forEach(btn => {
             btn.addEventListener('click', function() {
                 document.querySelectorAll('.sidebar-item').forEach(b => b.classList.remove('active'))
@@ -503,101 +609,58 @@
             })
         })
 
-        // Résiliation
-        document.getElementById('cancel-btn').addEventListener('click', () => {
-            document.getElementById('cancel-modal').classList.add('show')
-        })
-        document.getElementById('cancel-modal-close').addEventListener('click', () => {
-            document.getElementById('cancel-modal').classList.remove('show')
-        })
-        document.getElementById('confirm-cancel-btn').addEventListener('click', () => {
-            document.getElementById('cancel-modal').classList.remove('show')
-            openStripePortal()
-        })
-        document.querySelectorAll('.modal-overlay').forEach(o => {
-            o.addEventListener('click', e => { if (e.target === o) o.classList.remove('show') })
-        })
+        /* Résiliation */
+        document.getElementById('cancel-btn').addEventListener('click', () => document.getElementById('cancel-modal').classList.add('show'))
+        document.getElementById('cancel-modal-close').addEventListener('click', () => document.getElementById('cancel-modal').classList.remove('show'))
+        document.getElementById('confirm-cancel-btn').addEventListener('click', () => { document.getElementById('cancel-modal').classList.remove('show'); openStripePortal() })
+        document.querySelectorAll('.modal-overlay').forEach(o => o.addEventListener('click', e => { if (e.target === o) o.classList.remove('show') }))
 
-        // ✅ Ouvre le portail Stripe via session dynamique (plus besoin de se reconnecter)
+        /* Portail Stripe */
         async function openStripePortal() {
             const btn = document.getElementById('update-card-btn')
-            const originalText = btn.innerHTML
-            btn.disabled = true
-            btn.innerHTML = '⏳ Chargement...'
-
+            const orig = btn.innerHTML
+            btn.disabled = true; btn.innerHTML = '⏳ Chargement...'
             try {
                 const { data: { session } } = await sb.auth.getSession()
                 const email = session?.user?.email
                 if (!email) { alert('Session expirée, reconnecte-toi.'); return }
-
-                // Récupère le stripe_customer_id depuis Supabase
-                const { data: sub } = await sb
-                    .from('subscriptions')
-                    .select('stripe_customer_id')
-                    .or(`email.eq.${email},user_id.eq.${session.user.id}`)
-                    .limit(1)
-                    .single()
-
-                if (!sub?.stripe_customer_id) {
-                    alert('Aucun abonnement Stripe trouvé.')
-                    return
-                }
-
+                const { data: sub } = await sb.from('subscriptions').select('stripe_customer_id')
+                    .or(`email.eq.${email},user_id.eq.${session.user.id}`).limit(1).single()
+                if (!sub?.stripe_customer_id) { alert('Aucun abonnement Stripe trouvé.'); return }
                 const res = await fetch('/api/create-portal-session', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ customerId: sub.stripe_customer_id })
                 })
                 const json = await res.json()
-                if (json.url) {
-                    window.location.href = json.url
-                } else {
-                    alert('Erreur portail Stripe : ' + (json.error || 'inconnu'))
-                }
-            } catch (err) {
-                console.error(err)
-                alert('Erreur de connexion au portail.')
-            } finally {
-                btn.disabled = false
-                btn.innerHTML = originalText
-            }
+                if (json.url) window.location.href = json.url
+                else alert('Erreur portail Stripe : ' + (json.error || 'inconnu'))
+            } catch (err) { console.error(err); alert('Erreur de connexion au portail.') }
+            finally { btn.disabled = false; btn.innerHTML = orig }
         }
-
         document.getElementById('update-card-btn').addEventListener('click', openStripePortal)
 
-        // Profil
+        /* Profil */
         document.getElementById('profile-form').addEventListener('submit', async (e) => {
             e.preventDefault()
-            const { error } = await sb.auth.updateUser({
-                data: {
-                    first_name: document.getElementById('p-firstname').value,
-                    last_name:  document.getElementById('p-lastname').value,
-                    pays:       document.getElementById('p-country').value,
-                }
-            })
-            showAlert('profile-saved',
-                error ? `❌ Erreur : ${error.message}` : '✓ Profil mis à jour avec succès.',
-                error ? 'error' : 'success'
-            )
+            const { error } = await sb.auth.updateUser({ data: {
+                first_name: document.getElementById('p-firstname').value,
+                last_name:  document.getElementById('p-lastname').value,
+                pays:       document.getElementById('p-country').value,
+            }})
+            showAlert('profile-saved', error ? `❌ Erreur : ${error.message}` : '✓ Profil mis à jour avec succès.', error ? 'error' : 'success')
         })
 
-        // Mot de passe
+        /* Mot de passe */
         document.getElementById('security-form').addEventListener('submit', async (e) => {
             e.preventDefault()
-            const pw  = document.getElementById('new-pw').value
+            const pw = document.getElementById('new-pw').value
             const cpw = document.getElementById('confirm-pw').value
-            if (pw !== cpw || pw.length < 8) {
-                showAlert('pw-saved', '❌ Les mots de passe ne correspondent pas ou font moins de 8 caractères.', 'error')
-                return
-            }
+            if (pw !== cpw || pw.length < 8) { showAlert('pw-saved', '❌ Les mots de passe ne correspondent pas ou font moins de 8 caractères.', 'error'); return }
             const { error } = await sb.auth.updateUser({ password: pw })
-            showAlert('pw-saved',
-                error ? `❌ Erreur : ${error.message}` : '✓ Mot de passe modifié.',
-                error ? 'error' : 'success'
-            )
+            showAlert('pw-saved', error ? `❌ Erreur : ${error.message}` : '✓ Mot de passe modifié.', error ? 'error' : 'success')
         })
 
-        // Déconnexion
+        /* Déconnexion */
         document.getElementById('logout-btn').addEventListener('click', async () => {
             await sb.auth.signOut()
             localStorage.removeItem('tpx_user_email')
@@ -605,12 +668,19 @@
             window.location.href = 'login.html'
         })
 
-        // Supprimer compte
+        /* Supprimer compte */
         document.getElementById('delete-account-btn').addEventListener('click', () => {
-            if (confirm('Es-tu certain ? Cette action est irréversible.')) {
-                alert('Pour supprimer ton compte, contacte le support.')
-            }
+            if (confirm('Es-tu certain ? Cette action est irréversible.')) alert('Pour supprimer ton compte, contacte le support.')
         })
+
+        /* Hamburger */
+        const hamburger = document.getElementById('hamburger'), navMenu = document.getElementById('navMenu'), navOverlay = document.getElementById('navOverlay'), navClose = document.getElementById('navClose')
+        function openMenu()  { hamburger.classList.add('open'); navMenu.classList.add('open'); navOverlay.classList.add('open'); document.body.style.overflow = 'hidden' }
+        function closeMenu() { hamburger.classList.remove('open'); navMenu.classList.remove('open'); navOverlay.classList.remove('open'); document.body.style.overflow = '' }
+        hamburger.addEventListener('click', openMenu)
+        navClose.addEventListener('click', closeMenu)
+        navOverlay.addEventListener('click', closeMenu)
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu() })
     </script>
 </body>
 </html>
