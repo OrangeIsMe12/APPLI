@@ -512,15 +512,58 @@
         })
         document.getElementById('confirm-cancel-btn').addEventListener('click', () => {
             document.getElementById('cancel-modal').classList.remove('show')
-            window.open(STRIPE_PORTAL_URL, '_blank')
+            openStripePortal()
         })
         document.querySelectorAll('.modal-overlay').forEach(o => {
             o.addEventListener('click', e => { if (e.target === o) o.classList.remove('show') })
         })
 
-        document.getElementById('update-card-btn').addEventListener('click', () => {
-            window.open(STRIPE_PORTAL_URL, '_blank')
-        })
+        // ✅ Ouvre le portail Stripe via session dynamique (plus besoin de se reconnecter)
+        async function openStripePortal() {
+            const btn = document.getElementById('update-card-btn')
+            const originalText = btn.innerHTML
+            btn.disabled = true
+            btn.innerHTML = '⏳ Chargement...'
+
+            try {
+                const { data: { session } } = await sb.auth.getSession()
+                const email = session?.user?.email
+                if (!email) { alert('Session expirée, reconnecte-toi.'); return }
+
+                // Récupère le stripe_customer_id depuis Supabase
+                const { data: sub } = await sb
+                    .from('subscriptions')
+                    .select('stripe_customer_id')
+                    .or(`email.eq.${email},user_id.eq.${session.user.id}`)
+                    .limit(1)
+                    .single()
+
+                if (!sub?.stripe_customer_id) {
+                    alert('Aucun abonnement Stripe trouvé.')
+                    return
+                }
+
+                const res = await fetch('/api/create-portal-session', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ customerId: sub.stripe_customer_id })
+                })
+                const json = await res.json()
+                if (json.url) {
+                    window.location.href = json.url
+                } else {
+                    alert('Erreur portail Stripe : ' + (json.error || 'inconnu'))
+                }
+            } catch (err) {
+                console.error(err)
+                alert('Erreur de connexion au portail.')
+            } finally {
+                btn.disabled = false
+                btn.innerHTML = originalText
+            }
+        }
+
+        document.getElementById('update-card-btn').addEventListener('click', openStripePortal)
 
         // Profil
         document.getElementById('profile-form').addEventListener('submit', async (e) => {
