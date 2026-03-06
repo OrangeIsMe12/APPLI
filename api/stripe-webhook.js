@@ -102,6 +102,60 @@ export default async function handler(req, res) {
         }
     }
 
+    // ── Abonnement créé → sauvegarde dans Supabase ───────────────────────────
+    // C'est cet événement qui se déclenche quand le Payment Link crée un abonnement
+    if (event.type === 'customer.subscription.created') {
+        try {
+            // Récupère l'email depuis le customer Stripe
+            let email = null
+            if (data.customer) {
+                const customer = await stripe.customers.retrieve(data.customer)
+                email = customer.email
+            }
+
+            if (!email) {
+                console.error('customer.subscription.created: no email found for customer', data.customer)
+                return res.json({ received: true })
+            }
+
+            const periodEnd   = safeTimestampToISO(data.current_period_end)
+            const periodStart = safeTimestampToISO(data.current_period_start)
+            const createdAt   = safeTimestampToISO(data.created)
+
+            console.log('customer.subscription.created:', {
+                email, status: data.status, periodEnd, createdAt
+            })
+
+            const upsertData = {
+                email,
+                stripe_customer_id:     data.customer,
+                stripe_subscription_id: data.id,
+                status:                 data.status,
+                member_since:           createdAt || new Date().toISOString(),
+            }
+
+            if (periodEnd)   upsertData.current_period_end   = periodEnd
+            if (periodStart) upsertData.current_period_start = periodStart
+
+            // ✅ Cherche si on a un user Supabase avec cet email pour lier le user_id
+            const { data: existingUser } = await sb
+                .from('subscriptions')
+                .select('user_id')
+                .eq('email', email)
+                .single()
+
+            if (existingUser?.user_id) {
+                upsertData.user_id = existingUser.user_id
+            }
+
+            await sb.from('subscriptions').upsert(upsertData, { onConflict: 'email' })
+
+        } catch (err) {
+            console.error('customer.subscription.created error:', err.message, err.stack)
+            return res.json({ received: true })
+        }
+    }
+
     // ── Abonnement mis à jour (renouvellement, changement de statut) ──────────
     if (event.type === 'customer.subscription.updated') {
         try {
