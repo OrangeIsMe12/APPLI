@@ -51,7 +51,7 @@ module.exports = async function handler(req, res) {
             subscription_data: {
                 trial_period_days: 7, // Retire cette ligne si pas de trial
             },
-            return_url: `${req.headers.origin || 'https://tonsite.com'}/success.html?session_id={CHECKOUT_SESSION_ID}`,
+            return_url: `${req.headers.origin || 'https://www.thegolddesk.online/'}/success.html?session_id={CHECKOUT_SESSION_ID}`,
         })
 
         return res.status(200).json({ clientSecret: session.client_secret })
