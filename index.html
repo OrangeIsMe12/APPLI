@@ -1,3 +1,7 @@
+
+Index · HTML
+Copier
+
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -8,764 +12,122 @@
     <link rel="icon" type="image/png" href="/icon.jpg">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-         :root {
-            --gold: #c9a84c;
-            --gold-dim: #7a6328;
-            --bg: #080808;
-            --bg2: #0d0d0d;
-            --border: #1e1a10;
-            --text: #e8e0d0;
-            --text-dim: #9a9080;
-            --text-muted: #4a4038;
-            --green: #4caf7d;
-            --red: #e05252;
-        }
-        
-        body {
-            background: var(--bg);
-            font-family: 'DM Sans', sans-serif;
-            color: var(--text);
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-        /* HERO */
-        
-        .hero {
-            position: relative;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 60px 24px;
-            text-align: center;
-            overflow: hidden;
-        }
-        
-        .hero::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(201, 168, 76, 0.07) 0%, transparent 70%), radial-gradient(ellipse 40% 40% at 20% 80%, rgba(201, 168, 76, 0.03) 0%, transparent 60%);
-            pointer-events: none;
-        }
-        
-        .hero-tag {
-            font-family: 'DM Mono', monospace;
-            font-size: 10px;
-            letter-spacing: 5px;
-            color: var(--gold);
-            text-transform: uppercase;
-            opacity: 0.7;
-            margin-bottom: 32px;
-            position: relative;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        
-        .hero-tag::before,
-        .hero-tag::after {
-            content: '';
-            width: 40px;
-            height: 1px;
-            background: var(--gold);
-            opacity: 0.3;
-        }
-        
-        .hero-title {
-            font-family: 'Playfair Display', serif;
-            font-size: clamp(72px, 14vw, 130px);
-            font-weight: 900;
-            line-height: 0.88;
-            letter-spacing: -3px;
-            position: relative;
-            margin-bottom: 8px;
-        }
-        
-        .hero-title .the {
-            color: var(--gold);
-            display: block;
-        }
-        
-        .hero-title .pro {
-            color: var(--text);
-            display: block;
-        }
-        
-        .hero-title .xau {
-            color: var(--gold);
-            display: block;
-            font-style: italic;
-            opacity: 0.8;
-        }
-        
-        .hero-sub {
-            font-family: 'DM Mono', monospace;
-            font-size: 11px;
-            letter-spacing: 4px;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            margin-top: 28px;
-            margin-bottom: 52px;
-        }
-        
-        .hero-cta {
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            background: linear-gradient(135deg, #1a1408, #0f0d06);
-            border: 1px solid var(--gold-dim);
-            color: var(--gold);
-            font-family: 'DM Mono', monospace;
-            font-size: 11px;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            padding: 16px 36px;
-            text-decoration: none;
-            border-radius: 2px;
-            transition: all 0.3s;
-        }
-        
-        .hero-cta:hover {
-            border-color: var(--gold);
-            box-shadow: 0 0 40px rgba(201, 168, 76, 0.12);
-            transform: translateY(-2px);
-        }
-        
-        .hero-cta:hover .arrow {
-            transform: translateX(5px);
-        }
-        
-        .arrow {
-            display: inline-block;
-            transition: transform 0.3s;
-        }
-        
-        .hero-scroll {
-            position: absolute;
-            bottom: 32px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-family: 'DM Mono', monospace;
-            font-size: 9px;
-            letter-spacing: 3px;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            animation: bob 2.5s ease-in-out infinite;
-        }
-        
-        @keyframes bob {
-            0%,
-            100% {
-                transform: translateX(-50%) translateY(0);
-            }
-            50% {
-                transform: translateX(-50%) translateY(8px);
-            }
-        }
-        
-        .scroll-line {
-            width: 1px;
-            height: 36px;
-            background: linear-gradient(to bottom, var(--gold-dim), transparent);
-        }
-        /* TICKER STRIP */
-        
-        .ticker-strip {
-            background: #060604;
-            border-top: 1px solid var(--border);
-            border-bottom: 1px solid var(--border);
-            padding: 10px 0;
-            overflow: hidden;
-        }
-        
-        .ticker-inner {
-            display: flex;
-            gap: 40px;
-            animation: ticker 22s linear infinite;
-            white-space: nowrap;
-        }
-        
-        @keyframes ticker {
-            0% {
-                transform: translateX(0);
-            }
-            100% {
-                transform: translateX(-50%);
-            }
-        }
-        
-        .ticker-item {
-            font-family: 'DM Mono', monospace;
-            font-size: 10px;
-            letter-spacing: 2px;
-            color: var(--text-muted);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .ticker-item .sym {
-            color: var(--gold);
-            opacity: 0.55;
-        }
-        
-        .up {
-            color: var(--green);
-        }
-        
-        .down {
-            color: var(--red);
-        }
-        
-        .ticker-dot {
-            color: var(--gold-dim);
-            opacity: 0.25;
-        }
-        
-        .ticker-muted {
-            color: var(--text-muted);
-            letter-spacing: 3px;
-        }
-        /* EDITIONS SECTION */
-        
-        .editions-section {
-            max-width: 860px;
-            margin: 0 auto;
-            padding: 80px 24px;
-        }
-        
-        .section-header {
-            display: flex;
-            align-items: flex-end;
-            justify-content: space-between;
-            margin-bottom: 40px;
-        }
-        
-        .section-label {
-            font-family: 'DM Mono', monospace;
-            font-size: 9px;
-            letter-spacing: 4px;
-            color: var(--gold);
-            text-transform: uppercase;
-            opacity: 0.7;
-            margin-bottom: 10px;
-        }
-        
-        .section-label::before {
-            content: '▸ ';
-            opacity: 0.5;
-        }
-        
-        .section-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 32px;
-            color: var(--text);
-            font-weight: 700;
-        }
-        
-        .edition-count {
-            font-family: 'DM Mono', monospace;
-            font-size: 10px;
-            color: var(--text-muted);
-            letter-spacing: 2px;
-        }
-        /* CARDS */
-        
-        .cards-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2px;
-            background: var(--border);
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            overflow: hidden;
-        }
-        
-        .card-featured {
-            grid-column: 1 / -1;
-            background: linear-gradient(135deg, #100e06 0%, #0a0905 60%, #100e06 100%);
-            padding: 44px;
-            text-decoration: none;
-            display: block;
-            position: relative;
-            overflow: hidden;
-            transition: background 0.3s;
-            border-bottom: 1px solid var(--border);
-        }
-        
-        .card-featured::before {
-            content: '';
-            position: absolute;
-            top: -60px;
-            right: -60px;
-            width: 320px;
-            height: 320px;
-            background: radial-gradient(circle, rgba(201, 168, 76, 0.06) 0%, transparent 70%);
-            pointer-events: none;
-        }
-        
-        .card-featured:hover {
-            background: linear-gradient(135deg, #161108 0%, #0d0b05 60%, #161108 100%);
-        }
-        
-        .card-featured:hover .card-arrow {
-            opacity: 1;
-            transform: translateX(5px);
-        }
-        
-        .card-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 22px;
-        }
-        
-        .card-edition-num {
-            font-family: 'DM Mono', monospace;
-            font-size: 10px;
-            letter-spacing: 3px;
-            color: var(--gold);
-            opacity: 0.55;
-        }
-        
-        .badge {
-            font-family: 'DM Mono', monospace;
-            font-size: 9px;
-            letter-spacing: 2px;
-            padding: 4px 12px;
-            border-radius: 2px;
-            text-transform: uppercase;
-        }
-        
-        .badge-new {
-            background: rgba(201, 168, 76, 0.1);
-            color: var(--gold);
-            border: 1px solid rgba(201, 168, 76, 0.2);
-        }
-        
-        .badge-soon {
-            background: rgba(30, 26, 16, 0.5);
-            color: #2a2520;
-            border: 1px solid #1a1610;
-        }
-        
-        .card-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 30px;
-            font-weight: 700;
-            color: var(--text);
-            line-height: 1.2;
-            margin-bottom: 14px;
-        }
-        
-        .card-desc {
-            font-size: 14px;
-            color: var(--text-dim);
-            line-height: 1.75;
-            max-width: 580px;
-            margin-bottom: 28px;
-        }
-        
-        .card-meta {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-        
-        .card-date {
-            font-family: 'DM Mono', monospace;
-            font-size: 10px;
-            color: var(--text-muted);
-            letter-spacing: 1px;
-        }
-        
-        .card-tags {
-            display: flex;
-            gap: 8px;
-        }
-        
-        .card-tag {
-            font-family: 'DM Mono', monospace;
-            font-size: 8px;
-            letter-spacing: 2px;
-            color: var(--text-muted);
-            border: 1px solid #1e1a10;
-            padding: 3px 10px;
-            border-radius: 2px;
-            text-transform: uppercase;
-        }
-        
-        .card-arrow {
-            font-size: 16px;
-            color: var(--gold);
-            opacity: 0.35;
-            transition: all 0.3s;
-        }
-        /* SMALL CARDS */
-        
-        .card-small {
-            cursor: pointer;
-            background: #090908;
-            padding: 32px 28px;
-            text-decoration: none;
-            display: block;
-            transition: background 0.3s;
-        }
-        
-        .card-small.disabled {
-            pointer-events: none;
-        }
-        
-        .card-small:not(.disabled):hover {
-            background: #0d0b05;
-        }
-        
-        .card-small:not(.disabled):hover .card-arrow {
-            opacity: 1;
-            transform: translateX(5px);
-        }
-        
-        .card-small .card-title {
-            font-size: 20px;
-            margin-bottom: 10px;
-        }
-        
-        .card-small .card-desc {
-            font-size: 13px;
-            margin-bottom: 18px;
-        }
-        
-        .card-small.disabled .card-edition-num {
-            opacity: 0.15;
-        }
-        
-        .card-small.disabled .card-title {
-            color: #201c14;
-        }
-        
-        .card-small.disabled .card-desc {
-            color: #1a1610;
-        }
-        
-        .card-small.disabled .card-date {
-            color: #1a1610;
-        }
-        /* DIVIDER */
-        
-        .gold-divider {
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--gold), transparent);
-            opacity: 0.15;
-            margin: 0 auto;
-            max-width: 860px;
-        }
-        /* ABOUT */
-        
-        .about-section {
-            max-width: 860px;
-            margin: 0 auto;
-            padding: 64px 24px 80px;
-        }
-        
-        .about-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 2px;
-            background: var(--border);
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            overflow: hidden;
-        }
-        
-        .about-cell {
-            background: var(--bg2);
-            padding: 32px 28px;
-        }
-        
-        .about-icon {
-            font-size: 22px;
-            margin-bottom: 16px;
-            color: var(--gold);
-            opacity: 0.5;
-        }
-        
-        .about-label {
-            font-family: 'DM Mono', monospace;
-            font-size: 9px;
-            letter-spacing: 3px;
-            color: var(--gold);
-            text-transform: uppercase;
-            opacity: 0.55;
-            margin-bottom: 8px;
-        }
-        
-        .about-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 17px;
-            color: var(--text);
-            margin-bottom: 8px;
-        }
-        
-        .about-desc {
-            font-size: 12px;
-            color: var(--text-muted);
-            line-height: 1.65;
-        }
-        /* LOCKED CARDS */
-        
-        .card-small.locked {
-            position: relative;
-            background: #060605;
-            overflow: hidden;
-            pointer-events: none;
-        }
-        
-        .card-small.locked .card-edition-num {
-            opacity: 0.2;
-        }
-        
-        .card-small.locked .card-title {
-            color: #1a1610;
-        }
-        
-        .card-small.locked .card-desc {
-            color: #131008;
-        }
-        
-        .card-small.locked .card-date {
-            color: #131008;
-        }
-        
-        .badge-lock {
-            background: rgba(201, 168, 76, 0.08);
-            color: rgba(201, 168, 76, 0.4);
-            border: 1px solid rgba(201, 168, 76, 0.15);
-        }
-        
-        .lock-overlay {
-            position: absolute;
-            inset: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            background: rgba(6, 6, 5, 0.75);
-            backdrop-filter: blur(2px);
-            pointer-events: all;
-        }
-        
-        .lock-icon {
-            font-size: 28px;
-            opacity: 0.6;
-        }
-        
-        .lock-text {
-            font-family: 'DM Mono', monospace;
-            font-size: 10px;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            color: var(--gold);
-            opacity: 0.6;
-        }
-        
-        .lock-btn {
-            font-family: 'DM Mono', monospace;
-            font-size: 10px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: #080804;
-            background: var(--gold);
-            padding: 8px 16px;
-            text-decoration: none;
-            margin-top: 4px;
-            transition: filter 0.2s;
-        }
-        
-        .lock-btn:hover {
-            filter: brightness(1.15);
-        }
-        /* FOOTER */
-        
-        .footer {
-            border-top: 1px solid var(--border);
-            padding: 40px 24px;
-            text-align: center;
-        }
-        
-        .footer-logo {
-            font-family: 'Playfair Display', serif;
-            font-size: 22px;
-            color: #201c10;
-            margin-bottom: 12px;
-        }
-        
-        .footer-logo span {
-            color: var(--gold);
-            opacity: 0.25;
-        }
-        
-        .footer-copy {
-            font-family: 'DM Mono', monospace;
-            font-size: 9px;
-            color: #181410;
-            letter-spacing: 2px;
-        }
-        
-        @media (max-width: 640px) {
-            .cards-grid,
-            .about-grid {
-                grid-template-columns: 1fr;
-            }
-            .card-featured {
-                padding: 28px 24px;
-            }
-            .card-tags {
-                display: none;
-            }
-            .section-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 6px;
-            }
-        }
-        /* NAV */
-        
-        .top-nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 14px 32px;
-            border-bottom: 1px solid var(--border);
-            background: var(--bg);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        
-        .nav-brand {
-            font-family: 'Playfair Display', serif;
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--gold);
-            text-decoration: none;
-        }
-        
-        .nav-right {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-        
-        .nav-link {
-            font-family: 'DM Mono', monospace;
-            font-size: 10px;
-            font-weight: 600;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: var(--text-dim);
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-        
-        .nav-link:hover {
-            color: var(--gold);
-        }
-        
-        .nav-btn {
-            font-family: 'DM Mono', monospace;
-            font-size: 10px;
-            font-weight: 700;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: #080804;
-            background: var(--gold);
-            padding: 9px 18px;
-            text-decoration: none;
-            transition: background 0.2s;
-        }
-        
-        .nav-btn:hover {
-            filter: brightness(1.1);
-        }
-        
-        @media(max-width:640px) {
-            .nav-link {
-                display: none;
-            }
-        }
-        
-        .card-small.unlocked {
-            pointer-events: all;
-            cursor: pointer;
-            background: #090908;
-        }
-        
-        .card-small.unlocked:hover {
-            background: #0d0b05;
-        }
-        
-        .card-small.unlocked:hover .card-arrow {
-            opacity: 1;
-            transform: translateX(5px);
-        }
-        
-        .card-small.unlocked .card-title {
-            color: var(--text);
-        }
-        
-        .card-small.unlocked .card-desc {
-            color: var(--text-dim);
-        }
-        
-        .card-small.unlocked .card-date {
-            color: var(--text-muted);
-        }
-        
-        .card-small.unlocked .card-edition-num {
-            opacity: 0.55;
-        }
-        
-        .badge-subscriber {
-            background: rgba(76, 175, 122, 0.1);
-            color: #4caf7d;
-            border: 1px solid rgba(76, 175, 122, 0.2);
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --gold: #c9a84c; --gold-dim: #7a6328; --bg: #080808; --bg2: #0d0d0d;
+            --border: #1e1a10; --text: #e8e0d0; --text-dim: #9a9080;
+            --text-muted: #4a4038; --green: #4caf7d; --red: #e05252;
+        }
+        body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: var(--text); min-height: 100vh; overflow-x: hidden; }
+        .hero { position: relative; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 60px 24px; text-align: center; overflow: hidden; }
+        .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(201,168,76,0.07) 0%, transparent 70%), radial-gradient(ellipse 40% 40% at 20% 80%, rgba(201,168,76,0.03) 0%, transparent 60%); pointer-events: none; }
+        .hero-tag { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 5px; color: var(--gold); text-transform: uppercase; opacity: 0.7; margin-bottom: 32px; position: relative; display: flex; align-items: center; gap: 12px; }
+        .hero-tag::before, .hero-tag::after { content: ''; width: 40px; height: 1px; background: var(--gold); opacity: 0.3; }
+        .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(72px,14vw,130px); font-weight: 900; line-height: 0.88; letter-spacing: -3px; position: relative; margin-bottom: 8px; }
+        .hero-title .the { color: var(--gold); display: block; }
+        .hero-title .pro { color: var(--text); display: block; }
+        .hero-title .xau { color: var(--gold); display: block; font-style: italic; opacity: 0.8; }
+        .hero-sub { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 4px; color: var(--text-muted); text-transform: uppercase; margin-top: 28px; margin-bottom: 52px; }
+        .hero-cta { display: inline-flex; align-items: center; gap: 12px; background: linear-gradient(135deg,#1a1408,#0f0d06); border: 1px solid var(--gold-dim); color: var(--gold); font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; padding: 16px 36px; text-decoration: none; border-radius: 2px; transition: all 0.3s; }
+        .hero-cta:hover { border-color: var(--gold); box-shadow: 0 0 40px rgba(201,168,76,0.12); transform: translateY(-2px); }
+        .hero-cta:hover .arrow { transform: translateX(5px); }
+        .arrow { display: inline-block; transition: transform 0.3s; }
+        .hero-scroll { position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%); font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 3px; color: var(--text-muted); text-transform: uppercase; display: flex; flex-direction: column; align-items: center; gap: 8px; animation: bob 2.5s ease-in-out infinite; }
+        @keyframes bob { 0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(8px)} }
+        .scroll-line { width: 1px; height: 36px; background: linear-gradient(to bottom, var(--gold-dim), transparent); }
+        .ticker-strip { background: #060604; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 10px 0; overflow: hidden; }
+        .ticker-inner { display: flex; gap: 40px; animation: ticker 22s linear infinite; white-space: nowrap; }
+        @keyframes ticker { 0%{transform:translateX(0)}100%{transform:translateX(-50%)} }
+        .ticker-item { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; color: var(--text-muted); display: flex; align-items: center; gap: 10px; }
+        .ticker-item .sym { color: var(--gold); opacity: 0.55; }
+        .up { color: var(--green); } .down { color: var(--red); }
+        .ticker-dot { color: var(--gold-dim); opacity: 0.25; }
+        .editions-section { max-width: 860px; margin: 0 auto; padding: 80px 24px; }
+        .section-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 40px; }
+        .section-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 4px; color: var(--gold); text-transform: uppercase; opacity: 0.7; margin-bottom: 10px; }
+        .section-label::before { content: '▸ '; opacity: 0.5; }
+        .section-title { font-family: 'Playfair Display', serif; font-size: 32px; color: var(--text); font-weight: 700; }
+        .edition-count { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 2px; }
+        .cards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: var(--border); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
+        .card-featured { grid-column: 1 / -1; background: linear-gradient(135deg,#100e06 0%,#0a0905 60%,#100e06 100%); padding: 44px; text-decoration: none; display: block; position: relative; overflow: hidden; transition: background 0.3s; border-bottom: 1px solid var(--border); }
+        .card-featured::before { content: ''; position: absolute; top: -60px; right: -60px; width: 320px; height: 320px; background: radial-gradient(circle, rgba(201,168,76,0.06) 0%, transparent 70%); pointer-events: none; }
+        .card-featured:hover { background: linear-gradient(135deg,#161108 0%,#0d0b05 60%,#161108 100%); }
+        .card-featured:hover .card-arrow { opacity: 1; transform: translateX(5px); }
+        .card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 22px; }
+        .card-edition-num { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 3px; color: var(--gold); opacity: 0.55; }
+        .badge { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; padding: 4px 12px; border-radius: 2px; text-transform: uppercase; }
+        .badge-new { background: rgba(201,168,76,0.1); color: var(--gold); border: 1px solid rgba(201,168,76,0.2); }
+        .card-title { font-family: 'Playfair Display', serif; font-size: 30px; font-weight: 700; color: var(--text); line-height: 1.2; margin-bottom: 14px; }
+        .card-desc { font-size: 14px; color: var(--text-dim); line-height: 1.75; max-width: 580px; margin-bottom: 28px; }
+        .card-meta { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+        .card-date { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; }
+        .card-tags { display: flex; gap: 8px; }
+        .card-tag { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 2px; color: var(--text-muted); border: 1px solid #1e1a10; padding: 3px 10px; border-radius: 2px; text-transform: uppercase; }
+        .card-arrow { font-size: 16px; color: var(--gold); opacity: 0.35; transition: all 0.3s; }
+        .card-small { cursor: pointer; background: #090908; padding: 32px 28px; text-decoration: none; display: block; transition: background 0.3s; }
+        .card-small.locked { position: relative; background: #060605; overflow: hidden; pointer-events: none; }
+        .card-small.locked .card-edition-num { opacity: 0.2; }
+        .card-small.locked .card-title { color: #1a1610; }
+        .card-small.locked .card-desc { color: #131008; }
+        .card-small.locked .card-date { color: #131008; }
+        .card-small .card-title { font-size: 20px; margin-bottom: 10px; }
+        .card-small .card-desc { font-size: 13px; margin-bottom: 18px; }
+        .badge-lock { background: rgba(201,168,76,0.08); color: rgba(201,168,76,0.4); border: 1px solid rgba(201,168,76,0.15); }
+        .lock-overlay { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; background: rgba(6,6,5,0.75); backdrop-filter: blur(2px); pointer-events: all; }
+        .lock-icon { font-size: 28px; opacity: 0.6; }
+        .lock-text { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); opacity: 0.6; }
+        .lock-btn { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #080804; background: var(--gold); padding: 8px 16px; text-decoration: none; margin-top: 4px; transition: filter 0.2s; }
+        .lock-btn:hover { filter: brightness(1.15); }
+        .card-small.unlocked { pointer-events: all; cursor: pointer; background: #090908; }
+        .card-small.unlocked:hover { background: #0d0b05; }
+        .card-small.unlocked:hover .card-arrow { opacity: 1; transform: translateX(5px); }
+        .card-small.unlocked .card-title { color: var(--text); }
+        .card-small.unlocked .card-desc { color: var(--text-dim); }
+        .card-small.unlocked .card-date { color: var(--text-muted); }
+        .card-small.unlocked .card-edition-num { opacity: 0.55; }
+        .badge-subscriber { background: rgba(76,175,122,0.1); color: #4caf7d; border: 1px solid rgba(76,175,122,0.2); }
+        .gold-divider { height: 1px; background: linear-gradient(90deg,transparent,var(--gold),transparent); opacity: 0.15; margin: 0 auto; max-width: 860px; }
+        .about-section { max-width: 860px; margin: 0 auto; padding: 64px 24px 80px; }
+        .about-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2px; background: var(--border); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
+        .about-cell { background: var(--bg2); padding: 32px 28px; }
+        .about-icon { font-size: 22px; margin-bottom: 16px; color: var(--gold); opacity: 0.5; }
+        .about-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 3px; color: var(--gold); text-transform: uppercase; opacity: 0.55; margin-bottom: 8px; }
+        .about-title { font-family: 'Playfair Display', serif; font-size: 17px; color: var(--text); margin-bottom: 8px; }
+        .about-desc { font-size: 12px; color: var(--text-muted); line-height: 1.65; }
+        .footer { border-top: 1px solid var(--border); padding: 40px 24px; text-align: center; }
+        .footer-logo { font-family: 'Playfair Display', serif; font-size: 22px; color: #201c10; margin-bottom: 12px; }
+        .footer-logo span { color: var(--gold); opacity: 0.25; }
+        .footer-copy { font-family: 'DM Mono', monospace; font-size: 9px; color: #181410; letter-spacing: 2px; }
+        .top-nav { display: flex; justify-content: space-between; align-items: center; padding: 14px 32px; border-bottom: 1px solid var(--border); background: var(--bg); position: sticky; top: 0; z-index: 100; }
+        .nav-brand { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--gold); text-decoration: none; }
+        .nav-right { display: flex; align-items: center; gap: 16px; }
+        .nav-link { font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--text-dim); text-decoration: none; transition: color 0.2s; }
+        .nav-link:hover { color: var(--gold); }
+        .nav-btn { font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #080804; background: var(--gold); padding: 9px 18px; text-decoration: none; transition: background 0.2s; }
+        .nav-btn:hover { filter: brightness(1.1); }
+        @media(max-width:640px) { .nav-link{display:none;} .cards-grid,.about-grid{grid-template-columns:1fr;} .card-featured{padding:28px 24px;} .card-tags{display:none;} .section-header{flex-direction:column;align-items:flex-start;gap:6px;} }
     </style>
 </head>
 
 <body>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-       const { createClient } = window.supabase
-const sb = createClient(
-    'https://oehoqoaxcwiffbzuegou.supabase.co',
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9laG9xb2F4Y3dpZmZienVlZ291Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzMjI2MTMsImV4cCI6MjA4Nzg5ODYxM30.N5UP014MgNUBunZJuhKuUUlRYC_HY7lpAFAYD39CjvE'
-)
-sb.auth.getSession().then(({ data: { session } }) => {
-    if (!session) window.location.replace('login.html')
-})
+        const { createClient } = window.supabase
+        const sb = createClient(
+            'https://oehoqoaxcwiffbzuegou.supabase.co',
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9laG9xb2F4Y3dpZmZienVlZ291Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzMjI2MTMsImV4cCI6MjA4Nzg5ODYxM30.N5UP014MgNUBunZJuhKuUUlRYC_HY7lpAFAYD39CjvE'
+        )
+        sb.auth.getSession().then(({ data: { session } }) => {
+            if (!session) window.location.replace('login.html')
+        })
     </script>
 
     <!-- NAV -->
     <nav class="top-nav">
         <a href="index.html" class="nav-brand">The Pro Xau</a>
         <div class="nav-right">
-            <a href="https://buy.stripe.com/7sY9ALaso1b1bVGgCwfw400" class="nav-link">S'abonner</a>
+            <!-- ✅ id ajouté pour pouvoir le cacher si abonné -->
+            <a href="https://buy.stripe.com/7sY9ALaso1b1bVGgCwfw400" class="nav-link" id="nav-subscribe-link">S'abonner</a>
             <a href="dashboard.html" class="nav-btn">Mon compte →</a>
         </div>
     </nav>
@@ -780,79 +142,36 @@ sb.auth.getSession().then(({ data: { session } }) => {
         </h1>
         <p class="hero-sub">Analyse · Macro · Technique · Setups</p>
         <a href="#editions" class="hero-cta">
-        Voir toutes les éditions <span class="arrow">→</span>
-    </a>
+            Voir toutes les éditions <span class="arrow">→</span>
+        </a>
         <div class="hero-scroll">
             <div class="scroll-line"></div>
             Défiler
         </div>
     </section>
 
-    <!-- TICKER STRIP -->
-    <!-- ============================================================
-         TICKER — MISE À JOUR MANUELLE
-         Modifie les valeurs ci-dessous pour mettre à jour les prix.
-         price    = prix actuel
-         changePct = variation % (positif = vert, négatif = rouge)
-         ============================================================ -->
+    <!-- TICKER -->
     <div class="ticker-strip">
         <div class="ticker-inner" id="tickerInner"></div>
     </div>
-
     <script>
-        // ╔══════════════════════════════════════════╗
-        // ║  MODIFIE CES CHIFFRES POUR METTRE À JOUR ║
-        // ╚══════════════════════════════════════════╝
-        const tickerData = [{
-            label: 'XAUUSD',
-            price: 5183.30,
-            changePct: +0.37,
-            prefix: '$',
-            decimals: 0
-        }, {
-            label: 'XAGUSD',
-            price: 87.301520,
-            changePct: -2.06,
-            prefix: '$',
-            decimals: 2
-        }, {
-            label: 'DXY',
-            price: 97.77,
-            changePct: +0.15,
-            prefix: '',
-            decimals: 2
-        }, {
-            label: 'US10Y',
-            price: 4.05,
-            changePct: -0.05,
-            prefix: '',
-            decimals: 2,
-            suffix: '%'
-        }, ];
-        // ════════════════════════════════════════════
-
+        const tickerData = [
+            { label: 'XAUUSD', price: 5183.30, changePct: +0.37, prefix: '$', decimals: 0 },
+            { label: 'XAGUSD', price: 87.30,   changePct: -2.06, prefix: '$', decimals: 2 },
+            { label: 'DXY',    price: 97.77,   changePct: +0.15, prefix: '',  decimals: 2 },
+            { label: 'US10Y',  price: 4.05,    changePct: -0.05, prefix: '',  decimals: 2, suffix: '%' },
+        ]
         function buildTicker(data) {
-            let block = '';
+            let block = ''
             data.forEach(item => {
-                const cls = item.changePct >= 0 ? 'up' : 'down';
-                const sign = item.changePct >= 0 ? '+' : '';
-                const price = (item.prefix || '') +
-                    item.price.toLocaleString('en-US', {
-                        minimumFractionDigits: item.decimals,
-                        maximumFractionDigits: item.decimals
-                    }) + (item.suffix || '');
-                block += `
-                    <span class="ticker-item">
-                        <span class="sym">${item.label}</span>
-                        <span class="${cls}">${price}</span>
-                        <span class="${cls}">${sign}${item.changePct.toFixed(2)}%</span>
-                    </span>
-                    <span class="ticker-dot">◆</span>`;
-            });
-            return block + block + block + block;
+                const cls = item.changePct >= 0 ? 'up' : 'down'
+                const sign = item.changePct >= 0 ? '+' : ''
+                const price = (item.prefix||'') + item.price.toLocaleString('en-US',{minimumFractionDigits:item.decimals,maximumFractionDigits:item.decimals}) + (item.suffix||'')
+                block += `<span class="ticker-item"><span class="sym">${item.label}</span><span class="${cls}">${price}</span><span class="${cls}">${sign}${item.changePct.toFixed(2)}%</span></span><span class="ticker-dot">◆</span>`
+            })
+            return block + block + block + block
         }
-
-        document.getElementById('tickerInner').innerHTML = buildTicker(tickerData);
+        document.getElementById('tickerInner').innerHTML = buildTicker(tickerData)
     </script>
 
     <!-- EDITIONS -->
@@ -864,10 +183,8 @@ sb.auth.getSession().then(({ data: { session } }) => {
             </div>
             <div class="edition-count">1 édition publiée</div>
         </div>
-
         <div class="cards-grid">
-
-            <!-- ÉDITION 1 — FEATURED -->
+            <!-- ÉDITION 1 — LIBRE -->
             <a class="card-featured" href="edition01/edition-01.html">
                 <div class="card-top">
                     <div class="card-edition-num">ÉDITION #001</div>
@@ -886,8 +203,6 @@ sb.auth.getSession().then(({ data: { session } }) => {
                     <div class="card-arrow">→</div>
                 </div>
             </a>
-
-
 
             <!-- ÉDITION 2 — VERROUILLÉE -->
             <div id="card-edition-2" class="card-small locked">
@@ -920,17 +235,13 @@ sb.auth.getSession().then(({ data: { session } }) => {
                     <a href="https://buy.stripe.com/7sY9ALaso1b1bVGgCwfw400" class="lock-btn">S'abonner →</a>
                 </div>
             </div>
-
         </div>
     </section>
 
-
     <div class="gold-divider"></div>
 
-    <!-- ABONNEMENT -->
-<section id="pricing-section" style="max-width:860px; margin:0 auto; padding:80px 24px;">
-
-        <!-- Header -->
+    <!-- ✅ id="pricing-section" ajouté ici -->
+    <section id="pricing-section" style="max-width:860px; margin:0 auto; padding:80px 24px;">
         <div style="text-align:center; margin-bottom:56px;">
             <div style="font-family:'DM Mono',monospace; font-size:9px; letter-spacing:5px; color:var(--gold); text-transform:uppercase; opacity:0.7; margin-bottom:16px;">Accès complet</div>
             <h2 style="font-family:'Playfair Display',serif; font-size:clamp(32px,5vw,52px); font-weight:900; line-height:1.1; letter-spacing:-1px; margin-bottom:16px;">
@@ -939,14 +250,8 @@ sb.auth.getSession().then(({ data: { session } }) => {
             </h2>
             <p style="font-family:'DM Sans',sans-serif; font-size:14px; color:var(--text-dim); max-width:480px; margin:0 auto; line-height:1.7;">Accédez à toutes les éditions passées et futures — analyse macro, setups, technique et breaking news chaque semaine.</p>
         </div>
-
-        <!-- Pricing Card -->
         <div style="max-width:480px; margin:0 auto; border:1px solid var(--gold-dim); background:linear-gradient(135deg,#0f0d06,#080804); padding:40px 36px; position:relative;">
-
-            <!-- Badge -->
             <div style="position:absolute; top:-12px; left:50%; transform:translateX(-50%); background:var(--gold); font-family:'DM Mono',monospace; font-size:9px; font-weight:700; letter-spacing:3px; color:#080804; padding:4px 16px; text-transform:uppercase; white-space:nowrap;">Accès Abonné</div>
-
-            <!-- Price -->
             <div style="text-align:center; margin-bottom:32px; padding-top:8px;">
                 <div style="display:flex; align-items:flex-start; justify-content:center; gap:4px;">
                     <span style="font-family:'DM Mono',monospace; font-size:16px; color:var(--gold); margin-top:8px;">$</span>
@@ -955,49 +260,20 @@ sb.auth.getSession().then(({ data: { session } }) => {
                 </div>
                 <div style="font-family:'DM Mono',monospace; font-size:10px; letter-spacing:2px; color:var(--text-muted); text-transform:uppercase; margin-top:4px;">Annulable à tout moment</div>
             </div>
-
-            <!-- Features -->
             <div style="display:flex; flex-direction:column; gap:12px; margin-bottom:36px;">
-
-                <div style="display:flex; align-items:center; gap:12px;">
-                    <span style="color:var(--gold); font-size:12px; flex-shrink:0;">◆</span>
-                    <span style="font-family:'DM Sans',sans-serif; font-size:13px; color:var(--text);">Accès à <strong style="color:var(--gold);">toutes les éditions</strong> passées et futures</span>
-                </div>
-                <div style="display:flex; align-items:center; gap:12px;">
-                    <span style="color:var(--gold); font-size:12px; flex-shrink:0;">◆</span>
-                    <span style="font-family:'DM Sans',sans-serif; font-size:13px; color:var(--text);">Analyse macro hebdo — <strong style="color:var(--gold);">XAUUSD · XAGUSD</strong></span>
-                </div>
-                <div style="display:flex; align-items:center; gap:12px;">
-                    <span style="color:var(--gold); font-size:12px; flex-shrink:0;">◆</span>
-                    <span style="font-family:'DM Sans',sans-serif; font-size:13px; color:var(--text);">Setups technique + scénarios bullish & bearish</span>
-                </div>
-                <div style="display:flex; align-items:center; gap:12px;">
-                    <span style="color:var(--gold); font-size:12px; flex-shrink:0;">◆</span>
-                    <span style="font-family:'DM Sans',sans-serif; font-size:13px; color:var(--text);">Breaking news & agenda macro de la semaine</span>
-                </div>
-                <div style="display:flex; align-items:center; gap:12px;">
-                    <span style="color:var(--gold); font-size:12px; flex-shrink:0;">◆</span>
-                    <span style="font-family:'DM Sans',sans-serif; font-size:13px; color:var(--text);">Concept éducatif + veille X chaque édition</span>
-                </div>
-
+                <div style="display:flex; align-items:center; gap:12px;"><span style="color:var(--gold); font-size:12px; flex-shrink:0;">◆</span><span style="font-family:'DM Sans',sans-serif; font-size:13px; color:var(--text);">Accès à <strong style="color:var(--gold);">toutes les éditions</strong> passées et futures</span></div>
+                <div style="display:flex; align-items:center; gap:12px;"><span style="color:var(--gold); font-size:12px; flex-shrink:0;">◆</span><span style="font-family:'DM Sans',sans-serif; font-size:13px; color:var(--text);">Analyse macro hebdo — <strong style="color:var(--gold);">XAUUSD · XAGUSD</strong></span></div>
+                <div style="display:flex; align-items:center; gap:12px;"><span style="color:var(--gold); font-size:12px; flex-shrink:0;">◆</span><span style="font-family:'DM Sans',sans-serif; font-size:13px; color:var(--text);">Setups technique + scénarios bullish & bearish</span></div>
+                <div style="display:flex; align-items:center; gap:12px;"><span style="color:var(--gold); font-size:12px; flex-shrink:0;">◆</span><span style="font-family:'DM Sans',sans-serif; font-size:13px; color:var(--text);">Breaking news & agenda macro de la semaine</span></div>
+                <div style="display:flex; align-items:center; gap:12px;"><span style="color:var(--gold); font-size:12px; flex-shrink:0;">◆</span><span style="font-family:'DM Sans',sans-serif; font-size:13px; color:var(--text);">Concept éducatif + veille X chaque édition</span></div>
             </div>
-
-            <!-- CTA Button — remplace le href par ton lien Stripe -->
             <a href="https://buy.stripe.com/7sY9ALaso1b1bVGgCwfw400" style="display:block; text-align:center; background:var(--gold); color:#080804; font-family:'DM Mono',monospace; font-size:11px; font-weight:700; letter-spacing:3px; text-transform:uppercase; padding:18px 24px; text-decoration:none; transition:all 0.3s; border:2px solid rgba(201,168,76,0.4); box-shadow:0 0 20px rgba(201,168,76,0.2);"
-                onmouseover="this.style.background='#e2c97e'; this.style.transform='translateY(-2px)'" onmouseout="this.style.background='#c9a84c'; this.style.transform='translateY(0)'">
-          S'abonner maintenant →
-        </a>
-
-            <!-- Secure mention -->
-            <div style="text-align:center; margin-top:14px; font-family:'DM Mono',monospace; font-size:9px; letter-spacing:2px; color:var(--text-muted); text-transform:uppercase;">
-                🔒 Paiement sécurisé via Stripe
-            </div>
-
+                onmouseover="this.style.background='#e2c97e';this.style.transform='translateY(-2px)'" onmouseout="this.style.background='#c9a84c';this.style.transform='translateY(0)'">
+                S'abonner maintenant →
+            </a>
+            <div style="text-align:center; margin-top:14px; font-family:'DM Mono',monospace; font-size:9px; letter-spacing:2px; color:var(--text-muted); text-transform:uppercase;">🔒 Paiement sécurisé via Stripe</div>
         </div>
-
-        <!-- Free mention -->
         <p style="text-align:center; font-family:'DM Mono',monospace; font-size:10px; letter-spacing:2px; color:var(--text-muted); text-transform:uppercase; margin-top:24px;">Accès gratuit → Dernière édition uniquement</p>
-
     </section>
 
     <!-- ABOUT -->
@@ -1025,64 +301,62 @@ sb.auth.getSession().then(({ data: { session } }) => {
     </div>
 
     <!-- FOOTER -->
-   <script>
-    const SUPABASE_URL  = 'https://oehoqoaxcwiffbzuegou.supabase.co'
-    const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9laG9xb2F4Y3dpZmZienVlZ291Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzMjI2MTMsImV4cCI6MjA4Nzg5ODYxM30.N5UP014MgNUBunZJuhKuUUlRYC_HY7lpAFAYD39CjvE'
-    const { createClient } = supabase
-    const sb = createClient(SUPABASE_URL, SUPABASE_ANON)
+    <footer class="footer">
+        <div class="footer-logo">THE <span>PRO</span> XAU</div>
+        <div class="footer-copy">© 2026 THE PRO XAU · TOUS DROITS RÉSERVÉS · CONTENU ÉDUCATIF UNIQUEMENT</div>
+    </footer>
 
-    function unlockCard(cardId, lockId, badgeId, href) {
-        const card  = document.getElementById(cardId)
-        const lock  = document.getElementById(lockId)
-        const badge = document.getElementById(badgeId)
-        if (!card) return
-        if (lock) lock.remove()
-        card.classList.remove('locked')
-        card.classList.add('unlocked')
-        if (badge) {
-            badge.className   = 'badge badge-subscriber'
-            badge.textContent = '✓ Abonné'
+    <script>
+        const SUPABASE_URL  = 'https://oehoqoaxcwiffbzuegou.supabase.co'
+        const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9laG9xb2F4Y3dpZmZienVlZ291Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzMjI2MTMsImV4cCI6MjA4Nzg5ODYxM30.N5UP014MgNUBunZJuhKuUUlRYC_HY7lpAFAYD39CjvE'
+        const { createClient } = supabase
+        const sb2 = createClient(SUPABASE_URL, SUPABASE_ANON)
+
+        function unlockCard(cardId, lockId, badgeId, href) {
+            const card  = document.getElementById(cardId)
+            const lock  = document.getElementById(lockId)
+            const badge = document.getElementById(badgeId)
+            if (!card) return
+            if (lock) lock.remove()
+            card.classList.remove('locked')
+            card.classList.add('unlocked')
+            if (badge) { badge.className = 'badge badge-subscriber'; badge.textContent = '✓ Abonné' }
+            if (href) { card.style.cursor = 'pointer'; card.addEventListener('click', () => { window.location.href = href }) }
         }
-        if (href) {
-            card.style.cursor = 'pointer'
-            card.addEventListener('click', () => { window.location.href = href })
+
+        async function checkSubscription() {
+            try {
+                const { data: { session } } = await sb2.auth.getSession()
+                if (!session) return
+
+                const { data: sub } = await sb2
+                    .from('subscriptions')
+                    .select('status')
+                    .eq('email', session.user.email)
+                    .single()
+
+                if (!sub) return
+                if (sub.status !== 'active' && sub.status !== 'trialing') return
+
+                // ✅ Déverrouille les éditions
+                unlockCard('card-edition-2', 'lock-ed2', 'badge-ed2', 'edition02/edition-02.html')
+                unlockCard('card-edition-3', 'lock-ed3', 'badge-ed3', 'edition03/edition-03.html')
+
+                // ✅ Cache la section prix
+                const pricing = document.getElementById('pricing-section')
+                if (pricing) pricing.style.display = 'none'
+
+                // ✅ Cache le lien "S'abonner" dans la nav
+                const navLink = document.getElementById('nav-subscribe-link')
+                if (navLink) navLink.style.display = 'none'
+
+            } catch (e) {
+                console.warn(e)
+            }
         }
-    }
 
-    async function checkSubscription() {
-        try {
-            const { data: { session } } = await sb.auth.getSession()
-            if (!session) return
-
-            const { data: sub } = await sb
-                .from('subscriptions')
-                .select('status')
-                .eq('email', session.user.email)
-                .single()
-
-            if (!sub) return
-            if (sub.status !== 'active' && sub.status !== 'trialing') return
-
-            // ✅ Déverrouille les éditions
-            unlockCard('card-edition-2', 'lock-ed2', 'badge-ed2', 'edition02/edition-02.html')
-            unlockCard('card-edition-3', 'lock-ed3', 'badge-ed3', 'edition03/edition-03.html')
-
-            // ✅ Cache la section prix
-            const pricing = document.getElementById('pricing-section')
-            if (pricing) pricing.style.display = 'none'
-
-            // ✅ Cache le lien "S'abonner" dans la nav
-            const navSubscribe = document.querySelector('.nav-link')
-            if (navSubscribe) navSubscribe.style.display = 'none'
-
-        } catch (e) {
-            console.warn(e)
-        }
-    }
-
-    checkSubscription()
-</script>
+        checkSubscription()
+    </script>
 
 </body>
-
 </html>
