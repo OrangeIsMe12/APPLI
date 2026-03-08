@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Édition #002 — The Pro Xau</title>
+    <link rel="icon" type="image/png" href="/icon.jpg">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --gold: #c9a84c; --gold-dim: #7a6328; --bg: #080808; --bg2: #0d0d0d;
+            --border: #1e1a10; --text: #e8e0d0; --text-dim: #9a9080;
+            --text-muted: #4a4038; --green: #4caf7d; --red: #e05252;
+            --orange: #e07a3a;
+        }
+
+        body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: var(--text); min-height: 100vh; overflow-x: hidden; }
+
+        /* NAV */
+        .top-nav { display: flex; justify-content: space-between; align-items: center; padding: 14px 32px; border-bottom: 1px solid var(--border); background: var(--bg); position: sticky; top: 0; z-index: 100; }
+        .nav-brand { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--gold); text-decoration: none; }
+        .hamburger { background: none; border: 1px solid var(--border); padding: 8px 12px; cursor: pointer; display: flex; flex-direction: column; gap: 5px; transition: border-color 0.2s; }
+        .hamburger:hover { border-color: var(--gold); }
+        .hamburger span { display: block; width: 20px; height: 1px; background: var(--text-dim); transition: all 0.3s; }
+        .hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+        .hamburger.open span:nth-child(2) { opacity: 0; }
+        .hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+        .nav-menu { position: fixed; top: 0; right: -100%; width: 280px; height: 100vh; background: #060604; border-left: 1px solid var(--border); z-index: 200; transition: right 0.35s ease; display: flex; flex-direction: column; padding: 80px 40px 40px; gap: 4px; }
+        .nav-menu.open { right: 0; }
+        .nav-menu-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 199; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+        .nav-menu-overlay.open { opacity: 1; pointer-events: all; }
+        .nav-menu-close { position: absolute; top: 20px; right: 24px; background: none; border: none; color: var(--text-muted); font-size: 20px; cursor: pointer; font-family: 'DM Mono', monospace; transition: color 0.2s; }
+        .nav-menu-close:hover { color: var(--gold); }
+        .nav-menu-label { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 4px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 16px; opacity: 0.5; }
+        .nav-menu a { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--text-dim); text-decoration: none; padding: 14px 0; border-bottom: 1px solid var(--border); transition: color 0.2s; display: flex; justify-content: space-between; align-items: center; }
+        .nav-menu a:hover { color: var(--gold); }
+        .nav-menu a:last-child { border-bottom: none; }
+        .nav-menu-cta { margin-top: auto; background: var(--gold); color: #080804 !important; font-weight: 700; padding: 14px 24px !important; text-align: center; justify-content: center !important; border: none !important; }
+
+        /* BACK LINK */
+        .back-link { display: inline-flex; align-items: center; gap: 8px; font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--text-muted); text-decoration: none; padding: 20px 32px; border-bottom: 1px solid var(--border); width: 100%; transition: color 0.2s; }
+        .back-link:hover { color: var(--gold); }
+
+        /* EDITION HEADER */
+        .edition-header { max-width: 860px; margin: 0 auto; padding: 56px 24px 40px; border-bottom: 1px solid var(--border); }
+        .edition-meta { display: flex; align-items: center; gap: 16px; margin-bottom: 28px; flex-wrap: wrap; }
+        .edition-num { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 4px; color: var(--gold); opacity: 0.6; text-transform: uppercase; }
+        .edition-badge { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; padding: 4px 12px; background: rgba(201,168,76,0.1); color: var(--gold); border: 1px solid rgba(201,168,76,0.2); text-transform: uppercase; }
+        .edition-date { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; }
+        .edition-title { font-family: 'Playfair Display', serif; font-size: clamp(36px, 6vw, 58px); font-weight: 900; line-height: 1.05; letter-spacing: -1.5px; margin-bottom: 16px; }
+        .edition-title .highlight { color: var(--gold); }
+        .edition-subtitle { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 3px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 32px; }
+        .edition-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+        .tag { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 2px; color: var(--text-muted); border: 1px solid var(--border); padding: 4px 10px; text-transform: uppercase; }
+
+        /* TAB NAV */
+        .tab-nav { position: sticky; top: 52px; z-index: 90; background: var(--bg); border-bottom: 1px solid var(--border); overflow-x: auto; scrollbar-width: none; }
+        .tab-nav::-webkit-scrollbar { display: none; }
+        .tab-nav-inner { max-width: 860px; margin: 0 auto; display: flex; padding: 0 24px; }
+        .tab-btn { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--text-muted); padding: 14px 20px; border-bottom: 2px solid transparent; cursor: pointer; white-space: nowrap; transition: all 0.2s; background: none; border-top: none; border-left: none; border-right: none; }
+        .tab-btn:hover { color: var(--text-dim); }
+        .tab-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
+        .tab-btn.new-tag { color: var(--orange); }
+        .tab-btn.new-tag.active { color: var(--orange); border-bottom-color: var(--orange); }
+        .new-label { font-size: 7px; letter-spacing: 1px; background: var(--orange); color: #080804; padding: 1px 4px; margin-left: 4px; vertical-align: middle; }
+
+        /* CONTENT */
+        .edition-content { max-width: 860px; margin: 0 auto; padding: 0 24px 80px; }
+
+        /* SECTION */
+        .section { padding: 56px 0; border-bottom: 1px solid var(--border); }
+        .section:last-child { border-bottom: none; }
+        .section-header-block { display: flex; align-items: flex-start; gap: 20px; margin-bottom: 36px; }
+        .section-num { font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 500; color: var(--gold); background: rgba(201,168,76,0.08); border: 1px solid rgba(201,168,76,0.15); width: 40px; height: 40px; display: flex; align-items: center; justify-content: flex-start; padding-left: 10px; flex-shrink: 0; }
+        .section-header-text { flex: 1; }
+        .section-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 3px; color: var(--gold); text-transform: uppercase; opacity: 0.7; margin-bottom: 4px; }
+        .section-sources { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 2px; color: var(--text-muted); text-transform: uppercase; }
+        .section-title { font-family: 'Playfair Display', serif; font-size: clamp(28px, 4vw, 42px); font-weight: 700; line-height: 1.15; color: var(--text); margin-bottom: 8px; }
+        .section-title .gold { color: var(--gold); }
+        .section-title .italic { font-style: italic; }
+        .section-subtitle { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 32px; }
+
+        /* ALERT BOX */
+        .alert-box { border: 1px solid rgba(201,168,76,0.25); background: rgba(201,168,76,0.04); padding: 24px 28px; margin-bottom: 24px; }
+        .alert-box.orange { border-color: rgba(224,122,58,0.3); background: rgba(224,122,58,0.04); }
+        .alert-box.red { border-color: rgba(224,82,82,0.3); background: rgba(224,82,82,0.04); }
+        .alert-title { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 3px; color: var(--gold); text-transform: uppercase; margin-bottom: 14px; font-weight: 500; }
+        .alert-title.orange { color: var(--orange); }
+        .alert-title.red { color: var(--red); }
+        .alert-box p { font-size: 14px; color: var(--text-dim); line-height: 1.75; }
+        .alert-box strong { color: var(--gold); font-weight: 600; }
+        .alert-box strong.orange { color: var(--orange); }
+
+        /* FLASH BLOCK */
+        .flash-block { border-left: 3px solid var(--gold); padding: 20px 24px; margin-bottom: 20px; background: #0a0905; }
+        .flash-block.orange { border-left-color: var(--orange); }
+        .flash-block.red { border-left-color: var(--red); }
+        .flash-label { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 3px; color: var(--gold); text-transform: uppercase; margin-bottom: 8px; }
+        .flash-label.orange { color: var(--orange); }
+        .flash-label.red { color: var(--red); }
+        .flash-title { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--text); margin-bottom: 4px; line-height: 1.2; }
+        .flash-sub { font-family: 'Playfair Display', serif; font-size: 18px; font-style: italic; color: var(--gold); margin-bottom: 12px; }
+        .flash-block p { font-size: 13px; color: var(--text-dim); line-height: 1.7; }
+
+        /* BODY TEXT */
+        .body-text { font-size: 14px; color: var(--text-dim); line-height: 1.8; margin-bottom: 20px; }
+        .body-text strong { color: var(--text); font-weight: 600; }
+        .body-text .gold { color: var(--gold); }
+        .body-text .orange { color: var(--orange); }
+        .body-text .red { color: var(--red); }
+        .source-line { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 32px; }
+
+        /* STATS ROW */
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: var(--border); border: 1px solid var(--border); margin: 32px 0; }
+        .stat-cell { background: #0a0905; padding: 28px 24px; text-align: center; }
+        .stat-value { font-family: 'Playfair Display', serif; font-size: 36px; font-weight: 900; line-height: 1; margin-bottom: 8px; }
+        .stat-value.gold { color: var(--gold); }
+        .stat-value.red { color: var(--red); }
+        .stat-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; color: var(--text-muted); text-transform: uppercase; }
+
+        /* WARNING BANNER */
+        .warning-banner { border: 1px solid rgba(224,122,58,0.3); background: rgba(224,122,58,0.05); padding: 20px 24px; margin: 24px 0; }
+        .warning-banner p { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; color: var(--orange); text-transform: uppercase; line-height: 1.6; }
+
+        /* INFRA TABLE */
+        .infra-table { width: 100%; border-collapse: collapse; margin: 24px 0; }
+        .infra-table th { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); padding: 12px 16px; border-bottom: 1px solid var(--border); text-align: left; background: #060604; }
+        .infra-table td { padding: 16px; border-bottom: 1px solid var(--border); font-size: 13px; color: var(--text-dim); vertical-align: top; }
+        .infra-table tr:last-child td { border-bottom: none; }
+        .infra-table td:first-child { color: var(--text); font-weight: 600; }
+        .status-badge { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 2px; padding: 3px 10px; text-transform: uppercase; }
+        .status-arret { background: rgba(224,82,82,0.1); color: var(--red); border: 1px solid rgba(224,82,82,0.3); }
+        .status-force { background: rgba(224,122,58,0.1); color: var(--orange); border: 1px solid rgba(224,122,58,0.3); }
+        .status-partiel { background: rgba(201,168,76,0.1); color: var(--gold); border: 1px solid rgba(201,168,76,0.2); }
+        .status-ferme { background: rgba(224,82,82,0.15); color: var(--red); border: 1px solid rgba(224,82,82,0.4); }
+
+        /* ESCALADE CARDS */
+        .escalade-card { border: 1px solid var(--border); background: #090908; padding: 28px; margin-bottom: 16px; }
+        .escalade-card.critical { border-color: rgba(224,82,82,0.25); background: rgba(224,82,82,0.03); }
+        .escalade-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 10px; display: flex; justify-content: space-between; }
+        .escalade-label span:first-child { color: var(--gold); }
+        .escalade-label span:last-child { color: var(--red); }
+        .escalade-label.critical span:first-child { color: var(--red); }
+        .escalade-title { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+        .escalade-sub { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; color: var(--gold); margin-bottom: 14px; }
+        .escalade-sub.red { color: var(--red); }
+        .escalade-card p { font-size: 13px; color: var(--text-dim); line-height: 1.7; }
+
+        /* SCENARIO CARDS */
+        .scenario-card { border: 1px solid var(--border); background: #090908; padding: 28px; margin-bottom: 16px; position: relative; }
+        .scenario-card.bullish { border-color: rgba(76,175,125,0.25); }
+        .scenario-card.bearish { border-color: rgba(224,82,82,0.2); }
+        .scenario-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+        .scenario-label .name { color: var(--green); }
+        .scenario-label .name.bear { color: var(--red); }
+        .scenario-label .pct { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 900; color: var(--green); }
+        .scenario-label .pct.bear { color: var(--red); }
+        .scenario-trigger { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; color: var(--text-muted); margin-bottom: 12px; }
+        .scenario-card p { font-size: 13px; color: var(--text-dim); line-height: 1.7; }
+
+        /* CHART PLACEHOLDER */
+        .chart-placeholder { border: 1px dashed #1e1a10; padding: 48px 24px; text-align: center; margin: 20px 0; background: #060604; }
+        .chart-icon { font-size: 32px; margin-bottom: 12px; opacity: 0.3; }
+        .chart-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px; }
+        .chart-hint { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; color: #1e1a10; text-transform: uppercase; }
+
+        /* LEVELS BLOCK */
+        .levels-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2px; background: var(--border); border: 1px solid var(--border); margin: 24px 0; }
+        .level-cell { background: #090908; padding: 24px 20px; text-align: center; position: relative; overflow: hidden; }
+        .level-cell::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; }
+        .level-cell.resistance::before { background: var(--red); }
+        .level-cell.range::before { background: var(--gold); }
+        .level-cell.support::before { background: var(--green); }
+        .level-label { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 10px; }
+        .level-cell.resistance .level-label { color: var(--red); }
+        .level-cell.range .level-label { color: var(--gold); }
+        .level-cell.support .level-label { color: var(--green); }
+        .level-value { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 900; margin-bottom: 6px; }
+        .level-cell.resistance .level-value { color: var(--red); }
+        .level-cell.range .level-value { color: var(--gold); }
+        .level-cell.support .level-value { color: var(--green); }
+        .level-detail { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 1px; color: var(--text-muted); }
+
+        /* AGENDA TABLE */
+        .agenda-table { width: 100%; border-collapse: collapse; margin: 24px 0; }
+        .agenda-table th { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); padding: 12px 16px; border-bottom: 1px solid var(--border); text-align: left; background: #060604; }
+        .agenda-table td { padding: 18px 16px; border-bottom: 1px solid var(--border); vertical-align: top; }
+        .agenda-table tr:last-child td { border-bottom: none; }
+        .agenda-event-label { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 4px; }
+        .label-high { color: var(--red); }
+        .label-med { color: var(--gold); }
+        .label-guerre { color: var(--orange); }
+        .agenda-event-title { font-size: 13px; color: var(--text); font-weight: 600; margin-bottom: 6px; }
+        .agenda-event-desc { font-size: 12px; color: var(--text-muted); line-height: 1.6; }
+        .agenda-forecast { font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 500; }
+        .forecast-hot { color: var(--gold); }
+        .forecast-hold { color: var(--orange); }
+        .agenda-prev { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text-muted); }
+
+        /* MECHANIC DIAGRAMS */
+        .mechanic-block { border: 1px solid var(--border); background: #090908; margin-bottom: 20px; overflow: hidden; }
+        .mechanic-header { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--text-muted); padding: 14px 20px; border-bottom: 1px solid var(--border); background: #060604; }
+        .mechanic-flow { display: flex; flex-direction: column; gap: 0; }
+        .mechanic-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0; background: var(--border); }
+        .mechanic-cell { background: #090908; padding: 20px 24px; text-align: center; }
+        .mechanic-val { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--gold); margin-bottom: 4px; }
+        .mechanic-val.red { color: var(--red); }
+        .mechanic-val.green { color: var(--green); }
+        .mechanic-sub { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); }
+        .mechanic-arrow { text-align: center; padding: 10px; font-family: 'DM Mono', monospace; font-size: 12px; color: var(--gold); opacity: 0.4; background: var(--bg); }
+
+        /* FORMULA BOX */
+        .formula-box { border: 1px solid rgba(201,168,76,0.2); background: rgba(201,168,76,0.03); padding: 28px; margin: 24px 0; font-family: 'DM Mono', monospace; }
+        .formula-label { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); opacity: 0.7; margin-bottom: 14px; }
+        .formula-text { font-size: 12px; color: var(--text-dim); line-height: 1.8; }
+        .formula-text .gold { color: var(--gold); }
+        .formula-text .green { color: var(--green); }
+        .formula-result { font-size: 13px; color: var(--text); margin-top: 12px; font-weight: 500; }
+        .formula-result strong { color: var(--gold); }
+
+        /* QUOTE BLOCK */
+        .quote-block { border-left: 3px solid rgba(201,168,76,0.3); padding: 24px 28px; margin: 24px 0; background: #090907; }
+        .quote-text { font-family: 'Playfair Display', serif; font-size: 18px; font-style: italic; color: var(--text); line-height: 1.65; margin-bottom: 10px; }
+        .quote-source { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; color: var(--text-muted); text-transform: uppercase; }
+
+        /* ANTICIPER ITEMS */
+        .anticip-item { border: 1px solid var(--border); background: #090908; padding: 24px 28px; margin-bottom: 12px; display: flex; gap: 20px; align-items: flex-start; }
+        .anticip-icon { font-size: 20px; flex-shrink: 0; margin-top: 2px; }
+        .anticip-when { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; }
+        .anticip-title { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+        .anticip-body { font-size: 13px; color: var(--text-dim); line-height: 1.7; }
+        .anticip-body .gold { color: var(--gold); }
+        .anticip-body .red { color: var(--red); }
+        .anticip-body .green { color: var(--green); }
+
+        /* DECISION TABLE */
+        .decision-table { width: 100%; border-collapse: collapse; margin: 24px 0; }
+        .decision-table th { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); padding: 12px 16px; border-bottom: 1px solid var(--border); text-align: left; background: #060604; }
+        .decision-table td { padding: 14px 16px; border-bottom: 1px solid var(--border); font-size: 13px; color: var(--text-dim); }
+        .decision-table tr:last-child td { border-bottom: none; }
+        .decision-table td:first-child { color: var(--text); }
+        .decision-result { font-family: 'DM Mono', monospace; font-size: 11px; }
+        .result-up { color: var(--green); }
+        .result-down { color: var(--red); }
+
+        /* FINALE BANNER */
+        .finale-banner { border: 1px solid rgba(201,168,76,0.15); background: rgba(201,168,76,0.03); padding: 24px 28px; margin: 24px 0; }
+        .finale-banner p { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; color: var(--gold); text-transform: uppercase; line-height: 1.7; opacity: 0.8; }
+
+        /* DISCLAIMER */
+        .disclaimer { padding: 40px 24px; border-top: 1px solid var(--border); text-align: center; }
+        .disclaimer p { font-size: 12px; color: var(--text-muted); line-height: 1.7; max-width: 640px; margin: 0 auto 16px; }
+        .disclaimer-brand { font-family: 'Playfair Display', serif; font-size: 18px; color: #201c10; margin-bottom: 8px; }
+        .disclaimer-brand span { color: var(--gold); opacity: 0.25; }
+        .disclaimer-copy { font-family: 'DM Mono', monospace; font-size: 9px; color: #181410; letter-spacing: 2px; }
+
+        /* GOLD DIVIDER */
+        .gold-divider { height: 1px; background: linear-gradient(90deg,transparent,var(--gold),transparent); opacity: 0.1; margin: 0; }
+
+        @media(max-width:640px) {
+            .stats-grid { grid-template-columns: 1fr 1fr; }
+            .levels-grid { grid-template-columns: 1fr; }
+            .mechanic-row { grid-template-columns: 1fr; }
+            .tab-btn { padding: 12px 14px; font-size: 9px; }
+            .edition-title { font-size: 32px; }
+        }
+    </style>
+</head>
+<body>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <div class="nav-menu-overlay" id="navOverlay"></div>
+    <div class="nav-menu" id="navMenu">
+        <button class="nav-menu-close" id="navClose">✕</button>
+        <div class="nav-menu-label">Navigation</div>
+        <a href="../index.html">Accueil <span>→</span></a>
+        <a href="../about.html">À propos <span>→</span></a>
+        <a href="../services.html">Services <span>→</span></a>
+        <a href="../partenaires.html">Partenaires <span>→</span></a>
+        <a href="../faq.html">FAQ <span>→</span></a>
+        <a href="../privacy.html">Confidentialité <span>→</span></a>
+        <a href="../terms.html">Conditions <span>→</span></a>
+        <a href="../dashboard.html">Mon compte <span>→</span></a>
+    </div>
+
+    <nav class="top-nav">
+        <a href="../index.html" class="nav-brand">The Pro Xau</a>
+        <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+    </nav>
+
+    <a href="../index.html" class="back-link">← Retour aux éditions</a>
+
+    <!-- EDITION HEADER -->
+    <div class="edition-header">
+        <div class="edition-meta">
+            <span class="edition-num">Édition #002</span>
+            <span class="edition-badge">Mise à jour 8 mars 2026</span>
+            <span class="edition-date">Semaine du 9–14 Mars 2026</span>
+        </div>
+        <h1 class="edition-title">
+            Ras Tanura + Qatar LNG à l'arrêt<br>
+            <span class="highlight italic" style="font-style:italic;">Ormuz fermé · NFP −92K · Fed paralysée</span>
+        </h1>
+        <p class="edition-subtitle">Guerre des infrastructures — Jour 9</p>
+        <div class="edition-tags">
+            <span class="tag">Macro</span>
+            <span class="tag">Technique</span>
+            <span class="tag">Géopolitique</span>
+            <span class="tag">NFP</span>
+            <span class="tag">Iran</span>
+            <span class="tag">FOMC</span>
+        </div>
+    </div>
+
+    <!-- TAB NAV -->
+    <div class="tab-nav">
+        <div class="tab-nav-inner">
+            <button class="tab-btn active" onclick="scrollToSection('macro')">Macro</button>
+            <button class="tab-btn" onclick="scrollToSection('setup')">Setup</button>
+            <button class="tab-btn" onclick="scrollToSection('analyse')">Analyse</button>
+            <button class="tab-btn" onclick="scrollToSection('agenda')">Agenda</button>
+            <button class="tab-btn" onclick="scrollToSection('concept')">Concept</button>
+            <button class="tab-btn new-tag" onclick="scrollToSection('anticiper')">Anticiper <span class="new-label">NEW</span></button>
+        </div>
+    </div>
+
+    <div class="edition-content">
+
+        <!-- ═══════════════════════════════════════ -->
+        <!-- 01 · MACRO -->
+        <!-- ═══════════════════════════════════════ -->
+        <div class="section" id="macro">
+            <div class="section-header-block">
+                <div class="section-num">01</div>
+                <div class="section-header-text">
+                    <div class="section-label">Macro de la semaine</div>
+                    <div class="section-sources">Reuters · BLS.gov · Al Jazeera · CNBC · The National · Wikipedia</div>
+                </div>
+            </div>
+
+            <div class="alert-box">
+                <div class="alert-title">⚠ Escalade majeure — Ce que la version précédente ne couvrait pas</div>
+                <p>L'Iran ne se contente plus de bloquer Ormuz. Depuis le 2 mars, il frappe directement <strong>les infrastructures de production</strong> : Ras Tanura (Saudi Aramco, 550 000 b/j) à l'arrêt, QatarEnergy a suspendu la totalité de sa production LNG à Ras Laffan — soit <strong>20% du LNG mondial</strong>. Les prix européens du gaz ont bondi de <strong>+50%</strong>. Ce n'est plus un blocus de transit — c'est une guerre sur les capacités de production du Golfe entier.</p>
+            </div>
+
+            <div class="flash-block orange">
+                <div class="flash-label orange">⚡ Guerre des infrastructures — Jour 9</div>
+                <div class="flash-title">Ras Tanura + Qatar LNG à l'arrêt</div>
+                <div class="flash-sub">Ormuz fermé · NFP −92K · Fed paralysée</div>
+                <p>Le 2 mars, l'Iran a frappé par drones Ras Tanura, la plus grande raffinerie de Saudi Aramco — 550 000 barils/jour. Aramco a stoppé les opérations par mesure de sécurité. Le même jour, QatarEnergy a suspendu toute sa production LNG à Ras Laffan Industrial City et Mesaieed, déclarant la force majeure.</p>
+            </div>
+
+            <p class="body-text">Qatar LNG = 81 millions de tonnes par an = <span class="gold">20% du LNG mondial</span>. Les prix européens du gaz ont bondi de <span class="orange">+50%</span>, les prix asiatiques de <span class="orange">+39%</span> en une seule journée — le plus grand choc gazier depuis l'invasion ukrainienne.</p>
+
+            <p class="body-text">D'autres installations ont été touchées : le terminal pétrolier de Fujairah (UAE) frappé, le port de Duqm (Oman) touché avec une explosion sur un réservoir de carburant, le port de Salalah visé, un tanker Hondurasien (Athe Nova) incendié en traversant Ormuz.</p>
+
+            <p class="body-text">En parallèle, le <strong>NFP sorti vendredi 7 mars : −92K vs 58K attendu</strong>. Payrolls totaux négatifs, pire depuis octobre. Chômage à 4.4%. Gold clôture la semaine entre $5 105–$5 172. Brent à $90.90 (+9% journée, +35% YTD). DXY à 98.87. Pour lundi : gap attendu Brent $100+, Gold $5 270+.</p>
+
+            <div class="source-line">Source : Reuters · Al Jazeera · CNBC · The National · BLS.gov · Wikipedia · 2–8 Mars 2026</div>
+
+            <div class="stats-grid">
+                <div class="stat-cell">
+                    <div class="stat-value gold">$5 171</div>
+                    <div class="stat-label">XAU/USD · Clôture sem.</div>
+                </div>
+                <div class="stat-cell">
+                    <div class="stat-value red">−92K</div>
+                    <div class="stat-label">NFP · vs 58K att.</div>
+                </div>
+                <div class="stat-cell">
+                    <div class="stat-value gold">$90.90</div>
+                    <div class="stat-label">Brent · +9% journée</div>
+                </div>
+                <div class="stat-cell">
+                    <div class="stat-value" style="color:var(--orange);">+50%</div>
+                    <div class="stat-label">Gaz Europe · 1 journée</div>
+                </div>
+            </div>
+
+            <div class="warning-banner">
+                <p>⚡ Lundi 9 mars — Brent $100+ gap attendu. Gold $5 270+. Ormuz fermé + Ras Tanura shutdown + Qatar LNG force majeure = triple choc énergétique. Fed paralysée. Volatilité extrême à l'ouverture COMEX.</p>
+            </div>
+
+            <p class="body-text" style="margin-top:32px; font-family:'DM Mono',monospace; font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--gold); opacity:0.8;">⚠ Carte des frappes iraniennes sur les infrastructures énergétiques — 2–5 Mars 2026</p>
+
+            <table class="infra-table">
+                <thead>
+                    <tr>
+                        <th>Site</th>
+                        <th>Opérateur</th>
+                        <th>Capacité</th>
+                        <th>Statut</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Ras Tanura Refinery<br><span style="font-size:11px;color:var(--text-muted);font-weight:400;">Arabie Saoudite</span></td>
+                        <td>Saudi Aramco</td>
+                        <td>550 000 b/j</td>
+                        <td><span class="status-badge status-arret">Arrêt</span></td>
+                    </tr>
+                    <tr>
+                        <td>Ras Laffan Industrial City<br><span style="font-size:11px;color:var(--text-muted);font-weight:400;">Qatar</span></td>
+                        <td>QatarEnergy LNG</td>
+                        <td>81 Mt LNG/an · 20% mondial</td>
+                        <td><span class="status-badge status-force">Force Majeure</span></td>
+                    </tr>
+                    <tr>
+                        <td>Terminal Fujairah<br><span style="font-size:11px;color:var(--text-muted);font-weight:400;">UAE</span></td>
+                        <td>UAE National</td>
+                        <td>Hub Golfe d'Oman</td>
+                        <td><span class="status-badge status-partiel">Partiellement touché</span></td>
+                    </tr>
+                    <tr>
+                        <td>Port de Duqm<br><span style="font-size:11px;color:var(--text-muted);font-weight:400;">Oman</span></td>
+                        <td>Port Authority</td>
+                        <td>Dépôt carburant</td>
+                        <td><span class="status-badge status-arret">Explosion confirmée</span></td>
+                    </tr>
+                    <tr>
+                        <td>Port de Salalah<br><span style="font-size:11px;color:var(--text-muted);font-weight:400;">Oman</span></td>
+                        <td>Port Authority</td>
+                        <td>Carburant / Minéraux</td>
+                        <td><span class="status-badge status-partiel">Visé</span></td>
+                    </tr>
+                    <tr>
+                        <td>Détroit d'Ormuz<br><span style="font-size:11px;color:var(--text-muted);font-weight:400;">Golfe Persique</span></td>
+                        <td>IRGC</td>
+                        <td>17 M b/j · 20% pétrole mondial</td>
+                        <td><span class="status-badge status-ferme">Fermé J9</span></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- ESCALADE CARDS -->
+            <div class="escalade-card">
+                <div class="escalade-label">
+                    <span>Escalade #1</span>
+                    <span style="color:var(--text-muted);">Mise à jour</span>
+                </div>
+                <div class="escalade-title">Ras Tanura shutdown</div>
+                <div class="escalade-sub">Aramco −550K b/j hors marché</div>
+                <p>La plus grande raffinerie d'Arabie Saoudite est à l'arrêt. Aramco exporte via la Mer Rouge en urgence, contournant le Golfe. Ce n'est plus seulement du transit bloqué — c'est de la capacité de raffinage détruite. 12% de la production mondiale d'Aramco est concernée.</p>
+            </div>
+
+            <div class="escalade-card critical">
+                <div class="escalade-label critical">
+                    <span>Escalade #2 · Critique</span>
+                    <span style="color:var(--red);">Force Majeure</span>
+                </div>
+                <div class="escalade-title">Qatar LNG force majeure</div>
+                <div class="escalade-sub red">20% du LNG mondial suspendu</div>
+                <p>QatarEnergy a déclaré force majeure après les frappes sur Ras Laffan. Gaz Europe +50%, LNG Asie +39% en une journée. L'Europe, principale cliente du Qatar LNG, entre en crise énergétique soudaine — ce qui crée une pression inflationniste globale hors choc pétrolier.</p>
+            </div>
+
+            <div class="escalade-card">
+                <div class="escalade-label">
+                    <span>Catalyseur #3 · Guerre</span>
+                    <span style="color:var(--text-muted);">Jour 9</span>
+                </div>
+                <div class="escalade-title">Ormuz fermé — Jour 9</div>
+                <div class="escalade-sub">130+ pétroliers immobilisés</div>
+                <p>Trafic normal de ~17M b/j suspendu. Les tankers contournent via Cap de Bonne-Espérance (+14 jours). JP Morgan anticipe Brent $110–$120 si le blocus dure encore 7 jours — se traduit directement en inflation et en Gold. Prime guerre 12% déjà intégrée.</p>
+            </div>
+
+            <div class="escalade-card">
+                <div class="escalade-label">
+                    <span>Catalyseur #4 · Macro</span>
+                </div>
+                <div class="escalade-title">NFP −92K — Payrolls négatifs</div>
+                <div class="escalade-sub">Fed dans une position inédite</div>
+                <p>Pire payrolls depuis octobre. Santé (grève −28K), information (−11K), fédéral (−10K). La Fed ne peut ni monter (emploi négatif) ni baisser (inflation pétrolière + LNG). Résultat : Fed paralysée = "zéro coupe 2026" selon consensus = Gold structurel.</p>
+            </div>
+
+            <div class="escalade-card">
+                <div class="escalade-label">
+                    <span>Catalyseur #5</span>
+                </div>
+                <div class="escalade-title">DXY 98.87 — Safe-Haven double</div>
+                <div class="escalade-sub">USD et Gold montent ensemble</div>
+                <p>Phénomène rare : Dollar +2.1% mois comme safe-haven simultanément au Gold. Gold qui progresse MALGRÉ un dollar fort confirme une force structurelle exceptionnelle — pas une simple mécanique currency. Décorrélation inédite depuis 2008.</p>
+            </div>
+
+            <div class="escalade-card">
+                <div class="escalade-label">
+                    <span>Catalyseur #6</span>
+                </div>
+                <div class="escalade-title">CPI US mardi 11 mars</div>
+                <div class="escalade-sub">Ormuz + LNG ajoute ~+0.4–0.5%</div>
+                <p>Avec Ormuz ET le choc LNG, la pression énergétique sur le CPI est supérieure aux estimations initiales. Avant la mise à jour : +0.3% additionnel. Après Qatar LNG : jusqu'à +0.5% de pression supplémentaire. Un CPI chaud renforce encore la paralysie Fed.</p>
+            </div>
+        </div>
+
+        <div class="gold-divider"></div>
+
+        <!-- ═══════════════════════════════════════ -->
+        <!-- 02 · SETUP -->
+        <!-- ═══════════════════════════════════════ -->
+        <div class="section" id="setup">
+            <div class="section-header-block">
+                <div class="section-num">02</div>
+                <div class="section-header-text">
+                    <div class="section-label">Setup de la semaine · Éducatif</div>
+                    <div class="section-sources">Forex Factory · FXStreet · TradingView · LiteFinance</div>
+                </div>
+            </div>
+
+            <div class="section-title">Ormuz + Ras Tanura + LNG —<br><span class="gold">Gold face à $5 270–$5 990</span></div>
+            <div class="section-subtitle">FXStreet · LiteFinance · 8 Mars 2026</div>
+
+            <p class="body-text">La semaine du 9 mars arrive avec <strong>trois catalyseurs superposés</strong> au lieu de deux. Le CPI US mardi 11 mars est attendu à +0.3% — mais avec Ormuz fermé ET Qatar LNG suspendu, la pression énergétique combinée ajoute potentiellement +0.4–0.5% supplémentaire à l'équation. C'est une toute autre dynamique inflationniste que celle anticipée en début de semaine.</p>
+
+            <p class="body-text">Le Gold consolide entre $5 052–$5 208 selon les premières analyses de LiteFinance pour le 9 mars. La structure reste intacte. Deux scénarios s'affrontent — mais le Scénario B vient de perdre encore en probabilité avec les frappes sur infrastructures.</p>
+
+            <div class="stats-grid">
+                <div class="stat-cell">
+                    <div class="stat-value gold" style="font-size:28px;">+0.3%</div>
+                    <div class="stat-label">CPI US Forecast · Mardi 11 mars</div>
+                </div>
+                <div class="stat-cell">
+                    <div class="stat-value red" style="font-size:28px;">−92K</div>
+                    <div class="stat-label">NFP publié · vs 58K att. ↓↓</div>
+                </div>
+                <div class="stat-cell">
+                    <div class="stat-value gold" style="font-size:28px;">98.87</div>
+                    <div class="stat-label">DXY Actuel · +2.1% mois ↑</div>
+                </div>
+                <div class="stat-cell">
+                    <div class="stat-value" style="color:var(--orange);font-size:28px;">+50%</div>
+                    <div class="stat-label">Gaz Europe · Qatar LNG J1 ↑↑</div>
+                </div>
+            </div>
+
+            <!-- SCENARIO A -->
+            <div class="scenario-card bullish">
+                <div class="scenario-label">
+                    <span class="name">Scénario A — Bullish</span>
+                    <span class="pct">93%</span>
+                </div>
+                <div class="scenario-trigger">Trigger : Close daily > $5 270</div>
+                <p>Ormuz actif + Ras Tanura shutdown + Qatar LNG suspendu → cible $5 300 puis $5 990. Pullback $5 120 = zone d'achat optimale. Probabilité rehaussée vs semaine dernière. Scénario principal tant que le conflit est actif.</p>
+                <div class="chart-placeholder" style="margin-top:16px;">
+                    <div class="chart-icon">📈</div>
+                    <div class="chart-label">Chart TradingView — À venir</div>
+                    <div class="chart-hint">Uploader le screenshot bull scenario</div>
+                </div>
+            </div>
+
+            <!-- SCENARIO B -->
+            <div class="scenario-card bearish">
+                <div class="scenario-label">
+                    <span class="name bear">Scénario B — Bearish</span>
+                    <span class="pct bear">7%</span>
+                </div>
+                <div class="scenario-trigger">Trigger : Désescalade confirmée + CPI miss</div>
+                <p>Scénario encore moins probable qu'avant : nécessite une désescalade totale (Ormuz + Ras Tanura opérationnel + Qatar LNG redémarré) + CPI sous attentes. Test $5 050. Structure invalidée sous $5 050 close daily.</p>
+                <div class="chart-placeholder" style="margin-top:16px;">
+                    <div class="chart-icon">📉</div>
+                    <div class="chart-label">Chart TradingView — À venir</div>
+                    <div class="chart-hint">Uploader le screenshot bear scenario</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="gold-divider"></div>
+
+        <!-- ═══════════════════════════════════════ -->
+        <!-- 03 · ANALYSE TECHNIQUE -->
+        <!-- ═══════════════════════════════════════ -->
+        <div class="section" id="analyse">
+            <div class="section-header-block">
+                <div class="section-num">03</div>
+                <div class="section-header-text">
+                    <div class="section-label">Analyse technique · XAU/USD</div>
+                    <div class="section-sources">TradingView · Investing.com · LiteFinance · FXLeaders · COT</div>
+                </div>
+            </div>
+
+            <div class="section-title"><span class="gold">$5 300</span> — Le Mur<br>qui décide de tout</div>
+            <div class="section-subtitle">TradingView · LiteFinance · FXLeaders · 8 Mars 2026</div>
+
+            <p class="body-text">Le Gold consolide entre <span class="gold">$5 052–$5 208</span> en weekend. Selon FXLeaders (7 mars), l'opération "Epic Fury" (nom officiel US-Israël vs Iran) entre dans sa Semaine 2. Support critique à $5 063. Résistance principale à $5 205 puis $5 300. Un gap haussier est attendu lundi à l'ouverture COMEX. Le "War Regime" est désormais le cadre dominant — la technique s'efface derrière la géopolitique.</p>
+
+            <div class="levels-grid">
+                <div class="level-cell resistance">
+                    <div class="level-label">Résistance clé</div>
+                    <div class="level-value">$5 300</div>
+                    <div class="level-detail">78.6% Fib · Zone rouge 4H</div>
+                </div>
+                <div class="level-cell range">
+                    <div class="level-label">Range Weekend</div>
+                    <div class="level-value" style="font-size:20px;">$5 105–$5 172</div>
+                    <div class="level-detail">FXLeaders · 7 Mars 2026</div>
+                </div>
+                <div class="level-cell support">
+                    <div class="level-label">Support plancher</div>
+                    <div class="level-value">$5 063</div>
+                    <div class="level-detail">Zone critique · MA200</div>
+                </div>
+            </div>
+
+            <div class="chart-placeholder">
+                <div class="chart-icon">📊</div>
+                <div class="chart-label">XAU/USD · 1D · TradingView · 7–8 Mars 2026</div>
+                <div class="chart-hint">Chart Daily principal — À venir · Uploader le screenshot TradingView Daily</div>
+            </div>
+
+            <div class="scenario-card bullish" style="margin-top:24px;">
+                <div class="scenario-label">
+                    <span class="name">Breakout haussier</span>
+                    <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text-muted);">Target</span>
+                </div>
+                <div class="scenario-trigger">Lundi gap — consolidation $5 170–$5 270</div>
+                <p>Gap COMEX lundi → résistance $5 205 → puis $5 270–$5 300. CPI mardi = déclencheur. Ormuz + LNG = second leg vers $5 990 Q2.</p>
+            </div>
+
+            <div class="scenario-card bearish" style="margin-top:0;">
+                <div class="scenario-label">
+                    <span class="name bear">Retour support zone</span>
+                    <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text-muted);">Zone</span>
+                </div>
+                <div class="scenario-trigger">Désescalade totale + CPI miss</div>
+                <p>Prise de bénéfices → test $5 063. Structure invalidée sous $5 050 close daily. Probabilité abaissée à 7% compte tenu de l'escalade infra.</p>
+            </div>
+
+            <div class="warning-banner">
+                <p>Scénario principal — Gap haussier lundi COMEX attendu. Consolidation $5 170–$5 270 avant la seconde jambe liée à Ormuz + Ras Tanura + Qatar LNG. CPI mardi 11 mars = déclencheur du breakout $5 300. Source : FXLeaders · LiteFinance · 8 Mars 2026</p>
+            </div>
+        </div>
+
+        <div class="gold-divider"></div>
+
+        <!-- ═══════════════════════════════════════ -->
+        <!-- 04 · AGENDA MACRO -->
+        <!-- ═══════════════════════════════════════ -->
+        <div class="section" id="agenda">
+            <div class="section-header-block">
+                <div class="section-num">04</div>
+                <div class="section-header-text">
+                    <div class="section-label">Agenda macro · Ce qu'on surveille</div>
+                    <div class="section-sources">Forex Factory · Investing.com · Fed · BLS.gov</div>
+                </div>
+            </div>
+
+            <div class="section-title">Semaine du 9–14 Mars +<br><span class="gold">FOMC 18 Mars</span></div>
+
+            <div class="alert-box orange" style="margin-bottom:32px;">
+                <div class="alert-title orange">⚠ Variable géopolitique hors calendrier</div>
+                <p>Ormuz + Ras Tanura + Qatar LNG peuvent déclencher une volatilité extrême à tout moment, indépendamment de tout agenda économique. Chaque donnée macro cette semaine arrive sur fond de <strong style="color:var(--orange);">triple choc énergétique actif</strong>.</p>
+            </div>
+
+            <table class="agenda-table">
+                <thead>
+                    <tr>
+                        <th>Événement</th>
+                        <th>Forecast</th>
+                        <th>Préc.</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="agenda-event-label label-guerre">⚡ Guerre · Lundi 9 Mars</div>
+                            <div class="agenda-event-title">Gap COMEX + Chine CPI + Suivi Ras Tanura</div>
+                            <div class="agenda-event-desc">Brent $100+ gap attendu · XAU volatilité extrême · Chine CPI inflation pétrolière intégrée · Statut Ras Tanura : toujours à l'arrêt ou reprise partielle ?</div>
+                        </td>
+                        <td><span class="agenda-forecast forecast-hot">GAP ↑</span></td>
+                        <td><span class="agenda-prev">—</span></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="agenda-event-label label-high">HIGH · Mardi 11 Mars · 8h30 EST</div>
+                            <div class="agenda-event-title">US CPI Fév</div>
+                            <div class="agenda-event-desc">⚡ Catalyseur principal · +0.3% att. + Ormuz + LNG Qatar → pression réelle jusqu'à +0.5% → CPI chaud → Fed paralysée → Gold ↑↑</div>
+                        </td>
+                        <td><span class="agenda-forecast forecast-hot">+0.3%</span></td>
+                        <td><span class="agenda-prev">+0.3%</span></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="agenda-event-label label-med">MED · Jeudi 13 Mars</div>
+                            <div class="agenda-event-title">Initial Jobless Claims</div>
+                            <div class="agenda-event-desc">Signal précoce marché travail post-NFP −92K · Premier indicateur des effets économiques du conflit</div>
+                        </td>
+                        <td><span class="agenda-forecast">~220K</span></td>
+                        <td><span class="agenda-prev">221K</span></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="agenda-event-label label-med">MED · Jeudi 13 Mars</div>
+                            <div class="agenda-event-title">GDP Q4 2025 — 2e estimation</div>
+                            <div class="agenda-event-desc">Révision croissance Q4 — avant le choc Ormuz + LNG Q1. Donne la baseline avant le désastre.</div>
+                        </td>
+                        <td><span class="agenda-forecast">~2.3%</span></td>
+                        <td><span class="agenda-prev">2.3%</span></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="agenda-event-label label-high">HIGH · Vendredi 14 Mars · 8h30 EST</div>
+                            <div class="agenda-event-title">Core PCE Jan 2026</div>
+                            <div class="agenda-event-desc">⚡ Jauge Fed — Indicateur d'inflation préféré. Avec triple choc énergie, lecture chaude renforce la paralysie Fed → Gold ↑. Clôture hebdomadaire.</div>
+                        </td>
+                        <td><span class="agenda-forecast forecast-hot">~0.3%</span></td>
+                        <td><span class="agenda-prev">+0.4%</span></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="agenda-event-label label-high">HIGH · Vendredi 14 Mars</div>
+                            <div class="agenda-event-title">US PPI Fév</div>
+                            <div class="agenda-event-desc">Inflation producteur — confirme pression Ormuz + Ras Tanura sur la chaîne de valeur. Très probablement chaud.</div>
+                        </td>
+                        <td><span class="agenda-forecast forecast-hot">+0.2%</span></td>
+                        <td><span class="agenda-prev">+0.4%</span></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="agenda-event-label label-guerre">⚡ Guerre · Mercredi 18 Mars · 14h00 EST</div>
+                            <div class="agenda-event-title">Décision Fed — FOMC</div>
+                            <div class="agenda-event-desc">Taux maintenus — Fed coincée entre triple choc énergie et NFP négatif. Conférence Powell = catalyseur majeur. Ton hawkish ou prudent ? Tout Gold dépend de cette nuance.</div>
+                        </td>
+                        <td><span class="agenda-forecast forecast-hold">Hold</span></td>
+                        <td><span class="agenda-prev">3.50–3.75%</span></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;color:var(--text-muted);line-height:1.7;">△ Heures en EST. Données indicatives — vérifier forexfactory.com avant publication.<br>Ormuz + Ras Tanura + Qatar LNG = variables géopolitiques indépendantes pouvant déclencher une volatilité hors calendrier à tout moment.</p>
+        </div>
+
+        <div class="gold-divider"></div>
+
+        <!-- ═══════════════════════════════════════ -->
+        <!-- 05 · CONCEPT -->
+        <!-- ═══════════════════════════════════════ -->
+        <div class="section" id="concept">
+            <div class="section-header-block">
+                <div class="section-num">05</div>
+                <div class="section-header-text">
+                    <div class="section-label">Concept de la semaine · Éducatif</div>
+                    <div class="section-sources">Fed Reserve · ForexLive · Investopedia · Reuters · Al Jazeera</div>
+                </div>
+            </div>
+
+            <div class="section-title"><span class="gold">"War Premium"</span> + <span style="color:var(--red);">"Fed Paralysée"</span><br>— La triple mécanique</div>
+
+            <p class="body-text">Cette semaine, trois mécanismes distincts s'activent simultanément. C'est exceptionnel — et c'est ce qui explique pourquoi les institutionnels positionnent en taille. Si tu ne distingues pas ces trois niveaux, tu risques de mal interpréter les mouvements intraday, notamment le CPI mardi.</p>
+
+            <!-- MECANIQUE 1 -->
+            <div class="mechanic-block">
+                <div class="mechanic-header">Mécanique #1 — War Premium sur le pétrole (Ormuz + Ras Tanura)</div>
+                <div class="mechanic-flow">
+                    <div class="mechanic-row" style="gap:2px;background:var(--border);">
+                        <div class="mechanic-cell">
+                            <div class="mechanic-val red">Ormuz fermé</div>
+                            <div class="mechanic-sub">−17M b/j transit</div>
+                        </div>
+                        <div class="mechanic-cell">
+                            <div class="mechanic-val red">Ras Tanura ↓</div>
+                            <div class="mechanic-sub">−550K b/j raffiné</div>
+                        </div>
+                    </div>
+                    <div class="mechanic-arrow">↓</div>
+                    <div class="mechanic-row" style="gap:2px;background:var(--border);">
+                        <div class="mechanic-cell">
+                            <div class="mechanic-val gold">Brent $90+</div>
+                            <div class="mechanic-sub">Prime guerre 12%</div>
+                        </div>
+                        <div class="mechanic-cell">
+                            <div class="mechanic-val green">Gold ↑</div>
+                            <div class="mechanic-sub">$5 300–$5 990</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MECANIQUE 2 -->
+            <div class="mechanic-block">
+                <div class="mechanic-header">Mécanique #2 — Choc LNG (Qatar force majeure)</div>
+                <div class="mechanic-flow">
+                    <div class="mechanic-row" style="gap:2px;background:var(--border);">
+                        <div class="mechanic-cell">
+                            <div class="mechanic-val red">Qatar LNG ↓</div>
+                            <div class="mechanic-sub">20% mondial</div>
+                        </div>
+                        <div class="mechanic-cell">
+                            <div class="mechanic-val" style="color:var(--orange);font-size:18px;">Gaz Europe +50%</div>
+                            <div class="mechanic-sub">Inflation LNG</div>
+                        </div>
+                    </div>
+                    <div class="mechanic-arrow">↓</div>
+                    <div class="mechanic-row" style="gap:2px;background:var(--border);">
+                        <div class="mechanic-cell">
+                            <div class="mechanic-val" style="color:var(--orange);font-size:18px;">CPI global ↑</div>
+                            <div class="mechanic-sub">Choc énergie dual</div>
+                        </div>
+                        <div class="mechanic-cell">
+                            <div class="mechanic-val green">Gold ↑</div>
+                            <div class="mechanic-sub">Nouveau front infl.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MECANIQUE 3 -->
+            <div class="mechanic-block">
+                <div class="mechanic-header">Mécanique #3 — Fed paralysée (NFP −92K + Ormuz + LNG)</div>
+                <div class="mechanic-flow">
+                    <div style="display:flex;flex-direction:column;gap:0;">
+                        <div class="mechanic-cell" style="border-bottom:1px solid var(--border);">
+                            <div class="mechanic-val red">NFP −92K</div>
+                            <div class="mechanic-sub">Payrolls négatifs</div>
+                        </div>
+                        <div class="mechanic-arrow">↓</div>
+                        <div class="mechanic-cell" style="border-bottom:1px solid var(--border);">
+                            <div class="mechanic-val gold">Fed hold</div>
+                            <div class="mechanic-sub">Zéro coupe 2026</div>
+                        </div>
+                        <div class="mechanic-arrow">↓</div>
+                        <div class="mechanic-cell" style="border-bottom:1px solid var(--border);">
+                            <div class="mechanic-val gold">DXY ~99</div>
+                            <div class="mechanic-sub">Safe-haven dollar</div>
+                        </div>
+                        <div class="mechanic-arrow">↓</div>
+                        <div class="mechanic-cell">
+                            <div class="mechanic-val green">Gold +5%</div>
+                            <div class="mechanic-sub">Décorrélé du USD</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FORMULA -->
+            <div class="formula-box">
+                <div class="formula-label">Formule — Gold Upside semaine du 9–14 Mars</div>
+                <div class="formula-text">
+                    Gold Upside = <span class="gold">(Brent × 1.5)</span> + <span class="gold">(Qatar LNG × 2.0)</span> + <span class="gold">(Safe-Haven dual × 8)</span> + <span class="gold">Ormuz(10/10)</span>
+                </div>
+                <div class="formula-result" style="margin-top:16px;">→ <strong>$5 360 plancher probable</strong> tant qu'Ormuz ET Ras Tanura sont actifs</div>
+                <div class="formula-result" style="margin-top:8px;color:var(--text-muted);">Retournement complet : Paix Ormuz + Ras Tanura opérationnel + Qatar LNG redémarré + CPI &lt;0.2% → $5 050</div>
+            </div>
+
+            <div class="quote-block">
+                <div class="quote-text">Ce qui était exceptionnel avant le 2 mars est maintenant inédit. Trois fronts simultanés — transit pétrolier, raffinage, LNG — ont été activés en 72 heures. Le marché n'a pas encore pleinement intégré le choc LNG sur l'inflation européenne et asiatique. C'est la seconde jambe haussière du Gold qui se prépare, pas juste une consolidation.</div>
+                <div class="quote-source">La Rédaction — The Pro Xau · 8 Mars 2026 · Mis à jour après frappes Ras Tanura + Qatar LNG</div>
+            </div>
+
+            <div class="alert-box red">
+                <div class="alert-title red">⚠ Retournement — Scénario 7%</div>
+                <p>Paix Ormuz confirmée + Ras Tanura redémarre + Qatar LNG reprend + CPI &lt;0.2% = prise de bénéfices violente possible jusqu'à $5 050. Ce scénario est à <strong>7% de probabilité actuellement</strong>. Toujours définir son stop avant d'entrer.</p>
+            </div>
+        </div>
+
+        <div class="gold-divider"></div>
+
+        <!-- ═══════════════════════════════════════ -->
+        <!-- 06 · ANTICIPER -->
+        <!-- ═══════════════════════════════════════ -->
+        <div class="section" id="anticiper">
+            <div class="section-header-block">
+                <div class="section-num">06</div>
+                <div class="section-header-text">
+                    <div class="section-label">Anticiper la semaine · Stratégie</div>
+                    <div class="section-sources">LiteFinance · FXLeaders · TradingView · JP Morgan · Kpler · Forex Factory</div>
+                </div>
+            </div>
+
+            <div class="section-title">Comment se préparer à la<br><span class="gold">semaine du 9–14 Mars</span></div>
+            <div class="section-subtitle">Synthèse La Rédaction · The Pro Xau · 8 Mars 2026</div>
+
+            <p class="body-text">Anticiper ne signifie pas prédire. Ça signifie <span class="gold">avoir un plan pour chaque scénario avant que le marché ouvre</span>. Cette semaine, la variable dominante n'est pas macro — c'est géopolitique. Le CPI, le Core PCE et le FOMC sont secondaires tant qu'Ormuz est fermé et Ras Tanura à l'arrêt. Voici comment structurer ta semaine.</p>
+
+            <p style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--text-muted);margin-bottom:24px;">Les 3 scénarios à anticiper — Probabilités au 8 Mars 2026</p>
+
+            <div class="scenario-card bullish">
+                <div class="scenario-label">
+                    <span class="name">🚀 Scénario 1 — Escalade continue</span>
+                    <span class="pct" style="font-size:40px;">65%</span>
+                </div>
+                <div class="scenario-trigger">Trigger : Ormuz actif + nouvelles frappes infra</div>
+                <p>Aucune désescalade, nouvelles frappes sur infrastructures énergétiques. Gold breakout $5 300 → $5 540 → $5 990 Q2. Brent $100–$120. CPI chaud mardi confirme la jambe.</p>
+            </div>
+
+            <div class="scenario-card" style="border-color:rgba(201,168,76,0.2);">
+                <div class="scenario-label">
+                    <span class="name" style="color:var(--gold);">📊 Scénario 2 — Statu quo</span>
+                    <span class="pct" style="color:var(--gold);font-size:40px;">28%</span>
+                </div>
+                <div class="scenario-trigger">Trigger : Ormuz actif mais pas de nouvelles frappes</div>
+                <p>Consolidation $5 120–$5 270. Gold bull mais sans jambe explosive. CPI = déclencheur. Brent $90–$100. Attendre CPI mardi avant toute décision.</p>
+            </div>
+
+            <div class="scenario-card bearish">
+                <div class="scenario-label">
+                    <span class="name bear">⚠ Scénario 3 — Désescalade partielle</span>
+                    <span class="pct bear" style="font-size:40px;">7%</span>
+                </div>
+                <div class="scenario-trigger">Trigger : Accord diplomatique + Ras Tanura redémarre</div>
+                <p>Prise de bénéfices violente. Test $5 050. Structure invalidée sous $5 050 daily close. Stop obligatoire avant entrée.</p>
+            </div>
+
+            <p style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--text-muted);margin:40px 0 20px;">Les 5 choses à surveiller — Jour par jour</p>
+
+            <div class="anticip-item">
+                <div class="anticip-icon">⚡</div>
+                <div>
+                    <div class="anticip-when">Lundi 9 Mars · COMEX ouverture</div>
+                    <div class="anticip-title">Gap haussier Gold + Brent $100+</div>
+                    <div class="anticip-body">Surveiller l'amplitude du gap. <span class="gold">Gap > $5 220 = signe de force</span>. Gap &lt; $5 180 = consolidation probable avant CPI. Ne jamais chaser un gap — attendre un pullback sur $5 170–$5 190.</div>
+                </div>
+            </div>
+
+            <div class="anticip-item">
+                <div class="anticip-icon">📊</div>
+                <div>
+                    <div class="anticip-when">Mardi 11 Mars · 8h30 EST</div>
+                    <div class="anticip-title">CPI US Fév — Déclencheur de la semaine</div>
+                    <div class="anticip-body">C'est LA donnée. <span class="gold">CPI > +0.3% = Gold ↑ immédiat</span> (Fed paralysée). <span class="gold">CPI = 0.3% = consolidation</span>. <span class="red">CPI &lt; 0.2% = seul scénario bearish possible</span>. Attendre 5 minutes post-publication avant d'entrer.</div>
+                </div>
+            </div>
+
+            <div class="anticip-item">
+                <div class="anticip-icon">🛢️</div>
+                <div>
+                    <div class="anticip-when">En continu · Toute la semaine</div>
+                    <div class="anticip-title">Statut Ras Tanura + Qatar LNG</div>
+                    <div class="anticip-body">Surveiller toute annonce d'Aramco ou QatarEnergy. <span class="gold">Reprise partielle Ras Tanura = prise de bénéfices temporaire</span>. Redémarrage Qatar LNG total = correction violente possible.</div>
+                </div>
+            </div>
+
+            <div class="anticip-item">
+                <div class="anticip-icon">💵</div>
+                <div>
+                    <div class="anticip-when">Vendredi 13 Mars · 8h30 EST</div>
+                    <div class="anticip-title">Core PCE + Positionnement FOMC</div>
+                    <div class="anticip-body"><span class="gold">Core PCE chaud = Fed hawkish = DXY ↑ mais Gold reste fort</span> (décorrélation). PCE froid = Fed dovish attendu → Gold ↑. Les deux scénarios sont haussiers Gold sauf désescalade totale.</div>
+                </div>
+            </div>
+
+            <div class="anticip-item">
+                <div class="anticip-icon">🏦</div>
+                <div>
+                    <div class="anticip-when">Mercredi 18 Mars · 14h00 EST</div>
+                    <div class="anticip-title">FOMC Powell — Ton de la conférence</div>
+                    <div class="anticip-body">Taux maintenus attendus. L'enjeu est le <span class="gold">langage de Powell</span>. Ton "surveiller l'inflation énergie" = Gold ↑. Ton "surveiller l'emploi" = Gold neutre. Tout dépend de quelle jambe il met en avant.</div>
+                </div>
+            </div>
+
+            <div class="anticip-item">
+                <div class="anticip-icon">📉</div>
+                <div>
+                    <div class="anticip-when">Toute la semaine · DXY</div>
+                    <div class="anticip-title">DXY 98–100 — Zone de vigilance</div>
+                    <div class="anticip-body"><span class="red">DXY > 100 = pression mécanique sur Gold</span> (même si structurellement décorrélé). <span class="gold">DXY &lt; 97 = Gold ↑ puissant</span>. La zone 98–99 est neutre — Gold est alors piloté par la géopolitique seule.</div>
+                </div>
+            </div>
+
+            <p style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--text-muted);margin:40px 0 20px;">Matrice de décision — Comment lire chaque donnée</p>
+
+            <table class="decision-table">
+                <thead>
+                    <tr>
+                        <th>Donnée / Événement</th>
+                        <th>Si fort / chaud</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>CPI US Mardi</td>
+                        <td><span class="decision-result result-up">Gold ↑↑ Fed paralysée</span></td>
+                    </tr>
+                    <tr>
+                        <td>Core PCE Vendredi</td>
+                        <td><span class="decision-result result-up">Gold ↑ stagflation</span></td>
+                    </tr>
+                    <tr>
+                        <td>Jobless Claims Jeudi</td>
+                        <td><span class="decision-result result-down">Gold ↓ légère correction</span></td>
+                    </tr>
+                    <tr>
+                        <td>FOMC Powell 18/03</td>
+                        <td><span class="decision-result result-down">Gold ↓ court terme</span></td>
+                    </tr>
+                    <tr>
+                        <td>Ras Tanura Reprise</td>
+                        <td><span class="decision-result result-down">Gold ↓ prise de bénéf.</span></td>
+                    </tr>
+                    <tr>
+                        <td>Qatar LNG Redémarre</td>
+                        <td><span class="decision-result result-down">Gold ↓ correction violente</span></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="finale-banner">
+                <p>🗓 Calendrier optimal — Lundi : observer le gap + zone $5 170–$5 190. Mardi : attendre 8h35 EST (5 min post-CPI) pour l'entrée principale. Vendredi : réduire l'exposition avant le weekend géopolitique. Mercredi 18 Mars (FOMC) = prochain événement macro majeur.</p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- DISCLAIMER -->
+    <div class="disclaimer">
+        <p>Ce contenu est publié à titre éducatif et informatif uniquement. Il ne constitue pas un conseil en investissement ni une recommandation d'achat ou de vente. Les données sont issues de sources publiques (Investing.com, TradingEconomics, Reuters, BLS.gov, Al Jazeera, CNBC, The National, Wikipedia, LiteFinance, FXLeaders). Le trading implique un risque de perte en capital. Tradez toujours avec votre propre analyse.</p>
+        <div class="disclaimer-brand">THE <span>PRO</span> XAU</div>
+        <div class="disclaimer-copy">© 2026 THE PRO XAU · TOUS DROITS RÉSERVÉS · CONTENU ÉDUCATIF UNIQUEMENT · MIS À JOUR LE 8 MARS 2026</div>
+    </div>
+
+    <script>
+        const SUPABASE_URL  = 'https://oehoqoaxcwiffbzuegou.supabase.co'
+        const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9laG9xb2F4Y3dpZmZienVlZ291Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzMjI2MTMsImV4cCI6MjA4Nzg5ODYxM30.N5UP014MgNUBunZJuhKuUUlRYC_HY7lpAFAYD39CjvE'
+        const { createClient } = supabase
+        const sb2 = createClient(SUPABASE_URL, SUPABASE_ANON)
+
+        // Gate: seuls les abonnés actifs peuvent lire cette page
+        async function authGate() {
+            try {
+                const { data: { session } } = await sb2.auth.getSession()
+                if (!session) { window.location.href = '../register.html'; return }
+                const { data: sub } = await sb2
+                    .from('subscriptions')
+                    .select('status')
+                    .or(`email.eq.${session.user.email},user_id.eq.${session.user.id}`)
+                    .order('created_at', { ascending: false })
+                    .limit(1)
+                    .single()
+                if (!sub || (sub.status !== 'active' && sub.status !== 'trialing')) {
+                    window.location.href = '../register.html'
+                }
+            } catch(e) {
+                // Erreur réseau → on laisse passer
+            }
+        }
+        authGate()
+
+        // Hamburger
+        const hamburger  = document.getElementById('hamburger')
+        const navMenu    = document.getElementById('navMenu')
+        const navOverlay = document.getElementById('navOverlay')
+        const navClose   = document.getElementById('navClose')
+        hamburger.addEventListener('click', () => { hamburger.classList.toggle('open'); navMenu.classList.toggle('open'); navOverlay.classList.toggle('open'); document.body.style.overflow = navMenu.classList.contains('open') ? 'hidden' : '' })
+        navClose.addEventListener('click', () => { hamburger.classList.remove('open'); navMenu.classList.remove('open'); navOverlay.classList.remove('open'); document.body.style.overflow = '' })
+        navOverlay.addEventListener('click', () => { hamburger.classList.remove('open'); navMenu.classList.remove('open'); navOverlay.classList.remove('open'); document.body.style.overflow = '' })
+
+        // Tab scroll
+        function scrollToSection(id) {
+            const el = document.getElementById(id)
+            if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'start' }) }
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'))
+            event.target.classList.add('active')
+        }
+
+        // Active tab on scroll
+        const sections = ['macro','setup','analyse','agenda','concept','anticiper']
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.id
+                    document.querySelectorAll('.tab-btn').forEach((b, i) => {
+                        b.classList.toggle('active', sections[i] === id)
+                    })
+                }
+            })
+        }, { rootMargin: '-20% 0px -60% 0px' })
+        sections.forEach(id => { const el = document.getElementById(id); if (el) observer.observe(el) })
+    </script>
+</body>
+</html>
