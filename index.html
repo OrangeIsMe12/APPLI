@@ -175,41 +175,49 @@
                 <div class="section-label">Toutes les éditions</div>
                 <div class="section-title">Archive des publications</div>
             </div>
-            <div class="edition-count">1 édition publiée</div>
+            <div class="edition-count">2 éditions publiées</div>
         </div>
         <div class="cards-grid">
-            <a class="card-featured" href="edition01/edition-01.html">
+
+            <!-- ÉDITION #002 — Featured (dernière) — accès abonnés -->
+            <div id="card-edition-2-featured" class="card-featured locked" style="text-decoration:none; cursor:default; position:relative; overflow:hidden;">
                 <div class="card-top">
-                    <div class="card-edition-num">ÉDITION #001</div>
-                    <div class="badge badge-new">Dernière édition</div>
+                    <div class="card-edition-num">ÉDITION #002</div>
+                    <div class="badge badge-new" id="badge-ed2">Dernière édition</div>
                 </div>
-                <div class="card-title">Iran, NFP & Dollar —<br>Semaine du 2–7 Mars</div>
-                <p class="card-desc">Operation Epic Fury, NFP à 58K, DXY −9% — trois catalyseurs qui s'alignent. Analyse complète + setups bullish & bearish sur XAUUSD.</p>
+                <div class="card-title" id="featured-title">Édition 2 — Semaine du 11 Mars</div>
+                <p class="card-desc" id="featured-desc">Analyse complète de la semaine + setups bullish & bearish sur XAUUSD.</p>
                 <div class="card-meta">
-                    <div class="card-date">28 FÉV. 2026</div>
+                    <div class="card-date">11 MARS 2026</div>
                     <div class="card-tags">
                         <span class="card-tag">Macro</span>
                         <span class="card-tag">Technique</span>
-                        <span class="card-tag">NFP</span>
-                        <span class="card-tag">Iran</span>
                     </div>
-                    <div class="card-arrow">→</div>
+                    <div class="card-arrow" id="featured-arrow" style="opacity:0.35;">→</div>
                 </div>
-            </a>
-            <div id="card-edition-2" class="card-small locked">
-                <div class="card-top">
-                    <div class="card-edition-num">ÉDITION #002</div>
-                    <div class="badge badge-lock" id="badge-ed2">🔒 Abonnés</div>
-                </div>
-                <div class="card-title">Édition 2</div>
-                <p class="card-desc">Publication prévue le 11 mars 2026. Abonne-toi pour y accéder.</p>
-                <div class="card-date">11 MARS 2026</div>
-                <div class="lock-overlay" id="lock-ed2">
+                <!-- Lock overlay par défaut sur la featured -->
+                <div class="lock-overlay" id="lock-ed2-featured">
                     <div class="lock-icon">🔒</div>
                     <div class="lock-text">Accès abonnés</div>
                     <a href="register.html" class="lock-btn">S'abonner →</a>
                 </div>
             </div>
+
+            <!-- ÉDITION #001 — Petite carte, libre -->
+            <a class="card-small unlocked" href="edition01/edition-01.html">
+                <div class="card-top">
+                    <div class="card-edition-num">ÉDITION #001</div>
+                    <div class="badge badge-new">Accès libre</div>
+                </div>
+                <div class="card-title">Iran, NFP & Dollar —<br>Semaine du 2–7 Mars</div>
+                <p class="card-desc">Operation Epic Fury, NFP à 58K, DXY −9% — trois catalyseurs qui s'alignent.</p>
+                <div class="card-meta">
+                    <div class="card-date">28 FÉV. 2026</div>
+                    <div class="card-arrow">→</div>
+                </div>
+            </a>
+
+            <!-- ÉDITION #003 — Petite carte, verrouillée -->
             <div id="card-edition-3" class="card-small locked">
                 <div class="card-top">
                     <div class="card-edition-num">ÉDITION #003</div>
@@ -224,6 +232,7 @@
                     <a href="register.html" class="lock-btn">S'abonner →</a>
                 </div>
             </div>
+
         </div>
     </section>
 
@@ -266,9 +275,6 @@
     </section>
 
     <div class="gold-divider"></div>
-
-   
-    </section>
 
     <!-- ABOUT -->
     <div class="about-section">
@@ -314,16 +320,40 @@
         const { createClient } = supabase
         const sb2 = createClient(SUPABASE_URL, SUPABASE_ANON)
 
-        function unlockCard(cardId, lockId, badgeId, href) {
-            const card  = document.getElementById(cardId)
-            const lock  = document.getElementById(lockId)
-            const badge = document.getElementById(badgeId)
+        // Unlock la featured (édition 2) pour les abonnés
+        function unlockFeatured() {
+            const card  = document.getElementById('card-edition-2-featured')
+            const lock  = document.getElementById('lock-ed2-featured')
+            const badge = document.getElementById('badge-ed2')
+            if (!card) return
+            if (lock) lock.remove()
+            card.classList.remove('locked')
+            card.style.cursor = 'pointer'
+            card.style.textDecoration = 'none'
+            if (badge) { badge.className = 'badge badge-subscriber'; badge.textContent = '✓ Abonné' }
+            card.addEventListener('click', () => { window.location.href = 'edition02/edition-02.html' })
+            // hover effect
+            card.addEventListener('mouseenter', () => { card.style.background = 'linear-gradient(135deg,#161108 0%,#0d0b05 60%,#161108 100%)' })
+            card.addEventListener('mouseleave', () => { card.style.background = '' })
+            const arrow = document.getElementById('featured-arrow')
+            if (arrow) {
+                card.addEventListener('mouseenter', () => arrow.style.opacity = '1')
+                card.addEventListener('mouseleave', () => arrow.style.opacity = '0.35')
+            }
+        }
+
+        // Unlock édition 3 (petite carte)
+        function unlockCard3() {
+            const card  = document.getElementById('card-edition-3')
+            const lock  = document.getElementById('lock-ed3')
+            const badge = document.getElementById('badge-ed3')
             if (!card) return
             if (lock) lock.remove()
             card.classList.remove('locked')
             card.classList.add('unlocked')
             if (badge) { badge.className = 'badge badge-subscriber'; badge.textContent = '✓ Abonné' }
-            if (href) { card.style.cursor = 'pointer'; card.addEventListener('click', () => { window.location.href = href }) }
+            card.style.cursor = 'pointer'
+            card.addEventListener('click', () => { window.location.href = 'edition03/edition-03.html' })
         }
 
         async function checkSubscription() {
@@ -339,8 +369,8 @@
                     .single()
                 if (!sub) return
                 if (sub.status !== 'active' && sub.status !== 'trialing') return
-                unlockCard('card-edition-2', 'lock-ed2', 'badge-ed2', 'edition02/edition-02.html')
-                unlockCard('card-edition-3', 'lock-ed3', 'badge-ed3', 'edition03/edition-03.html')
+                unlockFeatured()
+                unlockCard3()
                 const pricing = document.getElementById('pricing-section')
                 if (pricing) pricing.style.display = 'none'
                 const navLink = document.getElementById('nav-subscribe-link')
@@ -364,9 +394,7 @@
         navClose.addEventListener('click', closeMenu)
         navOverlay.addEventListener('click', closeMenu)
 
-        // ── AUTH GATE ──
-        // Si pas de session → redirect register
-        // Si session → on affiche la page normalement
+        // AUTH GATE
         async function authGate() {
             try {
                 const { data: { session } } = await sb2.auth.getSession()
@@ -377,7 +405,6 @@
             } catch(e) {
                 // En cas d'erreur réseau, on laisse passer
             }
-            // Session OK → cacher l'overlay
             document.getElementById('authOverlay').classList.add('hidden')
             setTimeout(() => {
                 const o = document.getElementById('authOverlay')
@@ -385,7 +412,6 @@
             }, 400)
         }
         authGate()
-
     </script>
 
 </body>
