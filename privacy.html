@@ -17,7 +17,6 @@
         body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: var(--text); min-height: 100vh; overflow-x: hidden; }
         .top-nav { display: flex; justify-content: space-between; align-items: center; padding: 14px 32px; border-bottom: 1px solid var(--border); background: rgba(8,8,8,0.95); backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 100; }
         .nav-brand { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--gold); text-decoration: none; }
-        /* Hamburger */
         .hamburger { background: none; border: 1px solid var(--border); padding: 8px 12px; cursor: pointer; display: flex; flex-direction: column; gap: 5px; transition: border-color 0.2s; }
         .hamburger:hover { border-color: var(--gold); }
         .hamburger span { display: block; width: 20px; height: 1px; background: var(--text-dim); transition: all 0.3s; }
@@ -34,8 +33,6 @@
         .nav-menu a { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--text-dim); text-decoration: none; padding: 14px 0; border-bottom: 1px solid var(--border); transition: color 0.2s; display: flex; justify-content: space-between; align-items: center; }
         .nav-menu a:hover { color: var(--gold); }
         .nav-menu a:last-child { border-bottom: none; }
-        .nav-menu-cta { margin-top: auto; background: var(--gold); color: #080804 !important; font-weight: 700; padding: 14px 24px !important; text-align: center; justify-content: center !important; border: none !important; }
-        .nav-menu-cta:hover { filter: brightness(1.1); }
         .hero { border-bottom: 1px solid var(--border); padding: 80px 32px 64px; position: relative; overflow: hidden; }
         .hero::before { content: 'PRIVACY'; position: absolute; right: -20px; top: 50%; transform: translateY(-50%); font-family: 'Playfair Display', serif; font-size: clamp(80px,15vw,180px); font-weight: 900; color: var(--gold); opacity: 0.025; pointer-events: none; white-space: nowrap; }
         .hero-inner { max-width: 860px; margin: 0 auto; }
@@ -104,23 +101,22 @@
 
 <div class="progress-bar" id="progress"></div>
 
-<!-- NAV OVERLAY -->
 <div class="nav-menu-overlay" id="navOverlay"></div>
-<!-- MENU LATÉRAL -->
 <div class="nav-menu" id="navMenu">
     <button class="nav-menu-close" id="navClose">✕</button>
     <div class="nav-menu-label">Navigation</div>
-    <a href="index.html">Accueil <span>→</span></a>
-    <a href="about.html">À propos <span>→</span></a>
-    <a href="faq.html">FAQ <span>→</span></a>
-    <a href="privacy.html">Confidentialité <span>→</span></a>
-    <a href="terms.html">Conditions <span>→</span></a>
-    <a href="dashboard.html">Mon compte <span>→</span></a>
-    <a href="register.html" class="nav-menu-cta">S'abonner maintenant →</a>
+    <a href="/index.html">Accueil <span>→</span></a>
+    <a href="/about.html">À propos <span>→</span></a>
+    <a href="/services.html">Services <span>→</span></a>
+    <a href="/partenaires.html">Partenaires <span>→</span></a>
+    <a href="/faq.html">FAQ <span>→</span></a>
+    <a href="/privacy.html">Confidentialité <span>→</span></a>
+    <a href="/terms.html">Conditions <span>→</span></a>
+    <a href="/dashboard.html">Mon compte <span>→</span></a>
 </div>
-<!-- NAV -->
+
 <nav class="top-nav">
-    <a href="index.html" class="nav-brand">The Pro Xau</a>
+    <a href="/index.html" class="nav-brand">The Pro Xau</a>
     <button class="hamburger" id="hamburger">
         <span></span><span></span><span></span>
     </button>
@@ -245,11 +241,11 @@
 <footer>
     <div class="footer-logo">THE <span>PRO</span> XAU</div>
     <div class="footer-links">
-        <a href="index.html" class="footer-link">Accueil</a>
-        <a href="about.html" class="footer-link">À propos</a>
-        <a href="faq.html" class="footer-link">FAQ</a>
-        <a href="privacy.html" class="footer-link">Confidentialité</a>
-        <a href="terms.html" class="footer-link">Conditions</a>
+        <a href="/index.html" class="footer-link">Accueil</a>
+        <a href="/about.html" class="footer-link">À propos</a>
+        <a href="/faq.html" class="footer-link">FAQ</a>
+        <a href="/privacy.html" class="footer-link">Confidentialité</a>
+        <a href="/terms.html" class="footer-link">Conditions</a>
     </div>
     <div class="footer-copy">© 2026 THEPROXAU · TOUS DROITS RÉSERVÉS · CONTENU ÉDUCATIF UNIQUEMENT</div>
 </footer>
@@ -260,6 +256,7 @@
         const max = document.body.scrollHeight - window.innerHeight
         document.getElementById('progress').style.width = (scrolled / max * 100) + '%'
     })
+
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -272,34 +269,24 @@
         })
     }, { threshold: 0.1 })
     document.querySelectorAll('.section').forEach(s => observer.observe(s))
+
     document.querySelectorAll('.toc-item').forEach(item => {
         item.addEventListener('click', () => {
             const target = document.getElementById(item.dataset.target)
             if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' })
         })
     })
-    // Hamburger
-    const hamburger = document.getElementById('hamburger')
-    const navMenu = document.getElementById('navMenu')
+
+    const hamburger  = document.getElementById('hamburger')
+    const navMenu    = document.getElementById('navMenu')
     const navOverlay = document.getElementById('navOverlay')
-    const navClose = document.getElementById('navClose')
-    function openMenu() { hamburger.classList.add('open'); navMenu.classList.add('open'); navOverlay.classList.add('open'); document.body.style.overflow = 'hidden' }
+    const navClose   = document.getElementById('navClose')
+    function openMenu()  { hamburger.classList.add('open'); navMenu.classList.add('open'); navOverlay.classList.add('open'); document.body.style.overflow = 'hidden' }
     function closeMenu() { hamburger.classList.remove('open'); navMenu.classList.remove('open'); navOverlay.classList.remove('open'); document.body.style.overflow = '' }
     hamburger.addEventListener('click', openMenu)
     navClose.addEventListener('click', closeMenu)
     navOverlay.addEventListener('click', closeMenu)
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu() })
 </script>
-
-    <script>
-        const hamburger = document.getElementById('hamburger')
-        const navMenu = document.getElementById('navMenu')
-        const navOverlay = document.getElementById('navOverlay')
-        const navClose = document.getElementById('navClose')
-        function openMenu() { hamburger.classList.add('open'); navMenu.classList.add('open'); navOverlay.classList.add('open'); document.body.style.overflow = 'hidden' }
-        function closeMenu() { hamburger.classList.remove('open'); navMenu.classList.remove('open'); navOverlay.classList.remove('open'); document.body.style.overflow = '' }
-        hamburger.addEventListener('click', openMenu)
-        navClose.addEventListener('click', closeMenu)
-        navOverlay.addEventListener('click', closeMenu)
-    </script>
 </body>
 </html>
