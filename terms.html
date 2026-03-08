@@ -231,13 +231,7 @@
             transition: color 0.2s; display: flex; justify-content: space-between; align-items: center;
         }
         .nav-menu a:hover { color: var(--gold); }
-        .nav-menu a:last-of-type { border-bottom: none; }
-        .nav-menu-cta {
-            margin-top: auto; background: var(--gold); color: #080804 !important;
-            font-weight: 700; padding: 14px 24px !important;
-            text-align: center; justify-content: center !important; border: none !important;
-        }
-        .nav-menu-cta:hover { filter: brightness(1.1); }
+        .nav-menu a:last-child { border-bottom: none; }
     </style>
 </head>
 <body>
@@ -248,17 +242,18 @@
 <div class="nav-menu" id="navMenu">
     <button class="nav-menu-close" id="navClose">✕</button>
     <div class="nav-menu-label">Navigation</div>
-    <a href="index.html">Accueil <span>→</span></a>
-    <a href="about.html">À propos <span>→</span></a>
-    <a href="faq.html">FAQ <span>→</span></a>
-    <a href="privacy.html">Confidentialité <span>→</span></a>
-    <a href="terms.html">Conditions <span>→</span></a>
-    <a href="dashboard.html">Mon compte <span>→</span></a>
-    <a href="register.html" class="nav-menu-cta">S'abonner maintenant →</a>
+    <a href="/index.html">Accueil <span>→</span></a>
+    <a href="/about.html">À propos <span>→</span></a>
+    <a href="/services.html">Services <span>→</span></a>
+    <a href="/partenaires.html">Partenaires <span>→</span></a>
+    <a href="/faq.html">FAQ <span>→</span></a>
+    <a href="/privacy.html">Confidentialité <span>→</span></a>
+    <a href="/terms.html">Conditions <span>→</span></a>
+    <a href="/dashboard.html">Mon compte <span>→</span></a>
 </div>
 
 <nav class="top-nav">
-    <a href="index.html" class="nav-brand">The Pro Xau</a>
+    <a href="/index.html" class="nav-brand">The Pro Xau</a>
     <button class="hamburger" id="hamburger">
         <span></span><span></span><span></span>
     </button>
@@ -398,10 +393,11 @@
 <footer>
     <div class="footer-logo">THE <span>PRO</span> XAU</div>
     <div class="footer-links">
-        <a href="index.html" class="footer-link">Accueil</a>
-        <a href="dashboard.html" class="footer-link">Mon compte</a>
-        <a href="privacy.html" class="footer-link">Confidentialité</a>
-        <a href="terms.html" class="footer-link">Conditions</a>
+        <a href="/index.html" class="footer-link">Accueil</a>
+        <a href="/dashboard.html" class="footer-link">Mon compte</a>
+        <a href="/privacy.html" class="footer-link">Confidentialité</a>
+        <a href="/terms.html" class="footer-link">Conditions</a>
+         <a href="/services.html" class="footer-link">services</a>
     </div>
     <div class="footer-copy">© 2026 THEPROXAU · TOUS DROITS RÉSERVÉS · CONTENU ÉDUCATIF UNIQUEMENT</div>
 </footer>
@@ -463,7 +459,6 @@
     navClose.addEventListener('click', closeMenu);
     navOverlay.addEventListener('click', closeMenu);
 
-    /* Fermer avec Escape */
     document.addEventListener('keydown', e => {
         if (e.key === 'Escape') closeMenu();
     });
