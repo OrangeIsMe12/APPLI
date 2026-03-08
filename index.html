@@ -118,6 +118,13 @@
         @keyframes authSpin { to { transform: rotate(360deg); } }
         .auth-text { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 4px; text-transform: uppercase; color: #4a4038; }
 
+        /* Coming Soon inline card */
+        .cs-block { background: rgba(8,8,4,0.8); border: 1px solid var(--border); padding: 10px 10px 8px; min-width: 56px; text-align: center; }
+        .cs-val { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 900; color: var(--gold); line-height: 1; letter-spacing: -1px; display: block; }
+        .cs-lbl { font-family: 'DM Mono', monospace; font-size: 7px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-top: 5px; }
+        .cs-sep { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 900; color: var(--gold); opacity: 0.2; padding-bottom: 14px; animation: csBlink 1s step-end infinite; }
+        @keyframes csBlink { 0%,100%{opacity:0.2} 50%{opacity:0.05} }
+
         @media(max-width:640px) { .cards-grid,.about-grid,.services-inline-grid{grid-template-columns:1fr;} .card-featured{padding:28px 24px;} .card-tags{display:none;} .section-header{flex-direction:column;align-items:flex-start;gap:6px;} }
     </style>
 </head>
@@ -179,28 +186,61 @@
         </div>
         <div class="cards-grid">
 
-            <!-- ÉDITION #002 — Featured (dernière) — accès abonnés -->
-            <div id="card-edition-2-featured" class="card-featured locked" style="text-decoration:none; cursor:default; position:relative; overflow:hidden;">
-                <div class="card-top">
-                    <div class="card-edition-num">ÉDITION #002</div>
-                    <div class="badge badge-new" id="badge-ed2">Dernière édition</div>
-                </div>
-                <div class="card-title" id="featured-title">Édition 2 — Semaine du 11 Mars</div>
-                <p class="card-desc" id="featured-desc">Analyse complète de la semaine + setups bullish & bearish sur XAUUSD.</p>
-                <div class="card-meta">
-                    <div class="card-date">11 MARS 2026</div>
-                    <div class="card-tags">
-                        <span class="card-tag">Macro</span>
-                        <span class="card-tag">Technique</span>
+            <!-- ÉDITION #002 — Featured avec Coming Soon intégré -->
+            <div id="card-edition-2-featured" class="card-featured" style="cursor:default; position:relative; overflow:hidden; min-height:280px;">
+
+                <!-- Contenu flouté derrière -->
+                <div id="card-ed2-content" style="filter:blur(6px); opacity:0.35; pointer-events:none; user-select:none;">
+                    <div class="card-top">
+                        <div class="card-edition-num">ÉDITION #002</div>
+                        <div class="badge badge-new">Dernière édition</div>
                     </div>
-                    <div class="card-arrow" id="featured-arrow" style="opacity:0.35;">→</div>
+                    <div class="card-title">Ras Tanura + Qatar LNG —<br>Semaine du 9–14 Mars</div>
+                    <p class="card-desc">Ormuz fermé · NFP −92K · Fed paralysée — triple choc énergétique. Analyse complète + setups bullish & bearish sur XAUUSD.</p>
+                    <div class="card-meta">
+                        <div class="card-date">17 MARS 2026</div>
+                        <div class="card-tags">
+                            <span class="card-tag">Macro</span>
+                            <span class="card-tag">Technique</span>
+                            <span class="card-tag">Iran</span>
+                            <span class="card-tag">FOMC</span>
+                        </div>
+                    </div>
                 </div>
-                <!-- Lock overlay par défaut sur la featured -->
-                <div class="lock-overlay" id="lock-ed2-featured">
-                    <div class="lock-icon">🔒</div>
-                    <div class="lock-text">Accès abonnés</div>
-                    <a href="register.html" class="lock-btn">S'abonner →</a>
+
+                <!-- Coming Soon overlay -->
+                <div id="coming-soon-overlay" style="position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:0; background:rgba(8,8,6,0.72); backdrop-filter:blur(2px); padding:32px 24px; text-align:center;">
+
+                    <div style="font-family:'DM Mono',monospace; font-size:8px; letter-spacing:5px; color:var(--gold); text-transform:uppercase; opacity:0.6; margin-bottom:14px; display:flex; align-items:center; gap:10px;">
+                        <span style="display:inline-block; width:24px; height:1px; background:var(--gold); opacity:0.3;"></span>
+                        Prochaine édition
+                        <span style="display:inline-block; width:24px; height:1px; background:var(--gold); opacity:0.3;"></span>
+                    </div>
+
+                    <div style="font-family:'DM Mono',monospace; font-size:9px; letter-spacing:3px; color:var(--gold); opacity:0.5; text-transform:uppercase; margin-bottom:8px;">Édition #002</div>
+
+                    <div style="font-family:'Playfair Display',serif; font-size:clamp(18px,3vw,26px); font-weight:700; color:var(--text); line-height:1.2; margin-bottom:20px;">
+                        Ras Tanura + Qatar LNG<br>
+                        <span style="color:var(--gold); font-style:italic;">Dimanche · 18h00 EST</span>
+                    </div>
+
+                    <!-- Countdown inline -->
+                    <div id="cs-countdown" style="display:flex; align-items:center; justify-content:center; gap:6px; margin-bottom:20px;">
+                        <div class="cs-block"><span class="cs-val" id="cs-days">--</span><div class="cs-lbl">Jours</div></div>
+                        <div class="cs-sep">:</div>
+                        <div class="cs-block"><span class="cs-val" id="cs-hours">--</span><div class="cs-lbl">Heures</div></div>
+                        <div class="cs-sep">:</div>
+                        <div class="cs-block"><span class="cs-val" id="cs-minutes">--</span><div class="cs-lbl">Min</div></div>
+                        <div class="cs-sep">:</div>
+                        <div class="cs-block"><span class="cs-val" id="cs-seconds">--</span><div class="cs-lbl">Sec</div></div>
+                    </div>
+
+                    <!-- Badge disponible (caché jusqu'au bon moment) -->
+                    <div id="cs-available" style="display:none; font-family:'DM Mono',monospace; font-size:10px; letter-spacing:3px; color:#4caf7d; text-transform:uppercase; background:rgba(76,175,125,0.1); border:1px solid rgba(76,175,125,0.3); padding:10px 20px; margin-bottom:16px;">✓ Disponible maintenant</div>
+
+                    <a href="edition02/coming-soon-02.html" id="cs-link" style="font-family:'DM Mono',monospace; font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(--gold); opacity:0.5; text-decoration:none; border-bottom:1px solid rgba(201,168,76,0.2); padding-bottom:2px; transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">Voir le teaser →</a>
                 </div>
+
             </div>
 
             <!-- ÉDITION #001 — Petite carte, libre -->
@@ -331,7 +371,7 @@
             card.style.cursor = 'pointer'
             card.style.textDecoration = 'none'
             if (badge) { badge.className = 'badge badge-subscriber'; badge.textContent = '✓ Abonné' }
-            card.addEventListener('click', () => { window.location.href = 'edition02/edition-02.html' })
+            card.addEventListener('click', () => { window.location.href = 'edition02/coming-soon-02.html' })
             // hover effect
             card.addEventListener('mouseenter', () => { card.style.background = 'linear-gradient(135deg,#161108 0%,#0d0b05 60%,#161108 100%)' })
             card.addEventListener('mouseleave', () => { card.style.background = '' })
@@ -379,6 +419,44 @@
                 console.warn('checkSubscription error:', e)
             }
         }
+
+        // ── COUNTDOWN INLINE CARTE ED2 ──
+        const CS_TARGET = new Date('2026-03-17T18:00:00-05:00')
+
+        function padZ(n) { return String(n).padStart(2,'0') }
+
+        function updateCSCountdown() {
+            const diff = CS_TARGET - new Date()
+
+            if (diff <= 0) {
+                document.getElementById('cs-countdown').style.display = 'none'
+                document.getElementById('cs-available').style.display = 'block'
+                // Rendre la carte cliquable vers l'édition
+                const overlay = document.getElementById('coming-soon-overlay')
+                overlay.style.cursor = 'pointer'
+                overlay.addEventListener('click', () => { window.location.href = 'edition02/edition-02.html' })
+                document.getElementById('cs-link').textContent = 'Lire l\'édition #002 →'
+                document.getElementById('cs-link').href = 'edition02/edition-02.html'
+                // Déflouter le contenu
+                document.getElementById('card-ed2-content').style.filter = 'none'
+                document.getElementById('card-ed2-content').style.opacity = '1'
+                clearInterval(csTimer)
+                return
+            }
+
+            const days    = Math.floor(diff / 86400000)
+            const hours   = Math.floor((diff % 86400000) / 3600000)
+            const minutes = Math.floor((diff % 3600000) / 60000)
+            const seconds = Math.floor((diff % 60000) / 1000)
+
+            document.getElementById('cs-days').textContent    = padZ(days)
+            document.getElementById('cs-hours').textContent   = padZ(hours)
+            document.getElementById('cs-minutes').textContent = padZ(minutes)
+            document.getElementById('cs-seconds').textContent = padZ(seconds)
+        }
+
+        updateCSCountdown()
+        const csTimer = setInterval(updateCSCountdown, 1000)
 
         checkSubscription()
 
