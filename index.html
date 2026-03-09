@@ -377,8 +377,9 @@
             if (m) m.textContent = padZ(minutes)
             if (s) s.textContent = padZ(seconds)
         }
-        updateCSCountdown()
-        const csTimer = setInterval(updateCSCountdown, 1000)
+        let csTimer
+updateCSCountdown()
+csTimer = setInterval(updateCSCountdown, 1000)
 
         // ── UNLOCK FEATURED (édition 2) pour les abonnés ──
         function unlockFeatured() {
