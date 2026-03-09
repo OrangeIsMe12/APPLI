@@ -394,18 +394,35 @@
             card.addEventListener('mouseleave', () => { card.style.background = '' })
         }
 
-        // Unlock édition 3 (petite carte)
-        function unlockCard3() {
-            const card  = document.getElementById('card-edition-3')
-            const lock  = document.getElementById('lock-ed3')
-            const badge = document.getElementById('badge-ed3')
-            if (!card) return
-            if (lock) lock.remove()
-            card.classList.remove('locked')
-            card.classList.add('unlocked')
-            if (badge) { badge.className = 'badge badge-subscriber'; badge.textContent = '✓ Abonné' }
-            card.style.cursor = 'pointer'
-            card.addEventListener('click', () => { window.location.href = 'edition03/edition-03.html' })
+        // Unlock toutes les cartes verrouillées pour les abonnés
+        function unlockAllLockedCards() {
+            document.querySelectorAll('.card-small.locked').forEach(card => {
+                // Supprimer l'overlay cadenas
+                const lockOverlay = card.querySelector('.lock-overlay')
+                if (lockOverlay) lockOverlay.remove()
+
+                // Changer les classes
+                card.classList.remove('locked')
+                card.classList.add('unlocked')
+
+                // Mettre à jour le badge
+                const badge = card.querySelector('.badge')
+                if (badge) {
+                    badge.className = 'badge badge-subscriber'
+                    badge.textContent = '✓ Abonné'
+                }
+
+                // Construire le lien depuis l'id de la carte (ex: card-edition-3 → edition03/edition-03.html)
+                const cardId = card.id
+                const match = cardId && cardId.match(/(\d+)$/)
+                if (match) {
+                    const num = match[1].padStart(2, '0')
+                    card.style.cursor = 'pointer'
+                    card.addEventListener('click', () => {
+                        window.location.href = `edition${num}/edition-${num}.html`
+                    })
+                }
+            })
         }
 
         async function checkSubscription() {
@@ -422,7 +439,7 @@
                 if (!sub) return
                 if (sub.status !== 'active' && sub.status !== 'trialing') return
                 unlockFeatured()
-                unlockCard3()
+                unlockAllLockedCards()
                 const pricing = document.getElementById('pricing-section')
                 if (pricing) pricing.style.display = 'none'
                 const navLink = document.getElementById('nav-subscribe-link')
