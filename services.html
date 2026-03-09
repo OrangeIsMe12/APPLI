@@ -20,223 +20,6 @@ Copier
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
 
-        /* ═══════════════════════════════════════════
-           COVER PAGE
-        ═══════════════════════════════════════════ */
-        #cover {
-            position: fixed;
-            inset: 0;
-            z-index: 9999;
-            background: #050503;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            transition: opacity 0.7s ease, visibility 0.7s ease;
-        }
-        #cover.hidden {
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-        }
-
-        /* Bruit de fond */
-        #cover::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
-            background-size: 200px;
-            opacity: 0.4;
-            pointer-events: none;
-        }
-
-        /* Lignes de grille décoratives */
-        #cover::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background-image:
-                linear-gradient(rgba(201,168,76,0.04) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(201,168,76,0.04) 1px, transparent 1px);
-            background-size: 60px 60px;
-            pointer-events: none;
-        }
-
-        .cover-glow-top {
-            position: absolute;
-            top: -200px; left: 50%;
-            transform: translateX(-50%);
-            width: 700px; height: 500px;
-            background: radial-gradient(ellipse, rgba(201,168,76,0.12), transparent 70%);
-            pointer-events: none;
-        }
-        .cover-glow-bottom {
-            position: absolute;
-            bottom: -300px; left: 50%;
-            transform: translateX(-50%);
-            width: 600px; height: 500px;
-            background: radial-gradient(ellipse, rgba(201,168,76,0.06), transparent 70%);
-            pointer-events: none;
-        }
-
-        .cover-inner {
-            position: relative;
-            z-index: 2;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 40px 24px;
-            animation: coverFadeIn 1.2s ease forwards;
-        }
-
-        @keyframes coverFadeIn {
-            from { opacity: 0; transform: translateY(24px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
-
-        .cover-badge {
-            font-family: 'DM Mono', monospace;
-            font-size: 8px;
-            letter-spacing: 5px;
-            text-transform: uppercase;
-            color: var(--gold);
-            opacity: 0.6;
-            border: 1px solid rgba(201,168,76,0.2);
-            padding: 6px 18px;
-            margin-bottom: 44px;
-            animation: coverFadeIn 1.4s ease forwards;
-        }
-
-        .cover-logo {
-            font-family: 'Playfair Display', serif;
-            font-size: clamp(48px, 10vw, 96px);
-            font-weight: 900;
-            line-height: 1;
-            letter-spacing: -2px;
-            color: var(--text);
-            margin-bottom: 8px;
-        }
-        .cover-logo em {
-            color: var(--gold-light);
-            font-style: italic;
-        }
-
-        .cover-sub {
-            font-family: 'DM Mono', monospace;
-            font-size: 10px;
-            letter-spacing: 6px;
-            text-transform: uppercase;
-            color: var(--text-muted);
-            margin-bottom: 56px;
-        }
-
-        /* Ligne décorative */
-        .cover-divider {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            width: 280px;
-            margin-bottom: 56px;
-        }
-        .cover-divider::before,
-        .cover-divider::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(201,168,76,0.3), transparent);
-        }
-        .cover-divider-diamond {
-            width: 6px; height: 6px;
-            border: 1px solid rgba(201,168,76,0.5);
-            transform: rotate(45deg);
-            flex-shrink: 0;
-        }
-
-        .cover-tagline {
-            font-size: 14px;
-            color: var(--text-dim);
-            line-height: 1.7;
-            max-width: 360px;
-            margin-bottom: 56px;
-        }
-
-        .cover-enter-btn {
-            font-family: 'DM Mono', monospace;
-            font-size: 9px;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            color: #080804;
-            background: var(--gold);
-            border: none;
-            padding: 18px 48px;
-            cursor: pointer;
-            transition: all 0.25s;
-            position: relative;
-            overflow: hidden;
-        }
-        .cover-enter-btn::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: rgba(255,255,255,0);
-            transition: background 0.25s;
-        }
-        .cover-enter-btn:hover {
-            filter: brightness(1.12);
-            transform: translateY(-1px);
-            box-shadow: 0 8px 30px rgba(201,168,76,0.3);
-        }
-
-        .cover-disclaimer {
-            position: absolute;
-            bottom: 28px;
-            font-family: 'DM Mono', monospace;
-            font-size: 8px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: var(--text-muted);
-            opacity: 0.4;
-        }
-
-        /* ── Bouton flottant pour ré-afficher la cover ── */
-        #cover-toggle {
-            position: fixed;
-            bottom: 24px;
-            right: 24px;
-            z-index: 8888;
-            background: #0e0e0e;
-            border: 1px solid var(--border2);
-            color: var(--gold);
-            font-family: 'DM Mono', monospace;
-            font-size: 8px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            padding: 10px 16px;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            opacity: 0;
-            pointer-events: none;
-            transform: translateY(8px);
-            transition: opacity 0.4s, transform 0.4s;
-        }
-        #cover-toggle.visible {
-            opacity: 1;
-            pointer-events: all;
-            transform: translateY(0);
-        }
-        #cover-toggle:hover {
-            border-color: var(--gold);
-            background: var(--gold-dim);
-        }
-        #cover-toggle svg { width: 12px; height: 12px; }
-
-
         /* NAV */
         .top-nav { display: flex; justify-content: space-between; align-items: center; padding: 16px 40px; border-bottom: 1px solid var(--border); background: rgba(8,8,8,0.97); backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 100; }
         .nav-brand { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--gold); text-decoration: none; }
@@ -352,37 +135,6 @@ Copier
 </head>
 <body>
 
-<!-- ══════════════════════════════════════════
-     COVER PAGE  (retire la classe "hidden" pour la cacher)
-══════════════════════════════════════════ -->
-<div id="cover">
-    <div class="cover-glow-top"></div>
-    <div class="cover-glow-bottom"></div>
-
-    <div class="cover-inner">
-        <div class="cover-badge">Bienvenue · The Pro Xau</div>
-
-        <div class="cover-logo">The <em>Pro</em><br>Xau</div>
-        <div class="cover-sub">Communauté &amp; Signaux</div>
-
-        <div class="cover-divider"><div class="cover-divider-diamond"></div></div>
-
-        <p class="cover-tagline">Analyses d'or exclusives, signaux en temps réel et communauté privée pour traders ambitieux.</p>
-
-        <button class="cover-enter-btn" id="coverEnterBtn">Entrer sur le site →</button>
-    </div>
-
-    <div class="cover-disclaimer">Contenu éducatif uniquement · 2026</div>
-</div>
-
-<!-- Bouton flottant pour ré-afficher la cover -->
-<button id="cover-toggle" title="Afficher la page de couverture">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/>
-    </svg>
-    Cover
-</button>
-
 <!-- ── COMING SOON OVERLAY ── RETIRE CE BLOC QUAND PRÊT ── -->
 <div id="coming-soon-overlay">
     <div style="font-family:'DM Mono',monospace; font-size:9px; letter-spacing:5px; text-transform:uppercase; color:#c9a84c; opacity:0.6; margin-bottom:24px; display:flex; align-items:center; gap:12px;">
@@ -396,11 +148,11 @@ Copier
     <p style="font-family:'DM Sans',sans-serif; font-size:14px; color:#9a9080; max-width:400px; line-height:1.8; margin-bottom:48px;">
         Cette section est en cours de préparation. Reviens bientôt pour découvrir nos partenaires.
     </p>
-    <a href="index.html" style="
+    <a href="index.html" id="cs-back-btn" style="
         font-family:'DM Mono',monospace; font-size:9px; letter-spacing:3px; text-transform:uppercase;
         color:#080804; background:#c9a84c; padding:14px 28px; text-decoration:none;
         transition:background 0.2s; display:inline-flex; align-items:center; gap:8px;
-    " onmouseover="this.style.background='#e8c97a'" onmouseout="this.style.background='#c9a84c'">
+    ">
         ← Retour à l'accueil
     </a>
     <div style="position:absolute; font-family:'Playfair Display',serif; font-size:clamp(80px,18vw,180px); font-weight:900; color:#c9a84c; opacity:0.02; pointer-events:none; user-select:none; white-space:nowrap;">
@@ -525,29 +277,12 @@ Copier
     navOverlay.addEventListener('click', closeMenu)
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu() })
 
-    /* ── COVER ── */
-    const cover       = document.getElementById('cover')
-    const enterBtn    = document.getElementById('coverEnterBtn')
-    const toggleBtn   = document.getElementById('cover-toggle')
-
-    function hideCover() {
-        cover.classList.add('hidden')
-        // Petit délai avant d'afficher le bouton flottant
-        setTimeout(() => toggleBtn.classList.add('visible'), 700)
+    /* ── COMING SOON back button hover ── */
+    const csBackBtn = document.getElementById('cs-back-btn')
+    if (csBackBtn) {
+        csBackBtn.addEventListener('mouseenter', () => csBackBtn.style.background = '#e8c97a')
+        csBackBtn.addEventListener('mouseleave', () => csBackBtn.style.background = '#c9a84c')
     }
-
-    function showCover() {
-        cover.classList.remove('hidden')
-        toggleBtn.classList.remove('visible')
-    }
-
-    enterBtn.addEventListener('click', hideCover)
-    toggleBtn.addEventListener('click', showCover)
-
-    // Fermer aussi avec Echap quand la cover est visible
-    document.addEventListener('keydown', e => {
-        if (e.key === 'Escape' && !cover.classList.contains('hidden')) hideCover()
-    })
 
     /* ── COMING SOON ── */
     const csOverlay = document.getElementById('coming-soon-overlay')
