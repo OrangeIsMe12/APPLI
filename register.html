@@ -208,30 +208,63 @@
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9laG9xb2F4Y3dpZmZienVlZ291Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzMjI2MTMsImV4cCI6MjA4Nzg5ODYxM30.N5UP014MgNUBunZJuhKuUUlRYC_HY7lpAFAYD39CjvE'
 
         const { createClient } = supabase
-        const sb = createClient(SUPABASE_URL, SUPABASE_KEY)
+        // ✅ FIXÉ : persistSession: true — même config que dashboard et index
+        const sb = createClient(SUPABASE_URL, SUPABASE_KEY, {
+            auth: { storage: localStorage, persistSession: true, autoRefreshToken: true }
+        })
 
-        // ── Si déjà connecté → redirect direct vers checkout ──
+        // ✅ FIXÉ : authCheck avec timeout de sécurité
+        // Si Supabase met trop de temps à répondre (réseau lent / Cloudflare),
+        // on affiche le formulaire après 3 secondes max au lieu d'attendre indéfiniment.
         async function authCheck() {
+            const overlay = document.getElementById('authOverlay')
+            const timeout = setTimeout(() => {
+                // Sécurité : si ça prend plus de 3s, on affiche quand même le formulaire
+                overlay.classList.add('hidden')
+            }, 3000)
+
             try {
                 const { data: { session } } = await sb.auth.getSession()
+                clearTimeout(timeout)
                 if (session) {
-                    window.location.href = 'checkout.html'
-                    return
+                    // Déjà connecté → vérifier si abonné
+                    const { data: sub } = await sb.from('subscriptions').select('status')
+                        .or(`email.eq.${session.user.email},user_id.eq.${session.user.id}`)
+                        .order('created_at', { ascending: false }).limit(1).single()
+
+                    if (sub && (sub.status === 'active' || sub.status === 'trialing')) {
+                        // Déjà abonné → dashboard
+                        window.location.href = 'dashboard.html'
+                        return
+                    } else {
+                        // Connecté mais pas encore abonné → checkout
+                        window.location.href = 'checkout.html'
+                        return
+                    }
                 }
             } catch(e) {
-                // En cas d'erreur réseau, on laisse passer
+                clearTimeout(timeout)
+                // En cas d'erreur réseau, on laisse passer et affiche le formulaire
+                console.warn('authCheck error:', e)
             }
-            // Pas connecté → afficher le formulaire
-            document.getElementById('authOverlay').classList.add('hidden')
-        }
-        authCheck()
 
-        const form = document.getElementById('register-form')
-        const pwInput = document.getElementById('password')
-        const pwBar = document.getElementById('pw-bar')
+            // Pas connecté → afficher le formulaire
+            overlay.classList.add('hidden')
+        }
+
+        // ✅ Lancer authCheck dès que le DOM est prêt
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', authCheck)
+        } else {
+            authCheck()
+        }
+
+        const form      = document.getElementById('register-form')
+        const pwInput   = document.getElementById('password')
+        const pwBar     = document.getElementById('pw-bar')
         const submitBtn = document.getElementById('submit-btn')
 
-        // Toggle password
+        // Toggle password visibility
         document.querySelectorAll('.toggle-pw').forEach(btn => {
             btn.addEventListener('click', function() {
                 const inp = this.previousElementSibling
@@ -239,7 +272,7 @@
             })
         })
 
-        // Password strength
+        // Password strength indicator
         pwInput.addEventListener('input', () => {
             const v = pwInput.value
             let score = 0
@@ -259,11 +292,11 @@
         form.addEventListener('submit', async (e) => {
             e.preventDefault()
             let valid = true
-            const ff = document.getElementById('firstname')
-            const lf = document.getElementById('lastname')
-            const em = document.getElementById('email')
-            const pw = document.getElementById('password')
-            const pw2 = document.getElementById('password2')
+            const ff    = document.getElementById('firstname')
+            const lf    = document.getElementById('lastname')
+            const em    = document.getElementById('email')
+            const pw    = document.getElementById('password')
+            const pw2   = document.getElementById('password2')
             const terms = document.getElementById('terms')
 
             if (!ff.value.trim()) { ff.classList.add('error'); showError('firstname-error', true); valid = false }
@@ -301,7 +334,7 @@
                 options: {
                     data: {
                         first_name: ff.value.trim(),
-                        last_name: lf.value.trim()
+                        last_name:  lf.value.trim()
                     }
                 }
             })
@@ -320,7 +353,7 @@
 
             document.getElementById('alert-success').classList.add('show')
 
-            const userId = data.user.id
+            const userId    = data.user.id
             const userEmail = em.value.trim()
 
             localStorage.setItem('tpx_user_email', userEmail)
