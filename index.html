@@ -371,23 +371,27 @@
 
         // Unlock la featured (édition 2) pour les abonnés
         function unlockFeatured() {
-            const card  = document.getElementById('card-edition-2-featured')
-            const lock  = document.getElementById('lock-ed2-featured')
-            const badge = document.getElementById('badge-ed2')
+            const card    = document.getElementById('card-edition-2-featured')
+            const overlay = document.getElementById('coming-soon-overlay')
+            const content = document.getElementById('card-ed2-content')
             if (!card) return
-            if (lock) lock.remove()
-            card.classList.remove('locked')
+
+            // Supprimer l'overlay coming-soon
+            if (overlay) overlay.remove()
+
+            // Déflouter le contenu
+            if (content) {
+                content.style.filter = 'none'
+                content.style.opacity = '1'
+                content.style.pointerEvents = 'auto'
+                content.style.userSelect = 'auto'
+            }
+
+            // Rendre la carte cliquable vers l'édition
             card.style.cursor = 'pointer'
-            card.style.textDecoration = 'none'
-            if (badge) { badge.className = 'badge badge-subscriber'; badge.textContent = '✓ Abonné' }
-            card.addEventListener('click', () => { window.location.href = 'edition02/coming-soon-02.html' })
+            card.addEventListener('click', () => { window.location.href = 'edition02/edition-02.html' })
             card.addEventListener('mouseenter', () => { card.style.background = 'linear-gradient(135deg,#161108 0%,#0d0b05 60%,#161108 100%)' })
             card.addEventListener('mouseleave', () => { card.style.background = '' })
-            const arrow = document.getElementById('featured-arrow')
-            if (arrow) {
-                card.addEventListener('mouseenter', () => arrow.style.opacity = '1')
-                card.addEventListener('mouseleave', () => arrow.style.opacity = '0.35')
-            }
         }
 
         // Unlock édition 3 (petite carte)
