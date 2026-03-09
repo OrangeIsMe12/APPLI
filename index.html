@@ -110,7 +110,7 @@
         .nav-menu-cta:hover { filter: brightness(1.1); }
         .service-card-inline { background: #090908; padding: 32px 28px; text-decoration: none; display: flex; flex-direction: column; transition: background 0.25s; }
         .service-card-inline:hover { background: #0d0b05; }
-        
+
         /* Auth check overlay */
         .auth-overlay { position: fixed; inset: 0; background: #080808; z-index: 9999; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 16px; transition: opacity 0.3s; }
         .auth-overlay.hidden { opacity: 0; pointer-events: none; }
@@ -131,10 +131,10 @@
 
 <body>
 
-    <!-- Auth check overlay -->
+    <!-- Auth check overlay — retiré immédiatement, index est public -->
     <div class="auth-overlay" id="authOverlay">
         <div class="auth-spinner"></div>
-        <div class="auth-text">Vérification</div>
+        <div class="auth-text">Chargement</div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -360,6 +360,15 @@
         const { createClient } = supabase
         const sb2 = createClient(SUPABASE_URL, SUPABASE_ANON)
 
+        // ── INDEX EST UNE PAGE PUBLIQUE ──
+        // On retire l'overlay immédiatement, sans vérifier la session.
+        // checkSubscription() s'occupe de déverrouiller le contenu bonus pour les abonnés.
+        document.getElementById('authOverlay').classList.add('hidden')
+        setTimeout(() => {
+            const o = document.getElementById('authOverlay')
+            if (o) o.remove()
+        }, 400)
+
         // Unlock la featured (édition 2) pour les abonnés
         function unlockFeatured() {
             const card  = document.getElementById('card-edition-2-featured')
@@ -372,7 +381,6 @@
             card.style.textDecoration = 'none'
             if (badge) { badge.className = 'badge badge-subscriber'; badge.textContent = '✓ Abonné' }
             card.addEventListener('click', () => { window.location.href = 'edition02/coming-soon-02.html' })
-            // hover effect
             card.addEventListener('mouseenter', () => { card.style.background = 'linear-gradient(135deg,#161108 0%,#0d0b05 60%,#161108 100%)' })
             card.addEventListener('mouseleave', () => { card.style.background = '' })
             const arrow = document.getElementById('featured-arrow')
@@ -431,13 +439,11 @@
             if (diff <= 0) {
                 document.getElementById('cs-countdown').style.display = 'none'
                 document.getElementById('cs-available').style.display = 'block'
-                // Rendre la carte cliquable vers l'édition
                 const overlay = document.getElementById('coming-soon-overlay')
                 overlay.style.cursor = 'pointer'
                 overlay.addEventListener('click', () => { window.location.href = 'edition02/edition-02.html' })
                 document.getElementById('cs-link').textContent = 'Lire l\'édition #002 →'
                 document.getElementById('cs-link').href = 'edition02/edition-02.html'
-                // Déflouter le contenu
                 document.getElementById('card-ed2-content').style.filter = 'none'
                 document.getElementById('card-ed2-content').style.opacity = '1'
                 clearInterval(csTimer)
@@ -471,25 +477,6 @@
         hamburger.addEventListener('click', openMenu)
         navClose.addEventListener('click', closeMenu)
         navOverlay.addEventListener('click', closeMenu)
-
-        // AUTH GATE
-        async function authGate() {
-            try {
-                const { data: { session } } = await sb2.auth.getSession()
-                if (!session) {
-                    window.location.href = 'register.html'
-                    return
-                }
-            } catch(e) {
-                // En cas d'erreur réseau, on laisse passer
-            }
-            document.getElementById('authOverlay').classList.add('hidden')
-            setTimeout(() => {
-                const o = document.getElementById('authOverlay')
-                if (o) o.remove()
-            }, 400)
-        }
-        authGate()
     </script>
 
 </body>
