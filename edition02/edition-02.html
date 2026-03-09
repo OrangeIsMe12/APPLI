@@ -1038,13 +1038,22 @@
         authGate()
 
         // Hamburger
-        const hamburger  = document.getElementById('hamburger')
-        const navMenu    = document.getElementById('navMenu')
-        const navOverlay = document.getElementById('navOverlay')
-        const navClose   = document.getElementById('navClose')
-        hamburger.addEventListener('click', () => { hamburger.classList.toggle('open'); navMenu.classList.toggle('open'); navOverlay.classList.toggle('open'); document.body.style.overflow = navMenu.classList.contains('open') ? 'hidden' : '' })
-        navClose.addEventListener('click', () => { hamburger.classList.remove('open'); navMenu.classList.remove('open'); navOverlay.classList.remove('open'); document.body.style.overflow = '' })
-        navOverlay.addEventListener('click', () => { hamburger.classList.remove('open'); navMenu.classList.remove('open'); navOverlay.classList.remove('open'); document.body.style.overflow = '' })
+       function initNav() {
+    const hamburger  = document.getElementById('hamburger')
+    const navMenu    = document.getElementById('navMenu')
+    const navOverlay = document.getElementById('navOverlay')
+    const navClose   = document.getElementById('navClose')
+    if (!hamburger) return
+    hamburger.addEventListener('click', () => { hamburger.classList.toggle('open'); navMenu.classList.toggle('open'); navOverlay.classList.toggle('open'); document.body.style.overflow = navMenu.classList.contains('open') ? 'hidden' : '' })
+    navClose.addEventListener('click', () => { hamburger.classList.remove('open'); navMenu.classList.remove('open'); navOverlay.classList.remove('open'); document.body.style.overflow = '' })
+    navOverlay.addEventListener('click', () => { hamburger.classList.remove('open'); navMenu.classList.remove('open'); navOverlay.classList.remove('open'); document.body.style.overflow = '' })
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initNav)
+} else {
+    initNav()
+}
 
         // Tab scroll
         function scrollToSection(id) {
