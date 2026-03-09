@@ -39,6 +39,45 @@
         .nav-menu-cta { margin-top: auto; background: var(--gold); color: #080804 !important; font-weight: 700; padding: 15px 24px !important; text-align: center; justify-content: center !important; border: none !important; }
         .nav-menu-cta:hover { filter: brightness(1.1); }
 
+
+
+
+ <!-- ── COMING SOON OVERLAY ── RETIRE CE BLOC QUAND PRÊT ── -->
+    <div id="coming-soon-overlay" style="
+        position: fixed; inset: 0; z-index: 9999;
+        background: #080808;
+        display: flex; flex-direction: column;
+        align-items: center; justify-content: center;
+        text-align: center; padding: 40px;
+    ">
+        <div style="font-family:'DM Mono',monospace; font-size:9px; letter-spacing:5px; text-transform:uppercase; color:#c9a84c; opacity:0.6; margin-bottom:24px; display:flex; align-items:center; gap:12px;">
+            <span style="display:block; width:32px; height:1px; background:#c9a84c; opacity:0.4;"></span>
+            Bientôt disponible
+            <span style="display:block; width:32px; height:1px; background:#c9a84c; opacity:0.4;"></span>
+        </div>
+        <h1 style="font-family:'Playfair Display',serif; font-size:clamp(36px,7vw,72px); font-weight:900; color:#e8e0d0; line-height:1.05; letter-spacing:-1px; margin-bottom:16px;">
+            En <em style="color:#e8c97a; font-style:italic;">développement</em>
+        </h1>
+        <p style="font-family:'DM Sans',sans-serif; font-size:14px; color:#9a9080; max-width:400px; line-height:1.8; margin-bottom:48px;">
+            Cette section est en cours de préparation. Reviens bientôt pour découvrir nos partenaires.
+        </p>
+        <a href="index.html" style="
+            font-family:'DM Mono',monospace; font-size:9px; letter-spacing:3px; text-transform:uppercase;
+            color:#080804; background:#c9a84c; padding:14px 28px; text-decoration:none;
+            transition:background 0.2s; display:inline-flex; align-items:center; gap:8px;
+        " onmouseover="this.style.background='#e8c97a'" onmouseout="this.style.background='#c9a84c'">
+            ← Retour à l'accueil
+        </a>
+        <div style="position:absolute; font-family:'Playfair Display',serif; font-size:clamp(80px,18vw,180px); font-weight:900; color:#c9a84c; opacity:0.02; pointer-events:none; user-select:none; white-space:nowrap;">
+            PARTENAIRES
+        </div>
+    </div>
+
+
+
+
+        
+
         /* HERO */
         .hero { border-bottom: 1px solid var(--border); padding: 80px 40px 64px; position: relative; overflow: hidden; }
         .hero::before { content: 'SERVICES'; position: absolute; right: -20px; top: 50%; transform: translateY(-50%); font-family: 'Playfair Display', serif; font-size: clamp(60px, 12vw, 140px); font-weight: 900; color: var(--gold); opacity: 0.025; pointer-events: none; white-space: nowrap; line-height: 1; }
