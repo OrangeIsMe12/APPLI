@@ -35,7 +35,7 @@
         .nav-status { display: flex; align-items: center; gap: 7px; font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--green); padding: 7px 14px; border: 1px solid rgba(76,175,125,0.2); background: var(--green-dim); }
         .nav-status::before { content:''; width:5px; height:5px; border-radius:50%; background:var(--green); animation:blink 2s infinite; }
 
-        .hamburger { background: none; border: 1px solid var(--border); padding: 9px 13px; cursor: pointer; display: flex; flex-direction: column; gap: 5px; transition: border-color 0.2s; }
+        .hamburger { background: none; border: 1px solid var(--border); padding: 9px 13px; cursor: pointer; display: flex; flex-direction: column; gap: 5px; transition: border-color 0.2s; z-index: 201; position: relative; }
         .hamburger:hover { border-color: var(--gold); }
         .hamburger span { display: block; width: 20px; height: 1px; background: var(--text-dim); transition: all 0.3s; }
         .hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
@@ -55,7 +55,6 @@
         .nav-menu-cta:hover { filter: brightness(1.1); }
 
         .dashboard { display: grid; grid-template-columns: 280px 1fr; min-height: calc(100vh - 57px); }
-
         .sidebar { background: var(--bg2); border-right: 1px solid var(--border); display: flex; flex-direction: column; position: sticky; top: 57px; height: calc(100vh - 57px); overflow-y: auto; }
 
         @media(max-width: 900px) {
@@ -184,37 +183,10 @@
         .modal-actions { display: flex; gap: 12px; }
         .modal-actions .btn-small { flex: 1; justify-content: center; }
 
-        /* ── MOBILE NAV ── */
         .mobile-nav { display: none; }
         @media(max-width: 900px) {
-            .mobile-nav {
-                display: flex;
-                position: fixed;
-                bottom: 0; left: 0; right: 0;
-                background: #0a0a08;
-                border-top: 1px solid var(--border);
-                z-index: 150;
-                padding-bottom: env(safe-area-inset-bottom);
-            }
-            .mobile-nav-item {
-                flex: 1;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                gap: 5px;
-                padding: 10px 4px 12px;
-                border: none;
-                background: none;
-                cursor: pointer;
-                font-family: 'DM Mono', monospace;
-                font-size: 8px;
-                letter-spacing: 1px;
-                text-transform: uppercase;
-                color: var(--text-muted);
-                transition: all 0.18s;
-                border-top: 2px solid transparent;
-            }
+            .mobile-nav { display: flex; position: fixed; bottom: 0; left: 0; right: 0; background: #0a0a08; border-top: 1px solid var(--border); z-index: 150; padding-bottom: env(safe-area-inset-bottom); }
+            .mobile-nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; padding: 10px 4px 12px; border: none; background: none; cursor: pointer; font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); transition: all 0.18s; border-top: 2px solid transparent; }
             .mobile-nav-item.active { color: var(--gold); border-top-color: var(--gold); background: var(--gold-dim); }
             .mobile-nav-item:hover { color: var(--text-dim); }
             .mobile-nav-item.logout-item { color: rgba(224,90,90,0.6); }
@@ -252,7 +224,7 @@
         <div class="nav-right">
             <a href="edition01/edition-01.html" class="nav-editions-btn" id="nav-editions-btn" style="display:none;">📰 Mes Éditions</a>
             <div class="nav-status" id="nav-status-badge" style="display:none;">PRO Actif</div>
-            <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+            <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
         </div>
     </nav>
 
@@ -316,22 +288,10 @@
                         <span class="badge badge-active" id="sub-badge">Chargement…</span>
                     </div>
                     <div class="sub-details">
-                        <div>
-                            <div class="sub-detail-label">Montant</div>
-                            <div class="sub-detail-val gold">9.99$ USD / mois</div>
-                        </div>
-                        <div>
-                            <div class="sub-detail-label">Renouvellement</div>
-                            <div class="sub-detail-val" id="detail-renewal">—</div>
-                        </div>
-                        <div>
-                            <div class="sub-detail-label">Moyen de paiement</div>
-                            <div class="sub-detail-val">Géré via Stripe</div>
-                        </div>
-                        <div>
-                            <div class="sub-detail-label">Membre depuis</div>
-                            <div class="sub-detail-val" id="detail-since">—</div>
-                        </div>
+                        <div><div class="sub-detail-label">Montant</div><div class="sub-detail-val gold">9.99$ USD / mois</div></div>
+                        <div><div class="sub-detail-label">Renouvellement</div><div class="sub-detail-val" id="detail-renewal">—</div></div>
+                        <div><div class="sub-detail-label">Moyen de paiement</div><div class="sub-detail-val">Géré via Stripe</div></div>
+                        <div><div class="sub-detail-label">Membre depuis</div><div class="sub-detail-val" id="detail-since">—</div></div>
                     </div>
                     <div class="sub-actions">
                         <button class="btn-small btn-outline" id="update-card-btn">💳 Modifier la carte</button>
@@ -394,12 +354,9 @@
                     </div>
                     <button type="submit" class="btn-small btn-gold">Sauvegarder →</button>
                 </form>
-
-                <!-- Déconnexion mobile accessible depuis profil aussi -->
                 <div style="margin-top:40px; padding-top:32px; border-top:1px solid var(--border);">
                     <button class="btn-small btn-outline" id="logout-profil-btn" style="width:100%; justify-content:center;">🚪 Se déconnecter</button>
                 </div>
-
                 <div class="danger-zone" style="max-width:580px;">
                     <div class="danger-title">⚠ Zone de danger</div>
                     <p class="danger-text">La suppression de ton compte est permanente. Toutes tes données seront effacées et ton abonnement sera annulé immédiatement.</p>
@@ -431,7 +388,7 @@
         </main>
     </div>
 
-    <!-- MOBILE NAV — 5 items avec logout -->
+    <!-- MOBILE NAV -->
     <nav class="mobile-nav" id="mobileNav">
         <button class="mobile-nav-item active" data-tab="abonnement"><span class="mn-icon">💎</span><span>Abonnement</span></button>
         <button class="mobile-nav-item" data-tab="paiements"><span class="mn-icon">🧾</span><span>Paiements</span></button>
@@ -500,84 +457,94 @@
         }
 
         async function loadDashboard() {
-            const { data: { session }, error: sessionError } = await sb.auth.getSession()
-            if (!session || sessionError) {
-                await sb.auth.signOut()
+            try {
+                // ✅ FIXÉ : session récupérée depuis localStorage, instantané
+                const { data: { session }, error: sessionError } = await sb.auth.getSession()
+                if (!session || sessionError) {
+                    await sb.auth.signOut()
+                    window.location.href = 'login.html'
+                    return
+                }
+
+                const email      = session.user.email
+                const meta       = session.user.user_metadata || {}
+                const firstName  = meta.first_name || ''
+                const lastName   = meta.last_name  || ''
+                const fullName   = (firstName + ' ' + lastName).trim() || email.split('@')[0]
+                const displayFirst = firstName || email.split('@')[0]
+                const userId     = session.user.id
+
+                // ✅ FIXÉ : requête subscription en parallèle avec le rendu UI
+                const { data: sub } = await sb.from('subscriptions').select('*')
+                    .or(`email.eq.${email},user_id.eq.${userId}`)
+                    .order('created_at', { ascending: false }).limit(1).single()
+
+                const isActive = sub && (sub.status === 'active' || sub.status === 'trialing')
+
+                if (!isActive) {
+                    window.location.href = 'checkout.html'
+                    return
+                }
+
+                document.getElementById('loading-overlay').classList.add('hidden')
+
+                document.getElementById('user-name').textContent      = fullName
+                document.getElementById('sidebar-name').textContent   = fullName
+                document.getElementById('sidebar-avatar').textContent = displayFirst[0].toUpperCase()
+                document.getElementById('p-firstname').value = meta.first_name || ''
+                document.getElementById('p-lastname').value  = meta.last_name  || ''
+                document.getElementById('p-email').value     = email
+                document.getElementById('p-country').value   = meta.pays || ''
+
+                document.getElementById('nav-status-badge').style.display = 'flex'
+                const subLink = document.getElementById('nav-subscribe-link')
+                if (subLink) subLink.style.display = 'none'
+                document.getElementById('sidebar-status').textContent = 'PRO · Actif'
+
+                const renewalDate = fmt(sub.current_period_end)
+                const sinceDate   = fmt(sub.member_since || sub.created_at)
+
+                document.getElementById('card-status').textContent    = sub.status === 'trialing' ? 'Trial' : 'Actif'
+                document.getElementById('card-status').className      = 'stat-card-val green'
+                document.getElementById('card-since').textContent     = `Depuis ${sinceDate}`
+                document.getElementById('card-amount').textContent    = '9.99$'
+                document.getElementById('card-renewal').textContent   = renewalDate !== '—' ? `Le ${renewalDate}` : '—'
+                document.getElementById('detail-renewal').textContent = renewalDate
+                document.getElementById('detail-since').textContent   = sinceDate
+                document.getElementById('modal-end-date').textContent = renewalDate
+
+                const badge = document.getElementById('sub-badge')
+                badge.className = 'badge badge-active'
+                badge.textContent = sub.status === 'trialing' ? 'Trial actif' : 'Actif'
+
+                // ✅ Charger les paiements séparément (non bloquant)
+                sb.from('payments').select('*')
+                    .or(`email.eq.${email}${sub.stripe_customer_id ? `,stripe_customer_id.eq.${sub.stripe_customer_id}` : ''}`)
+                    .order('paid_at', { ascending: false })
+                    .then(({ data: payments }) => {
+                        const tbody = document.getElementById('payments-tbody')
+                        tbody.innerHTML = payments?.length > 0
+                            ? payments.map(p => `<tr>
+                                <td>${fmt(p.paid_at)}</td>
+                                <td>${p.description || 'The Pro Xau — Premium'}</td>
+                                <td class="payment-amount">${parseFloat(p.amount||0).toFixed(2)} ${p.currency||'USD'}</td>
+                                <td><span class="payment-status ${p.status==='paid'?'payment-paid':'payment-failed'}">${p.status==='paid'?'Payé':'Échoué'}</span></td>
+                                <td>${p.invoice_pdf?`<a class="payment-invoice" href="${p.invoice_pdf}" target="_blank">Télécharger PDF</a>`:'<span style="color:var(--text-muted)">—</span>'}</td>
+                            </tr>`).join('')
+                            : '<tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:48px;">Aucun paiement trouvé.</td></tr>'
+                    })
+
+                renderEditions(true)
+
+            } catch(err) {
+                console.error('loadDashboard error:', err)
                 window.location.href = 'login.html'
-                return
             }
-
-            const email      = session.user.email
-            const meta       = session.user.user_metadata || {}
-            const firstName  = meta.first_name || ''
-            const lastName   = meta.last_name  || ''
-            const fullName   = (firstName + ' ' + lastName).trim() || email.split('@')[0]
-            const displayFirst = firstName || email.split('@')[0]
-            const userId     = session.user.id
-
-            const { data: sub } = await sb.from('subscriptions').select('*')
-                .or(`email.eq.${email},user_id.eq.${userId}`)
-                .order('created_at', { ascending: false }).limit(1).single()
-
-            const isActive = sub && (sub.status === 'active' || sub.status === 'trialing')
-
-            if (!isActive) {
-                window.location.href = 'checkout.html'
-                return
-            }
-
-            document.getElementById('loading-overlay').classList.add('hidden')
-
-            document.getElementById('user-name').textContent      = fullName
-            document.getElementById('sidebar-name').textContent   = fullName
-            document.getElementById('sidebar-avatar').textContent = displayFirst[0].toUpperCase()
-            document.getElementById('p-firstname').value = meta.first_name || ''
-            document.getElementById('p-lastname').value  = meta.last_name  || ''
-            document.getElementById('p-email').value     = email
-            document.getElementById('p-country').value   = meta.pays || ''
-
-            document.getElementById('nav-status-badge').style.display = 'flex'
-            const subLink = document.getElementById('nav-subscribe-link')
-            if (subLink) subLink.style.display = 'none'
-            document.getElementById('sidebar-status').textContent = 'PRO · Actif'
-
-            const renewalDate = fmt(sub.current_period_end)
-            const sinceDate   = fmt(sub.member_since || sub.created_at)
-
-            document.getElementById('card-status').textContent    = sub.status === 'trialing' ? 'Trial' : 'Actif'
-            document.getElementById('card-status').className      = 'stat-card-val green'
-            document.getElementById('card-since').textContent     = `Depuis ${sinceDate}`
-            document.getElementById('card-amount').textContent    = '9.99$'
-            document.getElementById('card-renewal').textContent   = renewalDate !== '—' ? `Le ${renewalDate}` : '—'
-            document.getElementById('detail-renewal').textContent = renewalDate
-            document.getElementById('detail-since').textContent   = sinceDate
-            document.getElementById('modal-end-date').textContent = renewalDate
-
-            const badge = document.getElementById('sub-badge')
-            badge.className = 'badge badge-active'
-            badge.textContent = sub.status === 'trialing' ? 'Trial actif' : 'Actif'
-
-            const { data: payments } = await sb.from('payments').select('*')
-                .or(`email.eq.${email}${sub.stripe_customer_id ? `,stripe_customer_id.eq.${sub.stripe_customer_id}` : ''}`)
-                .order('paid_at', { ascending: false })
-
-            const tbody = document.getElementById('payments-tbody')
-            tbody.innerHTML = payments?.length > 0
-                ? payments.map(p => `<tr>
-                    <td>${fmt(p.paid_at)}</td>
-                    <td>${p.description || 'The Pro Xau — Premium'}</td>
-                    <td class="payment-amount">${parseFloat(p.amount||0).toFixed(2)} ${p.currency||'USD'}</td>
-                    <td><span class="payment-status ${p.status==='paid'?'payment-paid':'payment-failed'}">${p.status==='paid'?'Payé':'Échoué'}</span></td>
-                    <td>${p.invoice_pdf?`<a class="payment-invoice" href="${p.invoice_pdf}" target="_blank">Télécharger PDF</a>`:'<span style="color:var(--text-muted)">—</span>'}</td>
-                </tr>`).join('')
-                : '<tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:48px;">Aucun paiement trouvé.</td></tr>'
-
-            renderEditions(true)
         }
 
         loadDashboard()
 
-        // ── Logout centralisé ──
+        // ── Logout ──
         async function doLogout() {
             await sb.auth.signOut()
             localStorage.removeItem('tpx_user_email')
@@ -653,11 +620,28 @@
             if (confirm('Es-tu certain ? Cette action est irréversible.')) alert('Pour supprimer ton compte, contacte le support.')
         })
 
-        const hamburger=document.getElementById('hamburger'),navMenu=document.getElementById('navMenu'),navOverlay=document.getElementById('navOverlay'),navClose=document.getElementById('navClose')
-        const openMenu=()=>{ hamburger.classList.add('open'); navMenu.classList.add('open'); navOverlay.classList.add('open'); document.body.style.overflow='hidden' }
-        const closeMenu=()=>{ hamburger.classList.remove('open'); navMenu.classList.remove('open'); navOverlay.classList.remove('open'); document.body.style.overflow='' }
-        hamburger.addEventListener('click',openMenu); navClose.addEventListener('click',closeMenu); navOverlay.addEventListener('click',closeMenu)
-        document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeMenu() })
+        // ✅ NAV HAMBURGER — protégé contre Rocket Loader
+        function initNav() {
+            const hamburger = document.getElementById('hamburger')
+            const navMenu   = document.getElementById('navMenu')
+            const navOverlay = document.getElementById('navOverlay')
+            const navClose  = document.getElementById('navClose')
+            if (!hamburger) return
+
+            const openMenu  = () => { hamburger.classList.add('open'); navMenu.classList.add('open'); navOverlay.classList.add('open'); document.body.style.overflow='hidden' }
+            const closeMenu = () => { hamburger.classList.remove('open'); navMenu.classList.remove('open'); navOverlay.classList.remove('open'); document.body.style.overflow='' }
+
+            hamburger.addEventListener('click', openMenu)
+            navClose.addEventListener('click', closeMenu)
+            navOverlay.addEventListener('click', closeMenu)
+            document.addEventListener('keydown', e => { if(e.key==='Escape') closeMenu() })
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initNav)
+        } else {
+            initNav()
+        }
     </script>
 </body>
 </html>
