@@ -90,12 +90,15 @@
         .top-nav { display: flex; justify-content: space-between; align-items: center; padding: 14px 32px; border-bottom: 1px solid var(--border); background: var(--bg); position: sticky; top: 0; z-index: 100; }
         .nav-brand { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--gold); text-decoration: none; }
         .nav-right { display: flex; align-items: center; gap: 16px; }
-        .hamburger { background: none; border: 1px solid var(--border); padding: 8px 12px; cursor: pointer; display: flex; flex-direction: column; gap: 5px; transition: border-color 0.2s; }
+
+        /* ✅ HAMBURGER FIXÉ */
+        .hamburger { background: none; border: 1px solid var(--border); padding: 8px 12px; cursor: pointer; display: flex; flex-direction: column; gap: 5px; transition: border-color 0.2s; z-index: 201; position: relative; }
         .hamburger:hover { border-color: var(--gold); }
         .hamburger span { display: block; width: 20px; height: 1px; background: var(--text-dim); transition: all 0.3s; }
         .hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
         .hamburger.open span:nth-child(2) { opacity: 0; }
         .hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
         .nav-menu { position: fixed; top: 0; right: -100%; width: 280px; height: 100vh; background: #060604; border-left: 1px solid var(--border); z-index: 200; transition: right 0.35s ease; display: flex; flex-direction: column; padding: 80px 40px 40px; gap: 4px; }
         .nav-menu.open { right: 0; }
         .nav-menu-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 199; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
@@ -108,15 +111,6 @@
         .nav-menu a:last-child { border-bottom: none; }
         .nav-menu-cta { margin-top: auto; background: var(--gold); color: #080804 !important; font-weight: 700; padding: 14px 24px !important; text-align: center; justify-content: center !important; border: none !important; }
         .nav-menu-cta:hover { filter: brightness(1.1); }
-        .service-card-inline { background: #090908; padding: 32px 28px; text-decoration: none; display: flex; flex-direction: column; transition: background 0.25s; }
-        .service-card-inline:hover { background: #0d0b05; }
-
-        /* Auth check overlay */
-        .auth-overlay { position: fixed; inset: 0; background: #080808; z-index: 9999; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 16px; transition: opacity 0.3s; }
-        .auth-overlay.hidden { opacity: 0; pointer-events: none; }
-        .auth-spinner { width: 32px; height: 32px; border: 2px solid #1e1a10; border-top-color: #c9a84c; border-radius: 50%; animation: authSpin 0.8s linear infinite; }
-        @keyframes authSpin { to { transform: rotate(360deg); } }
-        .auth-text { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 4px; text-transform: uppercase; color: #4a4038; }
 
         /* Coming Soon inline card */
         .cs-block { background: rgba(8,8,4,0.8); border: 1px solid var(--border); padding: 10px 10px 8px; min-width: 56px; text-align: center; }
@@ -125,19 +119,24 @@
         .cs-sep { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 900; color: var(--gold); opacity: 0.2; padding-bottom: 14px; animation: csBlink 1s step-end infinite; }
         @keyframes csBlink { 0%,100%{opacity:0.2} 50%{opacity:0.05} }
 
-        @media(max-width:640px) { .cards-grid,.about-grid,.services-inline-grid{grid-template-columns:1fr;} .card-featured{padding:28px 24px;} .card-tags{display:none;} .section-header{flex-direction:column;align-items:flex-start;gap:6px;} }
+        @media(max-width:640px) { .cards-grid,.about-grid{grid-template-columns:1fr;} .card-featured{padding:28px 24px;} .card-tags{display:none;} .section-header{flex-direction:column;align-items:flex-start;gap:6px;} }
     </style>
 </head>
 
 <body>
 
-    <!-- Auth check overlay — retiré immédiatement, index est public -->
-    <div class="auth-overlay" id="authOverlay">
-        <div class="auth-spinner"></div>
-        <div class="auth-text">Chargement</div>
-    </div>
-
+    <!-- ✅ Supabase chargé EN PREMIER, avant tout le reste -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // ✅ CLIENT SUPABASE AVEC persistSession — CORRECTION BUG PRINCIPAL
+        const SUPABASE_URL  = 'https://oehoqoaxcwiffbzuegou.supabase.co'
+        const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9laG9xb2F4Y3dpZmZienVlZ291Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzMjI2MTMsImV4cCI6MjA4Nzg5ODYxM30.N5UP014MgNUBunZJuhKuUUlRYC_HY7lpAFAYD39CjvE'
+        const { createClient } = supabase
+        // ✅ FIXÉ : persistSession: true pour que la session soit lue depuis localStorage
+        const sb2 = createClient(SUPABASE_URL, SUPABASE_ANON, {
+            auth: { storage: localStorage, persistSession: true, autoRefreshToken: true }
+        })
+    </script>
 
     <div class="nav-menu-overlay" id="navOverlay"></div>
 
@@ -157,7 +156,7 @@
 
     <nav class="top-nav">
         <a href="index.html" class="nav-brand">The Pro Xau</a>
-        <button class="hamburger" id="hamburger">
+        <button class="hamburger" id="hamburger" aria-label="Menu">
             <span></span><span></span><span></span>
         </button>
     </nav>
@@ -210,21 +209,16 @@
 
                 <!-- Coming Soon overlay -->
                 <div id="coming-soon-overlay" style="position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:0; background:rgba(8,8,6,0.72); backdrop-filter:blur(2px); padding:32px 24px; text-align:center;">
-
                     <div style="font-family:'DM Mono',monospace; font-size:8px; letter-spacing:5px; color:var(--gold); text-transform:uppercase; opacity:0.6; margin-bottom:14px; display:flex; align-items:center; gap:10px;">
                         <span style="display:inline-block; width:24px; height:1px; background:var(--gold); opacity:0.3;"></span>
                         Prochaine édition
                         <span style="display:inline-block; width:24px; height:1px; background:var(--gold); opacity:0.3;"></span>
                     </div>
-
                     <div style="font-family:'DM Mono',monospace; font-size:9px; letter-spacing:3px; color:var(--gold); opacity:0.5; text-transform:uppercase; margin-bottom:8px;">Édition #002</div>
-
                     <div style="font-family:'Playfair Display',serif; font-size:clamp(18px,3vw,26px); font-weight:700; color:var(--text); line-height:1.2; margin-bottom:20px;">
                         Ras Tanura + Qatar LNG<br>
                         <span style="color:var(--gold); font-style:italic;">Dimanche · 18h00 EST</span>
                     </div>
-
-                    <!-- Countdown inline -->
                     <div id="cs-countdown" style="display:flex; align-items:center; justify-content:center; gap:6px; margin-bottom:20px;">
                         <div class="cs-block"><span class="cs-val" id="cs-days">--</span><div class="cs-lbl">Jours</div></div>
                         <div class="cs-sep">:</div>
@@ -234,13 +228,9 @@
                         <div class="cs-sep">:</div>
                         <div class="cs-block"><span class="cs-val" id="cs-seconds">--</span><div class="cs-lbl">Sec</div></div>
                     </div>
-
-                    <!-- Badge disponible (caché jusqu'au bon moment) -->
                     <div id="cs-available" style="display:none; font-family:'DM Mono',monospace; font-size:10px; letter-spacing:3px; color:#4caf7d; text-transform:uppercase; background:rgba(76,175,125,0.1); border:1px solid rgba(76,175,125,0.3); padding:10px 20px; margin-bottom:16px;">✓ Disponible maintenant</div>
-
                     <a href="edition02/coming-soon-02.html" id="cs-link" style="font-family:'DM Mono',monospace; font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(--gold); opacity:0.5; text-decoration:none; border-bottom:1px solid rgba(201,168,76,0.2); padding-bottom:2px; transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">Voir le teaser →</a>
                 </div>
-
             </div>
 
             <!-- ÉDITION #001 — Petite carte, libre -->
@@ -355,80 +345,84 @@
     </footer>
 
     <script>
-        const SUPABASE_URL  = 'https://oehoqoaxcwiffbzuegou.supabase.co'
-        const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9laG9xb2F4Y3dpZmZienVlZ291Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzMjI2MTMsImV4cCI6MjA4Nzg5ODYxM30.N5UP014MgNUBunZJuhKuUUlRYC_HY7lpAFAYD39CjvE'
-        const { createClient } = supabase
-        const sb2 = createClient(SUPABASE_URL, SUPABASE_ANON)
+        // ── COUNTDOWN INLINE CARTE ED2 ──
+        const CS_TARGET = new Date('2026-03-08T18:00:00-05:00')
+        function padZ(n) { return String(n).padStart(2,'0') }
+        function updateCSCountdown() {
+            const diff = CS_TARGET - new Date()
+            if (diff <= 0) {
+                const el = document.getElementById('cs-countdown')
+                const avail = document.getElementById('cs-available')
+                const content = document.getElementById('card-ed2-content')
+                if (el) el.style.display = 'none'
+                if (avail) avail.style.display = 'block'
+                const overlay = document.getElementById('coming-soon-overlay')
+                if (overlay) { overlay.style.cursor = 'pointer'; overlay.addEventListener('click', () => { window.location.href = 'edition02/edition-02.html' }) }
+                const link = document.getElementById('cs-link')
+                if (link) { link.textContent = "Lire l'édition #002 →"; link.href = 'edition02/edition-02.html' }
+                if (content) { content.style.filter = 'none'; content.style.opacity = '1' }
+                clearInterval(csTimer)
+                return
+            }
+            const days    = Math.floor(diff / 86400000)
+            const hours   = Math.floor((diff % 86400000) / 3600000)
+            const minutes = Math.floor((diff % 3600000) / 60000)
+            const seconds = Math.floor((diff % 60000) / 1000)
+            const d = document.getElementById('cs-days')
+            const h = document.getElementById('cs-hours')
+            const m = document.getElementById('cs-minutes')
+            const s = document.getElementById('cs-seconds')
+            if (d) d.textContent = padZ(days)
+            if (h) h.textContent = padZ(hours)
+            if (m) m.textContent = padZ(minutes)
+            if (s) s.textContent = padZ(seconds)
+        }
+        updateCSCountdown()
+        const csTimer = setInterval(updateCSCountdown, 1000)
 
-        // ── INDEX EST UNE PAGE PUBLIQUE ──
-        // On retire l'overlay immédiatement, sans vérifier la session.
-        // checkSubscription() s'occupe de déverrouiller le contenu bonus pour les abonnés.
-        document.getElementById('authOverlay').classList.add('hidden')
-        setTimeout(() => {
-            const o = document.getElementById('authOverlay')
-            if (o) o.remove()
-        }, 400)
-
-        // Unlock la featured (édition 2) pour les abonnés
+        // ── UNLOCK FEATURED (édition 2) pour les abonnés ──
         function unlockFeatured() {
             const card    = document.getElementById('card-edition-2-featured')
             const overlay = document.getElementById('coming-soon-overlay')
             const content = document.getElementById('card-ed2-content')
             if (!card) return
-
-            // Supprimer l'overlay coming-soon
             if (overlay) overlay.remove()
-
-            // Déflouter le contenu
             if (content) {
                 content.style.filter = 'none'
                 content.style.opacity = '1'
                 content.style.pointerEvents = 'auto'
                 content.style.userSelect = 'auto'
             }
-
-            // Rendre la carte cliquable vers l'édition
             card.style.cursor = 'pointer'
             card.addEventListener('click', () => { window.location.href = 'edition02/edition-02.html' })
             card.addEventListener('mouseenter', () => { card.style.background = 'linear-gradient(135deg,#161108 0%,#0d0b05 60%,#161108 100%)' })
             card.addEventListener('mouseleave', () => { card.style.background = '' })
         }
 
-        // Unlock toutes les cartes verrouillées pour les abonnés
+        // ── UNLOCK toutes les cartes verrouillées ──
         function unlockAllLockedCards() {
             document.querySelectorAll('.card-small.locked').forEach(card => {
-                // Supprimer l'overlay cadenas
                 const lockOverlay = card.querySelector('.lock-overlay')
                 if (lockOverlay) lockOverlay.remove()
-
-                // Changer les classes
                 card.classList.remove('locked')
                 card.classList.add('unlocked')
-
-                // Mettre à jour le badge
                 const badge = card.querySelector('.badge')
-                if (badge) {
-                    badge.className = 'badge badge-subscriber'
-                    badge.textContent = '✓ Abonné'
-                }
-
-                // Construire le lien depuis l'id de la carte (ex: card-edition-3 → edition03/edition-03.html)
+                if (badge) { badge.className = 'badge badge-subscriber'; badge.textContent = '✓ Abonné' }
                 const cardId = card.id
                 const match = cardId && cardId.match(/(\d+)$/)
                 if (match) {
                     const num = match[1].padStart(2, '0')
                     card.style.cursor = 'pointer'
-                    card.addEventListener('click', () => {
-                        window.location.href = `edition${num}/edition-${num}.html`
-                    })
+                    card.addEventListener('click', () => { window.location.href = `edition${num}/edition-${num}.html` })
                 }
             })
         }
 
+        // ✅ CHECK ABONNEMENT — utilise maintenant le bon client avec persistSession
         async function checkSubscription() {
             try {
                 const { data: { session } } = await sb2.auth.getSession()
-                if (!session) return
+                if (!session) return // Pas connecté, on laisse les cadenas
                 const { data: sub } = await sb2
                     .from('subscriptions')
                     .select('status')
@@ -436,8 +430,8 @@
                     .order('created_at', { ascending: false })
                     .limit(1)
                     .single()
-                if (!sub) return
-                if (sub.status !== 'active' && sub.status !== 'trialing') return
+                if (!sub || (sub.status !== 'active' && sub.status !== 'trialing')) return
+                // ✅ Abonné actif : unlock tout
                 unlockFeatured()
                 unlockAllLockedCards()
                 const pricing = document.getElementById('pricing-section')
@@ -449,55 +443,45 @@
             }
         }
 
-        // ── COUNTDOWN INLINE CARTE ED2 ──
-        const CS_TARGET = new Date('2026-03-08T18:00:00-05:00')
+        checkSubscription()
 
-        function padZ(n) { return String(n).padStart(2,'0') }
+        // ✅ NAV HAMBURGER — initialisé après le DOM, sans Rocket Loader interférence
+        function initNav() {
+            const hamburger  = document.getElementById('hamburger')
+            const navMenu    = document.getElementById('navMenu')
+            const navOverlay = document.getElementById('navOverlay')
+            const navClose   = document.getElementById('navClose')
 
-        function updateCSCountdown() {
-            const diff = CS_TARGET - new Date()
-
-            if (diff <= 0) {
-                document.getElementById('cs-countdown').style.display = 'none'
-                document.getElementById('cs-available').style.display = 'block'
-                const overlay = document.getElementById('coming-soon-overlay')
-                overlay.style.cursor = 'pointer'
-                overlay.addEventListener('click', () => { window.location.href = 'edition02/edition-02.html' })
-                document.getElementById('cs-link').textContent = 'Lire l\'édition #002 →'
-                document.getElementById('cs-link').href = 'edition02/edition-02.html'
-                document.getElementById('card-ed2-content').style.filter = 'none'
-                document.getElementById('card-ed2-content').style.opacity = '1'
-                clearInterval(csTimer)
+            if (!hamburger || !navMenu || !navOverlay || !navClose) {
+                console.warn('Nav elements not found')
                 return
             }
 
-            const days    = Math.floor(diff / 86400000)
-            const hours   = Math.floor((diff % 86400000) / 3600000)
-            const minutes = Math.floor((diff % 3600000) / 60000)
-            const seconds = Math.floor((diff % 60000) / 1000)
+            function openMenu()  {
+                hamburger.classList.add('open')
+                navMenu.classList.add('open')
+                navOverlay.classList.add('open')
+                document.body.style.overflow = 'hidden'
+            }
+            function closeMenu() {
+                hamburger.classList.remove('open')
+                navMenu.classList.remove('open')
+                navOverlay.classList.remove('open')
+                document.body.style.overflow = ''
+            }
 
-            document.getElementById('cs-days').textContent    = padZ(days)
-            document.getElementById('cs-hours').textContent   = padZ(hours)
-            document.getElementById('cs-minutes').textContent = padZ(minutes)
-            document.getElementById('cs-seconds').textContent = padZ(seconds)
+            hamburger.addEventListener('click', openMenu)
+            navClose.addEventListener('click', closeMenu)
+            navOverlay.addEventListener('click', closeMenu)
+            document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu() })
         }
 
-        updateCSCountdown()
-        const csTimer = setInterval(updateCSCountdown, 1000)
-
-        checkSubscription()
-
-        const hamburger  = document.getElementById('hamburger')
-        const navMenu    = document.getElementById('navMenu')
-        const navOverlay = document.getElementById('navOverlay')
-        const navClose   = document.getElementById('navClose')
-
-        function openMenu()  { hamburger.classList.add('open'); navMenu.classList.add('open'); navOverlay.classList.add('open'); document.body.style.overflow = 'hidden' }
-        function closeMenu() { hamburger.classList.remove('open'); navMenu.classList.remove('open'); navOverlay.classList.remove('open'); document.body.style.overflow = '' }
-
-        hamburger.addEventListener('click', openMenu)
-        navClose.addEventListener('click', closeMenu)
-        navOverlay.addEventListener('click', closeMenu)
+        // ✅ Attendre que le DOM soit prêt (protection contre Rocket Loader)
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initNav)
+        } else {
+            initNav()
+        }
     </script>
 
 </body>
